@@ -1,0 +1,147 @@
+<?php
+/**
+  * @file
+  * This file is use for install the module.
+  *
+  */
+
+//Create a table db
+function wimtvpro_schema() {
+$schema= array();
+
+$schema['wimtvpro_videos'] = array(
+'description' => t('Video Api WIMTV'),
+'fields' => array(
+'uid' => array(
+'description' => t('User identifier'),
+'type' => 'varchar',
+'length' => 100,
+
+'not null' => TRUE
+),
+'vid' => array(
+'description' => t('Identifier Video'),
+'type' => 'serial',
+'not null' => TRUE,
+),
+
+'contentidentifier' => array(
+'description' => t('Contentidentifier Video'),
+'type' => 'varchar',
+'length' => 100,
+'not null' => TRUE,
+),
+'state' => array(
+'description' => t('Showtime or no'),
+'type' => 'varchar',
+'length' => 100,
+'not null' => TRUE,
+),
+'status' => array(
+'description' => t('OWNED-ACQUIRED-PERFORMING'),
+'type' => 'varchar',
+'length' => 100,
+'not null' => TRUE,
+),
+'acquiredIdentifier' => array(
+'type' => 'varchar',
+'length' => 100,
+'not null' => TRUE,
+),
+'mytimestamp' => array(
+'description' => t('My timestamp'),
+'type' => 'int',
+'not null' => TRUE,
+),
+'position' => array(
+'description' => t('Position video user'),
+'type' => 'int',
+'not null' => TRUE,
+),
+'viewVideoModule' => array(
+'description' => t('View video into page or block'),
+'type' => 'int',
+'not null' => TRUE,
+),
+
+'urlThumbs' => array(
+'description' => t('Url thumbs video'),
+'type' => 'text',
+'not null' => TRUE,
+),
+'urlPlay' => array(
+'description' => t('Url preview video'),
+'type' => 'text',
+'not null' => FALSE,
+),
+'category' => array(
+'description' => t('Category and subcategory video[Json]'),
+'type' => 'text',
+'not null' => TRUE,
+),
+'title' => array(
+'description' => t('Title videos'),
+'type' => 'varchar',
+'length' => 100,
+'not null' => TRUE,
+),
+'duration' => array(
+'description' => t('Duration videos'),
+'type' => 'varchar',
+'length' => 10,
+'not null' => TRUE,
+),
+'showtimeIdentifier' => array(
+'description' => t('showtimeIdentifier videos'),
+'type' => 'varchar',
+'length' => 100,
+'not null' => TRUE,
+),
+),
+
+'primary key' => array('vid'),
+'unique keys' => array('mycolumn1' => array('vid'))
+);
+
+}
+
+
+
+
+
+function wimtvpro_install() {
+  drupal_install_schema('wimtvpro_videos');
+  drupal_install_schema('wimtvpro_playlist');
+  variable_set('contenttypeWithInsertVideo', array());
+  variable_set('addPageMyStreaming', '0');
+}
+
+function wimtvpro_uninstall() {
+  drupal_uninstall_schema('wimtvpro');
+  drupal_uninstall_schema('wimtvpro_playlist');
+  variable_del('userWimtv');
+  variable_del('passWimtv');
+  variable_del('basePathWimtv');
+  variable_del('urlVideosWimtv');
+  variable_del('urlVideosDetailWimtv');
+  variable_del('urlThumbsWimtv');
+  variable_del('urlEmbeddedPlayerWimtv');
+  variable_del('urlPostPublicWimtv');
+  variable_del('urlPostPublicAcquiWimtv');
+  variable_del('urlSTWimtv');
+  variable_del('urlShowTimeWimtv');
+  variable_del('urlShowTimeDetailWimtv');
+  variable_del('urlUserProfileWimtv');
+  variable_del('replaceContentWimtv');
+  variable_del('replaceUserWimtv');
+  variable_del('replaceacquiredIdentifier');
+  variable_del('replaceshowtimeIdentifier');
+  variable_del('ImageLogoProfile');
+  variable_del('pageNameProfile');
+  variable_del('personalDateProfile');
+  variable_del('EmailProfile');
+  variable_del('SocialProfile');
+  variable_del('sandbox');
+  variable_del('addPageMyStreaming');
+  variable_del('contenttypeWithInsertVideo');
+}

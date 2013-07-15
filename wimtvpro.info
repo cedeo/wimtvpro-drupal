@@ -1,0 +1,25 @@
+name = Wim TV Pro
+description = Publish your wimtv's video
+package = WIMTV
+core = 7.x
+configure = admin/config/wimtvpro
+
+dependencies[] = file
+stylesheets[all][] = wimtvpro.css
+stylesheets[all][] = wimtvpro_public.css
+file[] = wimtvpro.sql.php
+file[] = wimtvpro.form.php
+file[] = wimtvpro.function.php
+file[] = wimtvpro.sync.php
+file[] = wimtvpro.js
+file[] = wimtvpro.install
+file[] = required/block.inc
+file[] = required/form.inc
+file[] = required/insert.inc
+
+
+
+
+
+
+
