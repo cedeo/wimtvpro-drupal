@@ -1427,6 +1427,8 @@ function wimtvpro_plus_embeddedPlaylist_output() {
       $output .= "</head><body><div style='text-align:center;'>";
 	  $output .= "<div id='container'></div>";
 	  $dirJwPlayer = $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/player.swf";
+	  $vid = "";
+	  $dimension ="";
 	  if (count($code)>1) {
 	
 		  $arrayVid = explode(",",$code[1]);
@@ -1439,8 +1441,10 @@ function wimtvpro_plus_embeddedPlaylist_output() {
 		  }
 		  $result = db_query("SELECT * FROM {wimtvpro_videos} WHERE " . $videosFilter);
 		  $videos = $result->fetchAll();
-		  $urlPlay = explode("$$",$videos->urlPlay);
-		  foreach ($videos as $video){
+		  if ($videos->urlPlay!=""){
+			$urlPlay = explode("$$",$videos->urlPlay);
+		  }
+		foreach ($videos as $video){
 			$playlist .= "{'file':'" . $urlPlay[1]  . "',streamer:'" . $urlPlay[0] . "','image':'" . $video->urlThumbs  . "','title':'" . urlencode($video->title) . "','bufferlength':'0'},";
 		  
 		  }
