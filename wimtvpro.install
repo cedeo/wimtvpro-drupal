@@ -103,6 +103,9 @@ $schema['wimtvpro_videos'] = array(
 'unique keys' => array('mycolumn1' => array('vid'))
 );
 
+
+return $schema;
+
 }
 
 
