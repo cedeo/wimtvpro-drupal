@@ -308,11 +308,7 @@ $form['identifier'] = array(
     '#type' => 'hidden',
     '#default_value' => $identifier,
 );
-$form['timelivejs'] = array(
-    '#type' => 'hidden',
-    '#default_value' => '',
-	'#attributes' => array('id' => array('timelivejs')),
-);
+
 }
 else {
 $form['submit'] = array(
@@ -320,7 +316,11 @@ $form['submit'] = array(
 '#value' => t('Add'),
 );
 }
-
+$form['timelivejs'] = array(
+    '#type' => 'hidden',
+    '#default_value' => '',
+	'#attributes' => array('id' => array('timelivejs')),
+);
 $form['typeValue'] = array(
     '#type' => 'hidden',
     '#default_value' => $type,
@@ -376,7 +376,7 @@ function wimtvpro_wimlive_validate($form, &$form_state) {
   $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
   $url_live = variable_get("basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts";
   if ($_POST['typeValue']=="modify")  $url_live .= "/" . $_POST['identifier'];
-  $url_live .= "?timezone=" . $_POST['timelivejs'];
+  $url_live .= "?timezone=" . $_POST['timelive'];
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url_live);

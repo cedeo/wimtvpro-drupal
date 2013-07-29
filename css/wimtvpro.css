@@ -213,33 +213,6 @@ div.registration{
 }
 
 
-.progress,#progressbar {
-overflow: hidden;
-height: 20px;
-width:100%;
-background-color: #f7f7f7;
-	background-repeat: repeat-x;
-	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background-image: linear-gradient(to bottom, #f5f5f5, #f9f9f9);
-}
-
-.progress .bar,#progressbar  div{
-height: 100%;
-color: #000;
-float: left; line-height:22px;
-font-size: 10px;
-text-align: center;
-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-background-color: #5eb95e;
-	background-repeat: repeat-x;
-	background-image: linear-gradient(to bottom, #62c462, #57a957);
-}
-
 div.summary{
 	position:relative; margin:20px 0 0 0;
 	min-height:150px;
