@@ -376,7 +376,7 @@ function wimtvpro_wimlive_validate($form, &$form_state) {
   $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
   $url_live = variable_get("basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts";
   if ($_POST['typeValue']=="modify")  $url_live .= "/" . $_POST['identifier'];
-  $url_live .= "?timezone=" . $_POST['timelive'];
+  $url_live .= "?timezone=" . $_POST['timelivejs'];
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url_live);
