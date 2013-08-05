@@ -402,7 +402,6 @@ function wimtvpro_alert_reg(){
   }
 }
 
-
 function getDateRange($startDate, $endDate, $format="d/m/Y"){
 
 //Create output variable

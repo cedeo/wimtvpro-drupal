@@ -271,6 +271,29 @@
     
     break;
 
+	case "downloadVideo":
+	
+	$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
+    $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,  $url_download);
+
+
+      curl_setopt($ch, CURLOPT_VERBOSE, 0);
+
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+      curl_setopt($ch, CURLOPT_USERPWD, $credential);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+    $response = curl_exec($ch);
+	//echo $response ;
+	
+	echo "<iframe src=\"" . $url_download . "\" style=\"display:none;\" />"; 
+	die();
+	
+	break;
 
     default:
       echo "You not enter";

@@ -8,6 +8,8 @@ jQuery(document).ready(function(){
 		}
 	}
 
+
+	
 	function callRemoveVideo(element){
 
 		jQuery.ajax({
@@ -352,3 +354,11 @@ jQuery('#edit-sandbox').change (function() {
 	 
 	 
 });
+
+
+	
+	function downloadVideo(contentid){
+		var basePath = Drupal.settings.basePath;
+	    var uri = basePath  + "admin/config/wimtvpro/wimtvproCallAjax?namefunction=downloadVideo&id=" + contentid; 
+		 jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />"); 
+	}
