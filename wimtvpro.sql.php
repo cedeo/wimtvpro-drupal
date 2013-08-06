@@ -272,7 +272,8 @@
     break;
 
 	case "downloadVideo":
-	
+	//header("Content-Type: application/octet-stream");
+	//header("Content-Disposition: attachment;");
 	$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
     $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
 
@@ -280,17 +281,31 @@
     curl_setopt($ch, CURLOPT_URL,  $url_download);
 
 
-      curl_setopt($ch, CURLOPT_VERBOSE, 0);
-
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+      curl_setopt($ch, CURLOPT_HEADER, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
       curl_setopt($ch, CURLOPT_USERPWD, $credential);
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	  
+	  
+	$file = curl_exec($ch);
 
-    $response = curl_exec($ch);
-	//echo $response ;
+	$file_array = explode("\n\r", $file, 2);
+	$header_array = explode("\n", $file_array[0]);
+	foreach($header_array as $header_value) {
+	  $header_pieces = explode(':', $header_value);
+	  if(count($header_pieces) == 2) {
+		$headers[$header_pieces[0]] = trim($header_pieces[1]);
+	  }
+	}
+
+	header('Content-type: ' . $headers['Content-Type']);
+	header('Content-Disposition: ' . $headers['Content-Disposition']);
 	
-	echo "<iframe src=\"" . $url_download . "\" style=\"display:none;\" />"; 
+echo substr($file_array[1], 1);
+	
+
+	//echo "<iframe src=\"" . $url_download . "\" style=\"display:none;\" />"; 
 	die();
 	
 	break;
