@@ -300,9 +300,16 @@
 	}
 
 	header('Content-type: ' . $headers['Content-Type']);
-	header('Content-Disposition: ' . $headers['Content-Disposition']);
 	
-echo substr($file_array[1], 1);
+	$checkHeader = explode(";",$headers['Content-Disposition']);
+	echo $checkHeader[1];
+	$checkextension = explode(".",$checkHeader[1]);
+	if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
+		header('Content-Disposition: ' . $headers['Content-Disposition'] . ".mp4");
+	else
+		header('Content-Disposition: ' . $headers['Content-Disposition']);
+	
+	echo substr($file_array[1], 1);
 	
 
 	//echo "<iframe src=\"" . $url_download . "\" style=\"display:none;\" />"; 
