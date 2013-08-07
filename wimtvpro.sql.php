@@ -305,7 +305,7 @@
 	echo $checkHeader[1];
 	$checkextension = explode(".",$checkHeader[1]);
 	if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
-		header('Content-Disposition: ' . $headers['Content-Disposition'] . ".mp4");
+		header('Content-Disposition: ' . $headers['Content-Disposition'] . "mp4");
 	else
 		header('Content-Disposition: ' . $headers['Content-Disposition']);
 	
