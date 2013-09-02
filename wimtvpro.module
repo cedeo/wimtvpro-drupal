@@ -314,8 +314,6 @@ $schema['wimtvpro_playlist'] = array(
 
 );
 
-
-
 return $schema;
 }
 function wimtvpro_access() {
@@ -338,6 +336,7 @@ curl_setopt($ch, CURLOPT_URL, variable_get("basePathWimtv") . "profile");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 curl_setopt($ch, CURLOPT_USERPWD, $credential);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 $response = curl_exec($ch);
 $dati = json_decode($response, true);
 curl_close($ch);

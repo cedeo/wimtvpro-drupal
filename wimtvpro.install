@@ -103,6 +103,36 @@ $schema['wimtvpro_videos'] = array(
 'unique keys' => array('mycolumn1' => array('vid'))
 );
 
+$schema['wimtvpro_playlist'] = array(
+'description' => t('Playlist Api WIMTV'),
+'fields' => array(
+'id' => array('description' => t('Id of Playlist'),
+'type' => 'serial',
+'not null' => TRUE
+),
+
+'name' => array('description' => t('Name of Playlist'),
+'type' => 'text',
+'not null' => FALSE),
+
+'listVideo' => array('description' => t('List video contentidentifier'),
+'type' => 'text',
+'not null' => FALSE),
+'option' => array('description' => t('option playlist'),
+'type' => 'text',
+'not null' => FALSE),
+
+'uid' => array('description' => t('User identifier'),
+'type' => 'varchar',
+'length' => 100,
+'not null' => TRUE
+),
+
+),
+'primary key' => array('id'),
+'unique keys' => array('mycolumn1' => array('id'))
+
+);
 
 return $schema;
 
