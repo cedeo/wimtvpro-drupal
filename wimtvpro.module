@@ -1114,10 +1114,7 @@ if ($view_page==""){
   $to = "";
   $traffic = "";
   $storage = "";
-  if (variable_get("sandbox")=="No")
-    $baseReport = "http://www.wim.tv:3131/api/";
-  else
-    $baseReport = "http://peer.wim.tv:3131/api/";
+  $baseReport = "http://www.wim.tv:3131/api/";
   $megabyte = 1024*1024;
   if ((isset($_POST['from'])) && (isset($_POST['to'])) && (trim($_POST['from'])!="") && (trim($_POST['to'])!="")) {
     $from = $_POST['from'];
@@ -1170,14 +1167,19 @@ if ($view_page==""){
 	<input type="submit" value=">" class="form-submit" />
 	</form>
 	</div>';
+	
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url_info_user);
   curl_setopt($ch, CURLOPT_VERBOSE, 0);
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+  if (curl_error($ch)!="")
+    watchdog("Error traffic report",curl_error($ch));
   $response = curl_exec($ch);
   curl_close($ch);
+  watchdog("Traffic report: ",$response );
+
   $traffic_json = json_decode($response);
   if (isset($traffic_json->traffic))
     $traffic = $traffic_json->traffic;
@@ -1185,32 +1187,34 @@ if ($view_page==""){
     $storage = $traffic_json->storage;
   if (isset($url_packet)) {
     $ch2 = curl_init();
-	curl_setopt($ch2, CURLOPT_URL, $url_packet);
-	curl_setopt($ch2, CURLOPT_VERBOSE, 0);
-	curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, FALSE);
-	curl_setopt($ch2, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch2, CURLOPT_URL, $url_packet);
+    curl_setopt($ch2, CURLOPT_VERBOSE, 0);
+    curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch2, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch2, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 	$response2 = curl_exec($ch2);
+	watchdog("Current Packet: ",$response2 );
 	curl_close($ch2);
 	$commercialPacket_json = json_decode($response2);
-	if (isset($commercialPacket_json->current_packet)) { 
-	  $currentPacket = $commercialPacket_json->current_packet;
-	  if (($currentPacket->id)>0) $namePacket =  $currentPacket->name;
-	  else $namePacket =  $currentPacket->error;
-	  $report .= "<p>Commercial Packet: <b>" . $namePacket . "</b></p> ";
-	  $traffic_of = " of " . $currentPacket->band_human;
-	  $storage_of = " of " . $currentPacket->storage_human;
-	  $traffic_bar = "<div class='progress'><div class='bar' style='width:" . $commercialPacket_json->traffic->percent . "%'>" . $commercialPacket_json->traffic->percent_human . "%</div></div>";
-	  $storage_bar = "<div class='progress'><div class='bar' style='width:" . $commercialPacket_json->storage->percent . "%'>" . $commercialPacket_json->storage->percent_human . "%</div></div>";
-	  $byteToMb = "<b>" . $commercialPacket_json->traffic->current_human . '</b>' . $traffic_of . $traffic_bar;
-	  $byteToMbS = "<b>" . $commercialPacket_json->storage->current_human . '</b>' . $storage_of . $storage_bar;
-    }
+	$commercialPacket_json = json_decode($response2);
+	$currentPacket = $commercialPacket_json->current_packet;
+	if (($currentPacket->id)>0) $namePacket =  $currentPacket->name;
+	else $namePacket =  $currentPacket->error;
+	$report .="<p>Your Commercial Packet: <b>" . $namePacket . "</b></p> ";
+		
+	$traffic_of = " of " . $currentPacket->band_human;
+	$storage_of = " of " . $currentPacket->storage_human;
+				
+	$traffic_bar = "<div class='progress'><div class='bar' style='width:" . $commercialPacket_json->traffic->percent . "%'>&nbsp;</div>" . $commercialPacket_json->traffic->percent_human . "%</div>";
+    $storage_bar = "<div class='progress'><div class='bar' style='width:" . $commercialPacket_json->storage->percent . "%'>&nbsp;</div>" . $commercialPacket_json->storage->percent_human . "%</div>";			
+	$byteToMb = "<b>" . $commercialPacket_json->traffic->current_human . '</b>' . $traffic_of . $traffic_bar;
+	$byteToMbS = "<b>" . $commercialPacket_json->storage->current_human . '</b>' . $storage_of . $storage_bar;
   } else {
     $byteToMb = "<b>" . round($traffic/ $megabyte, 2) . ' MB</b>';
 	$byteToMbS = "<b>" . round($storage/ $megabyte, 2) . ' MB</b>';
   }
   //$commercialPacket = $traffic_json->commercialPacket;
-  if ($traffic=="") {
+  if (isset($traffic)=="") {
     $report .= "<p>You account don't generate traffic in this period.</p>";
   } else {
     $report .= "<p>Traffic: " . $byteToMb . "</p>";
@@ -1222,6 +1226,7 @@ if ($view_page==""){
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 	$response = curl_exec($ch);
+	watchdog("Stream report: ",$response );
 	curl_close($ch);
 	$arrayStream = json_decode($response);
 	$report .= '<div class="summary"><div class="tabs2"><span id="stream" class="active">View Streams</span><span id="graph">View graph</span></div>
