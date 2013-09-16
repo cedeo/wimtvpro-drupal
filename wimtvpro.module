@@ -1431,29 +1431,53 @@ function wimtvpro_plus_embeddedPlaylist_output() {
       $output .= "</head><body><div style='text-align:center;'>";
 	  $output .= "<div id='container'></div>";
 	  $dirJwPlayer = $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/player.swf";
-	  $vid = "";
-	  $dimension ="";
 	  if (count($code)>1) {
 	
 		  $arrayVid = explode(",",$code[1]);
-		  $videosFilter = "1=2 ";
-		  foreach ($arrayVid as $vids) {
-			if (($vids>=0) && ($vids!="")){
-			   $videosFilter .= " OR vid='" . $vids . "'";
-				
-			}
-		  }
-		  $result = db_query("SELECT * FROM {wimtvpro_videos} WHERE " . $videosFilter);
-		  $videos = $result->fetchAll();
-		  if ($videos->urlPlay!=""){
-			$urlPlay = explode("$$",$videos->urlPlay);
-		  }
-		foreach ($videos as $video){
-			$playlist .= "{'file':'" . $urlPlay[1]  . "',streamer:'" . $urlPlay[0] . "','image':'" . $video->urlThumbs  . "','title':'" . urlencode($video->title) . "','bufferlength':'0'},";
+		  
+		  $result = db_query("SELECT * FROM {wimtvpro_playlist} WHERE id = '" . $code[1] . "'");
+		  $array_playlist=$result->fetchAll();
+		
+		  $list = $array_playlist[0]->listVideo;
+		  
+		  $videoList = explode (",",$list);
+		  $sql_where  = " 1=2 ";
+		  for ($i=0;$i<count($videoList);$i++){
+		  
+			$sql_where .= "  OR contentidentifier='" . $videoList[$i] . "' ";
 		  
 		  }
+		  
+		  $sql_where = "AND (" . $sql_where . ")"; 
+		  
+		  $result_new = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' " . $sql_where);
 
-		  $dimensions = "width:" . variable_get('widthPreview') . ",height:" . variable_get('heightPreview');
+	
+          $array_videos  = $result_new->fetchAll();
+          $array_videos_new_drupal = array();
+		  for ($i=0;$i<count($videoList);$i++){
+			 foreach ($array_videos  as $record_new) {
+				if ($videoList[$i] == $record_new->contentidentifier){
+					array_push($array_videos_new_drupal, $record_new);
+				}
+			}
+		  }
+
+		
+		  $playlist = "";
+		  foreach ($array_videos_new_drupal as $videoT){
+		   
+		    $result_video = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier='" . $videoT->contentidentifier . "' ");
+		    $video  = $result_video->fetchAll();
+		    
+		    $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$videoT->contentidentifier,$video,FALSE);
+			if (!isset($videoT->urlThumbs)) $thumbs[1] = "";
+		   else $thumbs = explode ('"',$videoT->urlThumbs);
+			$playlist .= "{" . $configFile . " 'image':'" . $thumbs[1]  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
+			
+		  }
+
+		  $dimensions = "width:" . variable_get('widthPreview') . ",height:" . variable_get('heightPreview')-10;
 
 		  $output .= "<div id='container_playlist'></div>";
 		  $playlistSize = "30%";
@@ -1480,8 +1504,15 @@ function wimtvpro_plus_embeddedPlaylist_output() {
         link: '" . $GLOBALS['base_url']  . "'
 		}, ";*/
 		
+		if ($options["loop"]!="no") $output .= "'repeat':'always',";
+		
+		$isiPhone = (bool)strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
+		$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
+		if (!$isiPad  AND !$isiPhone) 
+			 $output .= "'flashplayer':'" . $dirJwPlayer . "',";
 		if (variable_get('nameSkin')!="") $output .= "skin: '" . $directory . "/" . variable_get('nameSkin') . ".zip',";
 		else $output .= "skin: '" . $directory . "/skin/default.zip',";
+		
 		$output .= $dimensions . "'playlist': [" .  $playlist . "],'playlist.position': 'right',	'playlist.size': '" . $playlistSize  . "'});</script>&nbsp;";
       }
 	  else {
