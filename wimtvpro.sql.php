@@ -64,6 +64,7 @@
       curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
       $response = curl_exec($ch);
       echo $response;
+	 
       $state = "showtime";
       $array_response = json_decode($response);
       $sql = "UPDATE {wimtvpro_videos} SET state='" . $state . "' ,showtimeIdentifier='" . $array_response -> showtimeIdentifier . "' WHERE contentidentifier='" . $id . "'";
@@ -136,10 +137,11 @@
       curl_setopt($ch, CURLOPT_URL, $url_remove_public_wimtv);
       curl_setopt($ch, CURLOPT_VERBOSE, 0);
       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
       curl_setopt($ch, CURLOPT_USERPWD, $credential);
-      curl_setopt($ch, CURLOPT_POST, TRUE);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: ' . $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
+
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       $response = curl_exec($ch);
       echo $response;
