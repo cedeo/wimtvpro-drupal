@@ -6,6 +6,7 @@
   */
 //Request thumbs videos
 
+
 function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
   global $user;
   $replace_content = variable_get("replaceContentWimtv");
@@ -21,11 +22,36 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
       $sql_where .= " AND ((viewVideoModule='2') OR (viewVideoModule='3')) ";
     }
   }
-  $result_new = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' AND position<>0 " . $sql_where . " ORDER BY Position ASC");
+  
+  $result = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "'" . $sql_where);
+  $array_count  = $result->fetchAll();
+  $n_per_page = 20;
+  // Initialize the pager
+  $current_page = pager_default_initialize(count($array_count), $n_per_page);
+  // Split your list into page sized chunks
+  $chunks = array_chunk($array_count, $n_per_page, TRUE);
+  // Show the appropriate items from the list
+  //$output = theme('table', array('header' => $header, 'rows' => $chunks[$current_page]));
+  // Show the pager
+  $output = theme('pager', array('quantity',count($array_count)));
+  
+
+  if (isset($_GET["page"])) {
+	$page = $_GET["page"];
+    $sql_limit =  " LIMIT " . ($n_per_page * $page) . " , " . $n_per_page;
+  }
+  else {
+    $page = 0;
+    $sql_limit =  " LIMIT " . $n_per_page;
+  }
+  $query = "SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' " . $sql_where . " ORDER BY Position ASC " . $sql_limit;
+
+  
+  $result_new = db_query($query);
   $array_videos_new_drupal  = $result_new->fetchAll();
 
-  $result_new0 = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' AND  position=0 " . $sql_where . " ORDER BY mytimestamp DESC");
-  $array_videos_new_drupal0 = $result_new0->fetchAll();
+  /*$result_new0 = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' AND  position=0 " . $sql_where . " ORDER BY mytimestamp DESC");
+  $array_videos_new_drupal0 = $result_new0->fetchAll();*/
 
   //Add JQuery header
   wimtvpro_install_jquery($showtime, $private);
@@ -43,11 +69,12 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
   curl_setopt($ch_st, CURLOPT_SSL_VERIFYPEER, FALSE);
   $details_st  =curl_exec($ch_st);
   $arrayjson_st = json_decode( $details_st);
+   watchdog("dettaglio wimtv",$details_st);
   $st_license = array();
   foreach ($arrayjson_st->items as $st){
   	$st_license[$st->showtimeIdentifier] = $st->licenseType;
   }
-
+ 
   $position_new=1;
   //Select video with position
   if (count($array_videos_new_drupal )>0) {
@@ -55,13 +82,10 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
         $my_media .=  wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$playlist,$st_license);
     }
   }
-   //Select video with position = 0
-  if (count($array_videos_new_drupal0)>0) {
-    foreach ($array_videos_new_drupal0 as $record_new) {
-        $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$playlist,$st_license);
-    }
-  }
-  return $my_media;
+
+  
+  return $my_media . $output;
+
 }
 
 //Request list of thumbs
@@ -102,18 +126,22 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 	if (($showtime_identifier!="") && (count($st_license)>0)){	
 		$license_type = $st_license[$showtime_identifier];	
 	}
-
+    $isfound = false;
+	if (!strstr($replace_video, 'Not Found'))
+	  $isfound = true;
     $replace_video = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
 	if ($license_type!="") $replace_video .= '<div class="icon_licence ' .$license_type . '"></div>';
   }
   $wimtvpro_url = "";
-  if ((!$private) && (!$insert_into_page))
-    $wimtvpro_url = wimtvpro_checkCleanUrl("", "wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, $GLOBALS['base_path']);
-    $video  = "<a class='wimtv-thumbnail' href='" . $wimtvpro_url . "'>" . $replace_video . "</a>";
-  if ($insert_into_page)
-    $wimtvpro_url = wimtvpro_checkCleanUrl("", "wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, $GLOBALS['base_path']);
-    $video  = "<a class='wimtv-thumbnail' href='" . $wimtvpro_url . "'>" . $replace_video . "</a>";
-  
+  if ($isfound) {
+    if ((!$private) && (!$insert_into_page))
+      $wimtvpro_url = wimtvpro_checkCleanUrl("", "wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, $GLOBALS['base_path']);
+    if ($insert_into_page)
+      $wimtvpro_url = wimtvpro_checkCleanUrl("", "wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, $GLOBALS['base_path']);
+	$video  = "<a class='wimtv-thumbnail' href='" . $wimtvpro_url . "'>" . $replace_video . "</a>";
+  } else {
+    $replace_video = false;
+  }
   if ($replace_video) {
     include('wimtvpro.form.php');
   if (!$insert_into_page) {
