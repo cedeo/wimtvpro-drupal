@@ -787,8 +787,13 @@ function wimtvpro_output() {
   
   form_set_error("error",$view_page);
   if ($view_page==""){
-    $title = "<div class='action'><span class='icon_sync0' title='Syncronize'>Syncronize</span></div>";
+   
+	
+	$title = "<div class='action'><span class='icon_sync0' title='Syncronize'>Syncronize</span></div>";
     $getThumbs = $title . "<ul class='items' id='FALSE'>" . wimtvpro_getThumbs(FALSE) . "</ul>"; 
+	
+	
+	
     return $getThumbs;
   } 
   return $view_page;
