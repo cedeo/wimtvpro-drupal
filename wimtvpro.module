@@ -1482,7 +1482,7 @@ function wimtvpro_plus_embeddedPlaylist_output() {
 			
 		  }
 
-		  $dimensions = "width:" . variable_get('widthPreview') . ",height:" . variable_get('heightPreview')-10;
+		  $dimension = "width:" . variable_get('widthPreview') . ",height:" . variable_get('heightPreview')-10;
 
 		  $output .= "<div id='container_playlist'></div>";
 		  $playlistSize = "30%";
@@ -1494,7 +1494,7 @@ function wimtvpro_plus_embeddedPlaylist_output() {
 		else {
 			$directory = base_path() . drupal_get_path('module', 'wimtvpro');
 		}
-		$embedded = str_replace("+", " " , urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvproplus/viewEmbeddedPlaylist/" . $vid . "'" . $dimension . "></iframe>"));
+		$embedded = str_replace("+", " " , urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvproplus/viewEmbeddedPlaylist/" . $code . "'" . $dimension . "></iframe>"));
 		$output .= "<script type='text/javascript'>jwplayer('container_playlist').setup({";
 		
 		$output .= "'plugins': {
