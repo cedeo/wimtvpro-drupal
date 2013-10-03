@@ -507,49 +507,48 @@ if (count($my_fields)>0) {
 
 
 if ($view_page==""){
-
-include(drupal_get_path('module', 'wimtvpro') . '/required/pricing.inc');
-if ($openFieldSet)
+  $openFieldSet = FALSE;
+  if ($openFieldSet)
 	$form['fieldPricing'] = array('#type'=>'fieldset','#title'=>'Pricing','#collapsible' => TRUE, '#collapsed' => FALSE);
-else 
+  else
 	$form['fieldPricing'] = array('#type'=>'fieldset','#title'=>'Pricing','#collapsible' => TRUE, '#collapsed' => TRUE);
-$form['fieldPayment'] = array('#type'=>'fieldset','#title'=>'Payment','#collapsible' => TRUE, '#collapsed' => TRUE);
-$form['fieldLive'] = array('#type'=>'fieldset','#title'=>'WimLive Configuration','#collapsible' => TRUE, '#collapsed' => TRUE);
-//$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>'Update Personal Info','#collapsible' => TRUE, '#collapsed' => TRUE);
-$form['fieldFeatures'] = array('#type'=>'fieldset','#title'=>'Features','#collapsible' => TRUE, '#collapsed' => TRUE);
-
-//fieldPricing
-
-$form['fieldPricing']['htmlFrame'] = array('#markup' => variable_get('htmltag3',$pricing) ); 
-//End fieldPricing
-
-
-$form['fieldPayment']['paypalEmail'] = array('#type' => 'textfield',
+    $form['fieldPayment'] = array('#type'=>'fieldset','#title'=>'Payment','#collapsible' => TRUE, '#collapsed' => TRUE);
+    $form['fieldLive'] = array('#type'=>'fieldset','#title'=>'WimLive Configuration','#collapsible' => TRUE, '#collapsed' => TRUE);
+    //$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>'Update Personal Info','#collapsible' => TRUE, '#collapsed' => TRUE);
+    $form['fieldFeatures'] = array('#type'=>'fieldset','#title'=>'Features','#collapsible' => TRUE, '#collapsed' => TRUE);
+  
+  //fieldPricing
+  $pricing = wimtvpro_callPricing();
+  $form['fieldPricing']['htmlFrame'] = array('#markup' => variable_get('htmltag3',$pricing) ); 
+  //End fieldPricing
+  
+  //fieldPayment
+  $form['fieldPayment']['paypalEmail'] = array('#type' => 'textfield',
 '#title' => t('Paypal Email'),
 '#default_value' => !empty($dati['paypalEmail']) ? $dati['paypalEmail'] : '',
 '#size' => 100,
 '#maxlength' => 200,
 '#required' => FALSE,);
-$form['fieldPayment']['taxCode'] = array('#type' => 'textfield',
+  $form['fieldPayment']['taxCode'] = array('#type' => 'textfield',
 '#title' => t('Tax Code'),
 '#default_value' => !empty($dati['taxCode']) ? $dati['taxCode'] : '',
 '#size' => 100,
 '#maxlength' => 200,
 '#required' => FALSE,); 
-$form['fieldPayment']['vatCode'] = array('#type' => 'textfield',
+  $form['fieldPayment']['vatCode'] = array('#type' => 'textfield',
 '#title' => t('Vat Code'),
 '#default_value' => !empty($dati['vatCode']) ? $dati['vatCode'] : '',
 '#size' => 100,
 '#maxlength' => 200,
 '#required' => FALSE,);
-$form['fieldPayment']['htmlBilling']=array('#markup' => variable_get('htmltag3',t("Billing Adress")) ); 
-$form['fieldPayment']['billingAddress[street]'] = array('#type' => 'textfield',
+  $form['fieldPayment']['htmlBilling']=array('#markup' => variable_get('htmltag3',t("Billing Adress")) ); 
+  $form['fieldPayment']['billingAddress[street]'] = array('#type' => 'textfield',
 '#title' => t('Street'),
 '#default_value' => !empty($dati['billingAddress']['street']) ? $dati['billingAddress']['street'] : '',
 '#size' => 100,
 '#maxlength' => 200,
 '#required' => FALSE,);
-$form['fieldPayment']['billingAddress[city]'] = array('#type' => 'textfield',
+  $form['fieldPayment']['billingAddress[city]'] = array('#type' => 'textfield',
 '#title' => t('Street'),
 '#default_value' => !empty($dati['billingAddress']['city']) ? $dati['billingAddress']['city'] : '',
 '#size' => 100,
@@ -567,7 +566,7 @@ $form['fieldPayment']['billingAddress[zipCode]'] = array('#type' => 'textfield',
 '#size' => 100,
 '#maxlength' => 200,
 '#required' => FALSE,);
-//End fieldPricing
+//End fieldPayment
 
 
 //fieldLive
@@ -1058,7 +1057,7 @@ function wimtvpro_embeddedAll_output() {
 	$output .= "'plugins': {
 			 
 			   'sharing-3': {
-				   'link': '" . $embeddedEncode  . "',
+				
 				   'code': '" . $embeddedEncode   . "'
 			   }},";
 	
@@ -1393,8 +1392,8 @@ function wimtvpro_plus_embeddedAll_output() {
 		$output .= "'plugins': {
 			 
 			   'sharing-3': {
-				   'link': '" . $embedded . "',
-				   'code': '" . $embedded  . "'
+				   
+					'code': '" . $embedded   . "'
 			   }},";
 			   
 		/*$output .= " logo: {
@@ -1445,6 +1444,8 @@ function wimtvpro_plus_embeddedPlaylist_output() {
 		
 		  $list = $array_playlist[0]->listVideo;
 		  
+		  $options = $array_playlist[0]->option;
+		  $array_option = explode (",",$options);
 		  $videoList = explode (",",$list);
 		  $sql_where  = " 1=2 ";
 		  for ($i=0;$i<count($videoList);$i++){
@@ -1494,22 +1495,30 @@ function wimtvpro_plus_embeddedPlaylist_output() {
 		else {
 			$directory = base_path() . drupal_get_path('module', 'wimtvpro');
 		}
-		$embedded = str_replace("+", " " , urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvproplus/viewEmbeddedPlaylist/" . $code . "'" . $dimension . "></iframe>"));
+		$dimension_embedded = " width='" . (variable_get('widthPreview')+50) . "px' height='" . (variable_get('heightPreview')+70)  . "px'";
+		$embedded = str_replace("+", " " , urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvproplus/viewEmbeddedPlaylist/" . $code[1] . "'" . $dimension_embedded. "></iframe>"));
 		$output .= "<script type='text/javascript'>jwplayer('container_playlist').setup({";
 		
 		$output .= "'plugins': {
 			
 			   'sharing-3': {
-				   'link': '" . $embedded . "',
-				   'code': '" . $embedded  . "'
+				 
+				   'code': '" . $embedded . "'
+			
 			   }},";
 		/*$output .= " logo: {
 		hide: 'false', position:'bottom-right', 
         file: '" . $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvproplus') . "/img/logo_player.png',
         link: '" . $GLOBALS['base_url']  . "'
 		}, ";*/
-		
-		if ($options["loop"]!="no") $output .= "'repeat':'always',";
+        $options = array();
+		foreach ($array_option as $value){		  
+		  $array = explode(":",$value);
+		  if ($array[0]!="")
+			$options[$array[0]] = $array[1];
+          
+		}
+		if ($options["loop"]!="no") $output .= "'repeat':'always',";  
 		
 		$isiPhone = (bool)strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
 		$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
