@@ -274,49 +274,68 @@
     break;
 
 	case "downloadVideo":
-	//header("Content-Type: application/octet-stream");
-	//header("Content-Disposition: attachment;");
-	$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
-    $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+		ini_set('max_execution_time', 300);
+		
+       $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+		$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
+		try {
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,  $url_download);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,  $url_download);
+			curl_setopt($ch, CURLOPT_HEADER, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_BINARYTRANSFER, 0);
+			curl_setopt($ch, CURLOPT_NOBODY, 1);
+			curl_setopt($ch, CURLOPT_USERPWD, $credential);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			$file = curl_exec($ch);
+			$file_array = explode("\n\r", $file, 2);
+			$header_array = explode("\n", $file_array[0]);
+			foreach($header_array as $header_value) {
+			  $header_pieces = explode(':', $header_value);
+			  if(count($header_pieces) == 2) {
+					$headers[$header_pieces[0]] = trim($header_pieces[1]);
+			  }
+			}
+			curl_close($ch);
+			
+			$explodeContent = explode("filename=",$headers['Content-Disposition']);
+			$filename = $explodeContent[1];
+			//echo $filename;
+			header('Content-type: ' . $headers['Content-Type']);
+			$checkHeader = explode(";",$headers['Content-Disposition']);
+			$checkextension = explode(".",$checkHeader[1]);
+			if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
+					$headers['Content-Disposition'] .= "mp4";
+			header('Content-Disposition: ' . $headers['Content-Disposition']);
+			
+			$fh = fopen(file_directory_temp() . "/" . $filename, 'w');
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,  $url_download);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 0);
+			curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_USERPWD, $credential);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 200);
+			curl_setopt($ch, CURLOPT_FILE, $fh);
+			curl_exec($ch);
+			curl_close($ch);
+			fclose($fh);
 
+			
+			} catch (Exception $e) {
+			  header('Content-type: text/plain');
+			  header('Content-Disposition: attachment; filename="error.txt"');
+			  echo 'Caught exception: ',  $e->getMessage(), "\n";
+			}
+			die();
+        
+    break;
 
-      curl_setopt($ch, CURLOPT_HEADER, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-      curl_setopt($ch, CURLOPT_USERPWD, $credential);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	  
-	  
-	$file = curl_exec($ch);
-
-	$file_array = explode("\n\r", $file, 2);
-	$header_array = explode("\n", $file_array[0]);
-	foreach($header_array as $header_value) {
-	  $header_pieces = explode(':', $header_value);
-	  if(count($header_pieces) == 2) {
-		$headers[$header_pieces[0]] = trim($header_pieces[1]);
-	  }
-	}
-
-	header('Content-type: ' . $headers['Content-Type']);
-	
-	$checkHeader = explode(";",$headers['Content-Disposition']);
-	//echo $checkHeader[1];
-	$checkextension = explode(".",$checkHeader[1]);
-	if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
-		header('Content-Disposition: ' . $headers['Content-Disposition'] . "mp4");
-	else
-		header('Content-Disposition: ' . $headers['Content-Disposition']);
-	
-	echo substr($file_array[1], 1);
-
-	//echo "<iframe src=\"" . $url_download . "\" style=\"display:none;\" />"; 
-	die();
 	
 	break;
+	
 
     default:
       echo "You not enter";

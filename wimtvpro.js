@@ -357,16 +357,20 @@ jQuery('#edit-sandbox').change (function() {
 
 
 	
-	function downloadVideo(contentid){
-		var basePath = Drupal.settings.basePath;
-	    var uri = basePath  + "admin/config/wimtvpro/wimtvproCallAjax?namefunction=downloadVideo&id=" + contentid; 
+	function downloadVideo(contentid,obj){
 		
-		 jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />"); 
-		 
-		/* var id = contentid;
-   
-	   var uri =  "https://www.wim.tv:443/wimtv-webapp/rest/videos/" + id + "/download";
-	   console.log (uri);
-	  jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");*/
-		 
+		jQuery(obj).parent().append("<div class='loader loaderDownload'></div>");
+		//jQuery(".loaderDownload").show();
+		//jQuery(obj).hide();
+		var basePath = Drupal.settings.basePath;
+		var uri = basePath  + "admin/config/wimtvpro/wimtvproCallAjax?namefunction=downloadVideo&id=" + contentid; 
+		
+	
+		
+		jQuery(obj).parent().append("<iframe  style=\"display:none\" id=\"iframeDownload\" src=\"" + uri + "\" />"); 
+		// jQuery(".loaderDownload").show();
+	
+		
+		
 	}
+	
