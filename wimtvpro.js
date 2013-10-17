@@ -357,20 +357,9 @@ jQuery('#edit-sandbox').change (function() {
 
 
 	
-	function downloadVideo(contentid,obj){
-		
-		jQuery(obj).parent().append("<div class='loader loaderDownload'></div>");
-		//jQuery(".loaderDownload").show();
-		//jQuery(obj).hide();
+	function downloadVideo(contentid,filename){
 		var basePath = Drupal.settings.basePath;
 		var uri = basePath  + "admin/config/wimtvpro/wimtvproCallAjax?namefunction=downloadVideo&id=" + contentid; 
-		
-	
-		
 		jQuery(obj).parent().append("<iframe  style=\"display:none\" id=\"iframeDownload\" src=\"" + uri + "\" />"); 
-		// jQuery(".loaderDownload").show();
-	
-		
-		
 	}
 	

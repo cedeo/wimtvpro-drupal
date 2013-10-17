@@ -276,7 +276,7 @@
 	case "downloadVideo":
 		ini_set('max_execution_time', 300);
 		
-       $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+        $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
 		$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
 		try {
 
@@ -301,15 +301,18 @@
 			
 			$explodeContent = explode("filename=",$headers['Content-Disposition']);
 			$filename = $explodeContent[1];
-			//echo $filename;
+			
 			header('Content-type: ' . $headers['Content-Type']);
 			$checkHeader = explode(";",$headers['Content-Disposition']);
 			$checkextension = explode(".",$checkHeader[1]);
-			if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
+			$numeroCount = count($checkHeader[1]); // se ci fosse un file che ha più di un punto
+			$ext = $checkextension[$numeroCount-1];
+			if ((!isset($ext))  || ($ext==""))
 					$headers['Content-Disposition'] .= "mp4";
 			header('Content-Disposition: ' . $headers['Content-Disposition']);
 			
-			$fh = fopen(file_directory_temp() . "/" . $filename, 'w');
+			$fh = fopen(file_directory_temp() . "/" . $filename, 'xb');
+			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,  $url_download);
 			curl_setopt($ch, CURLOPT_HEADER, 0);
