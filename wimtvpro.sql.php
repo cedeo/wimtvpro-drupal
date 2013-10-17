@@ -275,8 +275,6 @@
 	case "downloadVideo":
 		ini_set('max_execution_time', 300);
 		$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-		$credential = "adm:12345678";
-		$id = "urn:wim:tv:content:92136e75-2396-4b1e-8e25-9b6c5d06d587";
 		
 		$result = db_query("SELECT * FROM {wimtvpro_playlist} WHERE id = '" . $id . "'");
 		$arrayStatusVideo = $result->fetchAll();
