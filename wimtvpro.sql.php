@@ -233,7 +233,6 @@
         )) -> condition("vid", $id)
         ->execute();
 
-      die();
 	  die();
 	 break;
     
@@ -275,9 +274,29 @@
 
 	case "downloadVideo":
 		ini_set('max_execution_time', 300);
+		$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+		$credential = "adm:12345678";
+		$id = "urn:wim:tv:content:92136e75-2396-4b1e-8e25-9b6c5d06d587";
 		
-        $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+		$result = db_query("SELECT * FROM {wimtvpro_playlist} WHERE id = '" . $id . "'");
+		$arrayStatusVideo = $result->fetchAll();
+		$filestatus = explode ("|",$arrayStatusVideo->status);
+		
+		$filename = "";
+		$ext = "";
+		if ($filestatus[1]!=""){
+			$infoFile = explode (".",$filestatus[1]);
+			$numeroCount = count($infoFile);
+			$ext = $infoFile[$numeroCount-1];
+			$filename = $infoFile[0];
+			for ($i=1;$i<$numeroCount-1;$i++){
+				$filename .= "." . $infoFile[$i];
+			}
+		}
 		$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
+		if ($filename!=""){
+			$url_download .= "?filename=" . $filename . "&ext=" . $ext;
+		}
 		try {
 
 			$ch = curl_init();
@@ -311,6 +330,9 @@
 					$headers['Content-Disposition'] .= "mp4";
 			header('Content-Disposition: ' . $headers['Content-Disposition']);
 			
+			if (is_file(file_directory_temp() . "/" . $filename))
+				unlink (file_directory_temp() . "/" . $filename);
+				
 			$fh = fopen(file_directory_temp() . "/" . $filename, 'xb');
 			
 			$ch = curl_init();
