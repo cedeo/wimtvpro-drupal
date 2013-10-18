@@ -359,10 +359,6 @@
         
     break;
 
-	
-	break;
-	
-
     default:
       echo "You not enter";
       die();
