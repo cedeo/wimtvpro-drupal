@@ -275,8 +275,10 @@
 	case "downloadVideo":
 		ini_set('max_execution_time', 300);
 		$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+		$credential = "adm:12345678";
+		$id = "urn:wim:tv:content:92136e75-2396-4b1e-8e25-9b6c5d06d587";
 		
-		$result = db_query("SELECT * FROM {wimtvpro_playlist} WHERE id = '" . $id . "'");
+		$result = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier = '" . $id . "'");
 		$arrayStatusVideo = $result->fetchAll();
 		$filestatus = explode ("|",$arrayStatusVideo->status);
 		
@@ -324,6 +326,8 @@
 			$checkextension = explode(".",$checkHeader[1]);
 			$numeroCount = count($checkHeader[1]); // se ci fosse un file che ha più di un punto
 			$ext = $checkextension[$numeroCount-1];
+
+			
 			if ((!isset($ext))  || ($ext==""))
 					$headers['Content-Disposition'] .= "mp4";
 			header('Content-Disposition: ' . $headers['Content-Disposition']);
