@@ -357,7 +357,8 @@
 			if ($error) {
 				watchdog('Download Video Wimtv', 'Download failed:' . $error);
             }
-			
+			watchdog('Download Video Wimtv', 'Lenght video:' . $length );
+			watchdog('Download Video Wimtv', 'Mime video:' . $mime );
 		    unlink($directory . "/" . $filename);
 			curl_close($ch);
 			
