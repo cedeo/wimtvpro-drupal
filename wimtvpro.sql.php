@@ -280,7 +280,7 @@
 				
 		$filename = "";
 		$ext = "";
-		if (count($arrayStatusVideo)>0)
+		if (count($arrayStatusVideo)>0){
 			$filestatus = explode ("|",$arrayStatusVideo->status);
 			if ($filestatus[1]!=""){
 				$infoFile = explode (".",$filestatus[1]);
@@ -350,12 +350,12 @@
 			fclose($fh);
 
 			
-			} catch (Exception $e) {
-			  header('Content-type: text/plain');
-			  header('Content-Disposition: attachment; filename="error.txt"');
-			  echo 'Caught exception: ',  $e->getMessage(), "\n";
-			}
-			die();
+		} catch (Exception $e) {
+		  header('Content-type: text/plain');
+		  header('Content-Disposition: attachment; filename="error.txt"');
+		  echo 'Caught exception: ',  $e->getMessage(), "\n";
+		}
+		die();
         
     break;
 
