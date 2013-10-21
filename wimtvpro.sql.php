@@ -349,7 +349,7 @@
 			curl_setopt($ch, CURLOPT_TIMEOUT, 200);
 			curl_setopt($ch, CURLOPT_FILE, $fh);
 			curl_exec($ch);
-			curl_close($ch);
+			
 			fclose($fh);
 			$error    = curl_errno($ch);
             $length   = curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
@@ -357,11 +357,9 @@
 			if ($error) {
 				watchdog('Download Video Wimtv', 'Download failed:' . $error);
             }
-			if ($length < MIN_SIZE || $length > MAX_SIZE) {
-				watchdog('Download Video Wimtv', 'Download failed, Lenght is Over: ' . $length);
-			}
+			
 		    unlink($directory . "/" . $filename);
-
+			curl_close($ch);
 			
 		} catch (Exception $e) {
 		  header('Content-type: text/plain');
