@@ -338,6 +338,7 @@
 				
 			//$fh = fopen(drupal_realpath($directory . "/" . $filename), 'xb');
 			$fh = fopen(drupal_realpath($directory . "/" . $filename), 'cb');
+			flock($fh, LOCK_EX);
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,  $url_download);
 			curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -350,6 +351,16 @@
 			curl_exec($ch);
 			curl_close($ch);
 			fclose($fh);
+			$error    = curl_errno($ch);
+            $length   = curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
+            $mime     = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+			if ($error) {
+				watchdog('Download Video Wimtv', 'Download failed:' . $error);
+            }
+			if ($length < MIN_SIZE || $length > MAX_SIZE) {
+				watchdog('Download Video Wimtv', 'Download failed, Lenght is Over: ' . $length);
+			}
+		    unlink($directory . "/" . $filename);
 
 			
 		} catch (Exception $e) {
