@@ -38,7 +38,7 @@ jQuery(document).ready(function(){
 			error: function(request,error) {
 				alert(request.responseText);
 			}
-		})
+		});
 
 
 	}
@@ -359,7 +359,7 @@ jQuery('#edit-sandbox').change (function() {
 	
 	function downloadVideo(contentid){
 		var basePath = Drupal.settings.basePath;
-		var uri = basePath  + "admin/config/wimtvpro/wimtvproCallAjax?namefunction=downloadVideo&id=" + contentid; 
+		var uri = basePath  + "admin/config/wimtvpro/wimtvproCallAjax?namefunction=downloadVideo&id=" + contentid;
 		jQuery("body").append("<iframe  style=\"display:none\" id=\"iframeDownload\" src=\"" + uri + "\" />"); 
 	}
 	

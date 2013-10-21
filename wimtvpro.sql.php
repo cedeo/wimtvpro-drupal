@@ -280,7 +280,7 @@
 				
 		$filename = "";
 		$ext = "";
-		if (count($arrayStatusVideo)>0){
+		/*if (count($arrayStatusVideo)>0){
 			$filestatus = explode ("|",$arrayStatusVideo->status);
 			if ($filestatus[1]!=""){
 				$infoFile = explode (".",$filestatus[1]);
@@ -291,7 +291,7 @@
 					$filename .= "." . $infoFile[$i];
 				}
 			}
-		}
+		}*/
 		$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
 		if ($filename!=""){
 			$url_download .= "?filename=" . $filename . "&ext=" . $ext;
