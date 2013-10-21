@@ -275,6 +275,8 @@
 	case "downloadVideo":
 		ini_set('max_execution_time', 300);
 		$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+		$credential = "adm:12345678";
+		$id = "urn:wim:tv:content:926f8f94-8944-4191-b14a-b88822d4c1a1";
 		$result = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier = '" . $id . "'");
 		$arrayStatusVideo = $result->fetchAll();
 				
@@ -331,10 +333,12 @@
 					$headers['Content-Disposition'] .= "mp4";
 			header('Content-Disposition: ' . $headers['Content-Disposition']);
 			
-			if (is_file(file_directory_temp() . "/" . $filename))
-				unlink (file_directory_temp() . "/" . $filename);
+			$directory = "temporary://";
+
+			if (is_file($directory . "/" . $filename))
+				unlink ($directory . "/" . $filename);
 				
-			$fh = fopen(file_directory_temp() . "/" . $filename, 'xb');
+			$fh = fopen(drupal_realpath($directory . "/" . $filename), 'xb');
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,  $url_download);
