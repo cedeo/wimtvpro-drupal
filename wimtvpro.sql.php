@@ -338,7 +338,7 @@
 				unlink ($directory . "/" . $filename);
 				
 			//$fh = fopen(drupal_realpath($directory . "/" . $filename), 'xb');
-			$fh = fopen(drupal_realpath($directory . "/" . $filename), 'wb');
+			$fh = fopen(drupal_realpath($directory . "/" . $filename), 'xb');
 			flock($fh, LOCK_EX);
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,  $url_download);
