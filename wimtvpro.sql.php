@@ -331,7 +331,7 @@
 					$headers['Content-Disposition'] .= "mp4";
 			header('Content-Disposition: ' . $headers['Content-Disposition']);
 			
-			$directory = "temporary://";
+			$directory = "public://";
 
 			if (is_file($directory . "/" . $filename))
 				unlink ($directory . "/" . $filename);
