@@ -306,6 +306,7 @@
 			curl_setopt($ch, CURLOPT_NOBODY, 1);
 			curl_setopt($ch, CURLOPT_USERPWD, $credential);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 			$file = curl_exec($ch);
 			$file_array = explode("\n\r", $file, 2);
 			$header_array = explode("\n", $file_array[0]);
@@ -337,7 +338,7 @@
 				unlink ($directory . "/" . $filename);
 				
 			//$fh = fopen(drupal_realpath($directory . "/" . $filename), 'xb');
-			$fh = fopen(drupal_realpath($directory . "/" . $filename), 'cb');
+			$fh = fopen(drupal_realpath($directory . "/" . $filename), 'wb');
 			flock($fh, LOCK_EX);
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,  $url_download);
