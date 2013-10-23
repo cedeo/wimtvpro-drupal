@@ -273,25 +273,29 @@
     break;
 
 	case "downloadVideo":
-		ini_set('max_execution_time', 300);
+		/*ini_set('max_execution_time', 300);
 		$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
 		$result = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier = '" . $id . "'");
 		$arrayStatusVideo = $result->fetchAll();
 				
 		$filename = "";
 		$ext = "";
-		/*if (count($arrayStatusVideo)>0){
-			$filestatus = explode ("|",$arrayStatusVideo->status);
-			if ($filestatus[1]!=""){
-				$infoFile = explode (".",$filestatus[1]);
-				$numeroCount = count($infoFile);
-				$ext = $infoFile[$numeroCount-1];
-				$filename = $infoFile[0];
-				for ($i=1;$i<$numeroCount-1;$i++){
-					$filename .= "." . $infoFile[$i];
+		if (count($arrayStatusVideo)>0){
+			if (isset($arrayStatusVideo[0]->status) {
+				$filestatus = explode ("|",$arrayStatusVideo[0]->status);
+				if (count($filestatus)>0){
+					if ($filestatus[1]!=""){
+						$infoFile = explode (".",$filestatus[1]);
+						$numeroCount = count($infoFile);
+						$ext = $infoFile[$numeroCount-1];
+						$filename = $infoFile[0];
+						for ($i=1;$i<$numeroCount-1;$i++){
+							$filename .= "." . $infoFile[$i];
+						}
+					}
 				}
 			}
-		}*/
+		}
 		$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
 		if ($filename!=""){
 			$url_download .= "?filename=" . $filename . "&ext=" . $ext;
@@ -368,8 +372,79 @@
 		  header('Content-Disposition: attachment; filename="error.txt"');
 		  echo 'Caught exception: ',  $e->getMessage(), "\n";
 		}
-		die();
-        
+		die();*/
+		ini_set('max_execution_time', 300);
+		ini_set("memory_limit","1000M"); 
+		$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+		$result = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier = '" . $id . "'");
+		$arrayStatusVideo = $result->fetchAll();
+				
+		$filename = "";
+		$ext = "";
+		if (count($arrayStatusVideo)>0){
+			if (isset($arrayStatusVideo[0]->status)) {
+				$filestatus = explode ("|",$arrayStatusVideo[0]->status);
+				if (count($filestatus)>0){
+					if (isset($filestatus[1])){
+						$infoFile = explode (".",$filestatus[1]);
+						$numeroCount = count($infoFile);
+						$ext = $infoFile[$numeroCount-1];
+						$filename = $infoFile[0];
+						for ($i=1;$i<$numeroCount-1;$i++){
+							$filename .= "." . $infoFile[$i];
+						}
+					}
+				}
+			}
+		}
+		$url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
+		if ($filename!=""){
+			$url_download .= "?filename=" . $filename . "&ext=" . $ext;
+		}
+		try {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,  $url_download);
+
+			curl_setopt($ch, CURLOPT_HEADER, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_USERPWD, $credential);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+			$file = curl_exec($ch);
+
+			$file_array = explode("\n\r", $file, 2);
+			$header_array = explode("\n", $file_array[0]);
+			foreach($header_array as $header_value) {
+			  $header_pieces = explode(':', $header_value);
+			  if(count($header_pieces) == 2) {
+					$headers[$header_pieces[0]] = trim($header_pieces[1]);
+			  }
+			}
+
+			header('Content-type: ' . $headers['Content-Type']);
+			$explodeContent = explode("filename=",$headers['Content-Disposition']);
+			$filename = $explodeContent[1];
+			$checkHeader = explode(";",$headers['Content-Disposition']);
+			//echo $checkHeader[1];
+			$checkextension = explode(".",$checkHeader[1]);
+			if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
+					header('Content-Disposition: ' . $headers['Content-Disposition'] . "mp4");
+			else
+					header('Content-Disposition: ' . $headers['Content-Disposition']);
+			header('Content-Length: ' . $headers['Content-Length']);
+			echo substr($file_array[1], 1);
+			watchdog ("WimTvPro", "Download video: " . $filename);
+			//echo "<iframe src=\"" . $url_download . "\" style=\"display:none;\" />";
+
+		} catch (Exception $e) {
+		  header('Content-type: text/plain');
+		  header('Content-Disposition: attachment; filename="error.txt"');
+		  echo 'Caught exception: ',  $e->getMessage(), "\n";
+		  watchdog ("WimTvPro", "Il video non è stato scaricato: " . $filename);
+		}
+			
+        die();
     break;
 
   }
