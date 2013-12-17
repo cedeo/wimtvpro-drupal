@@ -7,8 +7,7 @@
 
 function wimtvproRegistration($node, $form_state) {
   $view_page = wimtvpro_alert_reg();
-  
-  
+
   if ($view_page!=""){
     //Form Registration
     $form = array();

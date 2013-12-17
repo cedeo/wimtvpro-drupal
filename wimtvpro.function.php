@@ -1,12 +1,13 @@
 <?php
 /**
   * @file
-  * This file is use for the function and utility.
+  * This file is used for the function and utility.
   *
   */
+include_once('api/wimtv_api.php');
+include_once('wimtvpro.pricing.php');
+
 //Request thumbs videos
-
-
 function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
   global $user;
   $replace_content = variable_get("replaceContentWimtv");
@@ -58,7 +59,7 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
 
   
   //Select Showtime
-  $param_st = variable_get("basePathWimtv") . "users/" . variable_get("userWimtv") . "/showtime?details=true";
+  /*$param_st = variable_get("basePathWimtv") . "users/" . variable_get("userWimtv") . "/showtime?details=true";
   $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
   $ch_st = curl_init();
   curl_setopt($ch_st, CURLOPT_URL, $param_st);
@@ -67,7 +68,9 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
   curl_setopt($ch_st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
   curl_setopt($ch_st, CURLOPT_USERPWD, $credential);
   curl_setopt($ch_st, CURLOPT_SSL_VERIFYPEER, FALSE);
-  $details_st  =curl_exec($ch_st);
+  $details_st  =curl_exec($ch_st);*/
+
+  $details_st = apiGetShowtimes();
   $arrayjson_st = json_decode( $details_st);
    watchdog("dettaglio wimtv",$details_st);
   $st_license = array();
@@ -277,7 +280,6 @@ function wimtvpro_checkCleanUrl($base, $url, $back=NULL) {
   }
 }
 
-
 function wimtvpro_getDateRange($startDate, $endDate, $format="d/m/Y"){
   //Create output variable
   $datesArray = array();
@@ -290,7 +292,6 @@ function wimtvpro_getDateRange($startDate, $endDate, $format="d/m/Y"){
   //Return results array
   return $datesArray;
 }
-
 
 function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$viewFlashPlayer=TRUE){
 
@@ -332,7 +333,6 @@ else
 return false;
 
 }
-
 
 function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
   
@@ -420,288 +420,26 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
   return $my_media;
 }
 
-
-function wimtvpro_alert_reg(){
-//If user isn't register or not inser user and password
-  if ((variable_get("userWimtv")=="username") && (variable_get("passWimtv")=="password")){
-    return t("If you are not a WIMTV's member yet <a href='@url'>REGISTER</a> or You have not insert the credentials  <a href='@url2'>SIGN IT</a>",array('@url' => url('admin/config/wimtvpro/registration'),'@url2' => url('admin/config/wimtvpro')));
-  } else {
-    return "";
-  }
+function wimtvpro_alert_reg() {
+    //If user isn't registered or had not insert user and password
+    if ((variable_get("userWimtv")=="username") && (variable_get("passWimtv")=="password")){
+        return t("If you are not a WIMTV's member yet <a href='@url'>REGISTER</a> or You have not insert the credentials  <a href='@url2'>SIGN IT</a>",array('@url' => url('admin/config/wimtvpro/registration'),'@url2' => url('admin/config/wimtvpro')));
+    } else {
+        return "";
+    }
 }
 
 function getDateRange($startDate, $endDate, $format="d/m/Y"){
-
-//Create output variable
-
-$datesArray = array();
-
-//Calculate number of days in the range
-
-$total_days = round(abs(strtotime($endDate) - strtotime($startDate)) / 86400, 0) + 1;
-
-
-
-//Populate array of weekdays and counts
-
-for($day=0; $day<$total_days; $day++)
-
-{
-
-$datesArray[] = date($format, strtotime("{$startDate} + {$day} days"));
-
-}
-
-//Return results array
-
-return $datesArray;
-
-}
-
-
-function wimtvpro_callPricing(){
-$pricing = "";
-$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-
-if ($credential!="username:password") {
-
-$directoryCookie = "public://cookieWim";
-// If directory cookieWim don't exist, create the directory (if change Public file system path into admin/config/media/file-system after installation of this module or is the first time)
-if (!is_dir($directoryCookie)) {
-  $directory_create = drupal_mkdir('public://cookieWim',777);
-}
-  
-if (isset($_GET['upgrade'])){
-drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/js/jquery.colorbox.js');
-drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/css/colorbox.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));		    		    
-  $fileCookie = "cookies_" . variable_get("userWimtv") . "_" . $_GET['upgrade'] . ".txt";
-
-  if (!is_file($directoryCookie. "/" . $fileCookie)) {
-    $f = fopen($directoryCookie. "/" . $fileCookie,"w");
-    fwrite($f,"");
-    fclose($f);
-  }
-  //Update Packet
-  $data = array("name" => $_GET['upgrade']);                                                                    
-  $data_string = json_encode($data);
-
-  // chiama
-  $ch = curl_init();
-  
-  global $base_url;
-  $my_page =  url($base_url . "/admin/config/wimtvpro?pack=1&success=" . $_GET['upgrade']);
-  curl_setopt($ch, CURLOPT_URL,  variable_get("basePathWimtv") . "userpacket/payment/pay?externalRedirect=true&success=" . urlencode($my_page));
-  curl_setopt($ch, CURLOPT_VERBOSE, 0);
-
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($ch, CURLOPT_USERPWD, $credential);
-
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-	'Content-Type: application/json', 'Accept-Language: en-US,en;q=0.5',                                                                               
-	'Content-Length: ' . strlen($data_string))                                                                       
-  );  
-
-  // salva cookie di sessione
-  curl_setopt($ch, CURLOPT_COOKIEJAR, $fileCookie);	
-  $result = curl_exec($ch);
-  curl_close($ch);
-  $arrayjsonst = json_decode($result);
-
-  if ($arrayjsonst->result=="REDIRECT") {
-    $pricing .= "
-	 <script>
-		  jQuery(document).ready(function() {
-			jQuery.colorbox({
-				onLoad: function() {
-					jQuery('#cboxClose').remove();
-				},
-				html:'<h2>" . $arrayjsonst->message . "</h2><h2><a href=\"" . $arrayjsonst->successUrl . "\">Yes</a> | <a onClick=\"jQuery(this).colorbox.close();\" href=\"#\">" . t("No") . "</a></h2>'
-			})
-		 });   		
-	 </script> 
-	  ";
-	 
-  } else {
-  
-	  $pricing .= "
-		 <script>
-			  jQuery(document).ready(function() {
-				jQuery.colorbox({
-					
-					html:'" . $arrayjsonst->html . "'
-				})
-			 });   		
-		 </script> 
-		  ";
-  
-  }
-
-
-}
-
-
-
-if (isset($_GET['success'])) {
-$openFieldSet = TRUE;
-//controlla stato pagamento
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, variable_get("basePathWimtv") . "userpacket/payment/check");
-curl_setopt($ch, CURLOPT_VERBOSE, 0);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: en-US,en;q=0.5'));
-curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-curl_setopt($ch, CURLOPT_USERPWD, $credential);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-$fileCookie = "cookies_" . variable_get("userWimtv") . "_" . $_GET['success'] . ".txt";
-
-// Recupera cookie sessione
-curl_setopt($ch, CURLOPT_COOKIEFILE, $fileCookie);
-
-$result = curl_exec($ch);
-curl_close($ch);
-$arrayjsonst = json_decode($result);
-}
-
-$url_packet_user = variable_get("basePathWimtv") . "userpacket/" . variable_get("userWimtv");
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url_packet_user);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: en-US,en;q=0.5'));
-curl_setopt($ch, CURLOPT_VERBOSE, 0);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-$response = curl_exec($ch);
-$packet_user_json = json_decode($response);
-
-$id_packet_user = $packet_user_json->id;
-$createDate_packet_user = $packet_user_json->createDate;
-$updateDate_packet_user = $packet_user_json->updateDate;
-
-$createDate = date('d/m/Y', $createDate_packet_user/1000);
-$updateDate = date('d/m/Y', $updateDate_packet_user/1000);
-$dateRange = getDateRange($createDate , $updateDate );
-
-$count_date = $packet_user_json->daysLeft;
-//$count_date = count($dateRange)-1;
-
-curl_close($ch);
-
-
-$url_packet = variable_get("basePathWimtv") . "commercialpacket"; 
-
-$header = array("Accept-Language: en-US,en;q=0.5");
-
-
-$ch2 = curl_init();
-curl_setopt($ch2, CURLOPT_URL, $url_packet);
-curl_setopt($ch2, CURLOPT_HTTPHEADER, $header);
-curl_setopt($ch2, CURLOPT_VERBOSE, 0);
-curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, FALSE);
-curl_setopt($ch2, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($ch2, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-$response2 = curl_exec($ch2);
-
-//$info = curl_getinfo($ch2);
-
-
-$packet_json = json_decode($response2);
-
-
-
-curl_close($ch2);
-//var_dump ($response2);
-
-$pricing .= "<table class='wp-list-table widefat fixed pages'>";
-$pricing .= "<thead><tr><th></th>";
-foreach ($packet_json -> items as $a) {
-
-$pricing .= "<th><b>" . $a->name . "</b></th>";	
-
-}
-
-$pricing .= "</thead>";
-$pricing .= "<tbody>";
-$pricing .= "<tr class='alternate'>";
-$pricing .= "<td>" . t("Band") . "</td>";
-foreach ($packet_json -> items as $a) {
-$pricing .= "<td>" . $a->band . " GB</td>";		    
-}
-
-$pricing .= "</tr>";
-
-$pricing .= "<tr>";
-$pricing .= "<td>" . t("Storage") . "</td>";
-foreach ($packet_json -> items as $a) {
-$pricing .= "<td>" . $a->storage . " GB</td>";		    
-}
-
-$pricing .= "</tr>";
-
-$pricing .= "<tr class='alternate'>";
-$pricing .= "<td>" . t("Support") . "</td>";
-foreach ($packet_json -> items as $a) {
-$pricing .= "<td>" . $a->support . "</td>";		    
-}
-
-$pricing .= "</tr>";
-
-
-$pricing .= "<tr>";
-$pricing .= "<td>" . t("Price") . "</td>";
-foreach ($packet_json -> items as $a) {
-$pricing .= "<td>" . number_format($a->price,2) . " &euro; / month</td>";		    
-}
-
-$pricing .= "</tr>";
-
-$pricing .= "<tr class='alternate'>";
-$pricing .= "<td></td>";
-foreach ($packet_json -> items as $a) {
-//$pricing .= "<td>" . $a->dayDuration . " - " . $a->id . "</td>";
-$pricing .= "<td>";
-if ($id_packet_user==$a->id) {
-
-$pricing .= "<img  src='" .  base_path()  . drupal_get_path('module', 'wimtvpro') . "/img/check.png' title='Checked'><br/>";
-if ($a->id>1)
-  $pricing .= $count_date . " " . t("day left");
-}
-else {
-
-$pricing .= "<a href='?pack=1";
-$pricing .= "&upgrade=" . $a->name;
-$pricing .= "'><img class='icon_upgrade' src='" . base_path()  . drupal_get_path('module', 'wimtvpro') . "/img/uncheck.png' title='Upgrade'><br/>";
-$pricing .= "</a>";
-}
-$pricing .= "</td>"; 		    
-}
-
-$pricing .= "</tr>";
-
-
-
-$pricing .= "</tbody>";
-$pricing .= "</table>";
-
-$pricing .= "
-<p>You have a free trial of 30 days to try the WimTVPro plugin.<br/> 
-After 30 days you can subscribe a plan that suit your needs.<br/> 
-All plans come with all features, only changes the amount of bandwidth and storage available.<br/> 
-Enyoy your WimTVPro video plugin!</p>
-";
-
-
-$pricing .= "</div>";
-
-}
-return $pricing;
-
+    //Create output variable
+    $datesArray = array();
+
+    //Calculate number of days in the range
+    $total_days = round(abs(strtotime($endDate) - strtotime($startDate)) / 86400, 0) + 1;
+
+    //Populate array of weekdays and counts
+    for($day=0; $day<$total_days; $day++)
+    {
+        $datesArray[] = date($format, strtotime("{$startDate} + {$day} days"));
+    }
+    return $datesArray;
 }

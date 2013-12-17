@@ -4,827 +4,269 @@
 	* This file is use for module wimtvpro.
 	*
 	*/
-  require(drupal_get_path('module', 'wimtvpro') . "/wimtvpro.function.php");
-  // Load default implementations of insert hooks for core modules.
-  require(drupal_get_path('module', 'wimtvpro') . '/required/form.inc');
-  require(drupal_get_path('module', 'wimtvpro') . '/required/block.inc');
-  require(drupal_get_path('module', 'wimtvpro') . '/required/insert.inc');
-  require(drupal_get_path('module', 'wimtvpro') . '/required/wimlive.inc');
-  require(drupal_get_path('module', 'wimtvpro') . '/required/playlist.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . "/wimtvpro.function.php");
+// Load default implementations of insert hooks for core modules.
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/form.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/block.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/insert.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/playlist.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/api/wimtv_api.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.admin.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.help.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.report.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimbox.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimvod.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimlive.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/views/playlist.php');
 
-function wimtvpro_help($path, $arg) {
-  $output = '';
-  switch ($path) {
-    case "admin/help#wimtvpro":
-    $output = t("<h2>Introduction</h2>");
-    $output .= t('<p>The Wim TV Pro module enhances your Drupal website by converting it into a full video asset management and publishing platform. This module is particularly useful on portals where video plays a major role (Web TVs, news portals, etc.), simplifying, improving and speeding up all video management and publishing operations. Editors can upload videos directly from their Drupal site to the <a href="http://www.wim.tv" title="www.wim.tv" rel="nofollow">www.wim.tv</a> video platform, publish them on any node having a Body field, and stream them to the visitors directly from the cloud.</p>');
-    $output .= t("<h2>Your webtv</h2>");
-    $output .= t("<p>By <a href='http://www.wim.tv/wimtv-webapp/userRegistration.do' target='_new'>registering an account on Wim.tv</a>, Web TVs can:</p>
-   <ul>
-   <li><strong>Import their videos</strong>, giving each of them a license chosen between a Creative Commons professional license or a Revenue Generating professional license (see the <a href='http://www.wim.tv/wimtv-webapp/licenseAbout.do' target='_new'>&ldquo;License for the Video&rdquo;</a> area for more details);</li>
-   <li><strong>Create on demand schedules</strong>, manage and broadcast them both within and outside Wim.tv on its website (via embedded player);</li>
-   <li><strong>Sell videos</strong>, making them available on the marketplace with an associated professional license for distribution and/or by setting a threshold payment for viewing;</li>
-   <li><strong>Create Video Contests</strong>, specifying the categories and the type of content they want. The contest allows Web TVs to acquire new video contents to add to their schedules</li>
-   <li><strong>Take part in Video Contests</strong>, consulting those activated by Web TVs and proposing their own videos to the selections.</li>
-   </ul></p>");
-
-
-  $output .= t('<h2>Configuration</h2>
-  <p>Go to <a href="' . url('admin/config/wimtvpro') . '">Wimtv configuration</a> to find all the configuration options.<br />
-  To set your username and password of WimTV registration.</p>
-
-  <h2>Add a new video</h2>
-  <p>Go to <a href="' . url('admin/config/wimtvpro/upload') . '">Upload video</a><br />
-  In this page you can add your WmTV videos and automatically they are uploaded to the WimTV server.<br />
-  You can insert a title and a description of this site.<br />
-  </p>
-
-  <h2>You video</h2>
-  <p>Go to <a href="' . url('admin/config/wimtvpro/mymedia') . '">My Media</a><br />
-  In this page you can view your videos uploaded with this module, to see the work done within the WimTV site you should click "synchronize".<br />
-  You can:
-  <ul>
-  <li>Publish your video and assign the type of license (free, creative commons or Pay per view)</li>
-  <li>Unpublish your video</li>
-  <li>Play your video</li>
-  </ul>
-  </p>
-
-  <h2>You Streaming Video</h2>
-  <p>Go to <a href="' . url('admin/config/wimtvpro/mystreaming') . '">My Streaming</a><br />
-  In this page you can view your videos moved to My Streaming and you can syncronize videos with WimTV.<br />
-  You can:
-  <ul>
-    <li>Unpublish your video</li>
-    <li>Play your video</li>
-    <li>Organize the order of videos</li>
-  </ul>
-  </p>
-
-   <h2>Your personal details of WimTV</h2>
-   <p>Go to <a href="' . url('admin/config/wimtvpro/mypersonalBlock') . '">My personal detail</a>
-   and you can change the visualization of your personal information (entered at the time of registration on WimTV) in a block "Block User Profile" block.</p>
-
-   <h2>View all videos in My Streaming (page and block)</h2>
-   <p>You can show your videos moved to My Streaming in the page "My Streaming Video" or in the block "Block list video My Streaming".</p>
-
-   <h2>Add your videos in My Streaming to content page</h2>
-   <p>When you create a content page you view a block called "My Streaming Video". In this block you can add or remove videos that you want to show.								videos that you want to show. The videos are added in the body text like BBCODE ([wimtv]code[/wimtv]).<br />
-   In the page to be created you will see the player (JWPLAYER) with the video.</p>
-
-   
-   <h2>Create event live</h2>
-   <p>Go to <a href="' . url('admin/config/wimtvpro/wimlive') . '">Wim Live</a> and you create and view your future event.</p>');
-
-    break;
-  }
-  return t($output);
-}
 
 //Principal menu Admin and for User
 function wimtvpro_menu() {
-  $items = array();
-  $items['admin/config/wimtvpro'] = array(
- 'title' => 'Wimtv configuration',
- 'description' => 'On this module config url for Api Wimtv',
- 'page callback' => 'drupal_get_form',
- 'page arguments' => array('wimtvpro_admin'),
- 'access arguments' => array('administer users'), 
-  );
-  $items['admin/config/wimtvpro/mymedia'] = array(
- 'title' => 'My Media',
- 'description' => 'Allows admins manage media wimtv',
- 'page callback' => 'wimtvpro_output',
- 'page arguments' => array('wimtvpro_output'),
- 'access arguments' => array('administer users'),  
- 'weight' => 0
-  );
-  $items['admin/config/wimtvpro/mystreaming'] = array(
- 'title' => 'My Streaming',
- 'description' => 'Allows admins manage streaming wimtv',
- 'page callback' => 'wimtvpro_streaming_output',
- 'page arguments' => array('wimtvpro_admin'),
- 'access arguments' => array('administer users'), 
- 'weight' => 1
-  ); 
-  $items['admin/config/wimtvpro/myplaylist'] = array(
- 'title' => 'Playlist',
- 'description' => 'Manage playlist of media wimtv',
- 'page callback' => 'wimtvpro_playlist',
- 'page arguments' => array('wimtvpro_playlist'),
- 'access arguments' => array('administer users'),  
- 'weight' => 1
-  );
-  $items['admin/config/wimtvpro/myplaylist/modify/%'] = array(
- 'page callback' => 'drupal_get_form',
- 'page arguments' => array('wimtvpro_playlist_mod', 5),
- 'access arguments' => array('administer users'),  
- 'type' =>  MENU_CALLBACK,
-  );
-  $items['admin/config/wimtvpro/upload'] = array(
- 'title' => 'Upload Video',
- 'description' => 'Video import',
- 'page callback' => 'drupal_get_form',
- 'page arguments' => array('wimtvpro_upload_form'),
- 'access arguments' => array('administer users'),
- 'weight' => 2
-  );
-  $items['admin/config/wimtvpro/wimlive'] = array(
- 'title' => 'Wim Live',
- 'description' => 'Configure your live event',
- 'page callback' => 'wimtvpro_wimlive_output',
- 'page arguments' => array('wimtvpro_wimlive_output'),
- 'access arguments' => array('administer users'),
- 'weight' => 3
-  );  
-  $items['admin/config/wimtvpro/mypersonalBlock'] = array(
- 'title' => 'My personal detail',
- 'description' => 'Configuration personal detail Wimtv block',
- 'page callback' => 'drupal_get_form',
- 'page arguments' => array('wimtvpro_blockUser_config'),
- 'access arguments' => array('administer users'), 
- 'weight' => 4
-  );
-  $items['admin/config/wimtvpro/report'] = array(
- 'title' => 'Report',
- 'description' => 'My Report Wimtv',
- 'page callback' => 'wimtvpro_report',
- 'page arguments' => array('wimtvpro_report'),
- 'access arguments' => array('administer users'), 
- 'weight' => 5
-  );
-  $items['admin/config/wimtvpro/wimlive/insert'] = array(
-  'title' => 'Add Event',
-  'page callback' => 'drupal_get_form',
-  'page arguments' => array('wimtvpro_wimlive_form'),
-  'access arguments' => array('administer users'),
-  'type' =>  MENU_CALLBACK,
-  );
-  $items['admin/config/wimtvpro/wimlive/webproducer/%'] = array(
-  'file' => 'required/live_webproducer.php',
-   'page arguments' => array('wimtvproWebProducer',5),
-   'access arguments' => array('administer users'),
-   'page callback' => 'wimtvproWebProducer',
-   'access callback' => TRUE,
-   'type' =>  MENU_CALLBACK
-   
-  );
-  $items['admin/config/wimtvpro/wimlive/modify/%'] = array(
- 'title' => 'Modify Event',
- 'page callback' => 'drupal_get_form',
- 'page arguments' => array('wimtvpro_wimlive_formModify', 5),
- 'access arguments' => array('administer users'),
- 
- 'type' =>  MENU_CALLBACK,
-  );
-  $items['admin/config/wimtvpro/registration'] = array(
-   'file' => 'wimtvpro_registration.php',
-   'title' => 'Registration WimTv',
-   'page arguments' => array('wimtvproRegistration'),
-   'access callback' => TRUE,
-   'type' =>  MENU_CALLBACK
-  );
-  $items['admin/config/wimtvpro/wimlive/delete/%'] = array(
- 'title' => 'Delete Event',
- 'page callback' => 'drupal_get_form',
- 'page arguments' => array('wimtvpro_wimlive_delete', 5),
- 'access arguments' => array('administer users'),
- 'type' =>  MENU_CALLBACK,
-  ); 
-  $items['wimtvpro/elencoLive'] = array(
-  'file' => 'required/wimlive.inc',
-  'page callback' => 'wimtvpro_tableLive',
- 'access arguments' => array('access content'),
- 'type' =>  MENU_CALLBACK,
-  ); 
-  $items['wimtvpro/viewEmbeddedPlaylist/%'] = array(
-
-	 'page callback' => 'wimtvpro_embeddedPlaylist_output',
-	 'page arguments' => array('wimtvpro_admin'),
-	 'access arguments' => array('access content'),
-	 'type' =>  MENU_CALLBACK,
-	);
-  
-  $items['admin/config/wimtvpro/embedded'] = array(
- 'title' => 'Video Embedded',
- 'page callback' => 'wimtvpro_embedded_output',
- 'page arguments' => array('wimtvpro_admin'),
- 'access arguments' => array('administer users'),
- 'type' =>  MENU_CALLBACK,
-  );
-  $items['admin/config/wimtvpro/embeddedAll'] = array(
- 'title' => 'Preview Embedded',
- 'page callback' => 'wimtvpro_embeddedAll_output',
- 'page arguments' => array('wimtvpro_admin'),
- 'access arguments' => array('administer users'),
- 'type' =>  MENU_CALLBACK,
-  );
-  $items['admin/config/wimtvpro/wimtvproCallAjax'] = array(
- 'file' => 'wimtvpro.sql.php',
- 'page arguments' => array('wimtvproCallAjax'),
- 'access callback' => TRUE,
- 'type' =>  MENU_CALLBACK
-  );
-  $items['admin/config/wimtvpro/wimtvproCallSync'] = array(
- 'file' => 'wimtvpro.sync.php',
- 'page arguments' => array('wimtvproCallSync'),
- 'access callback' => TRUE,
- 'type' =>  MENU_CALLBACK
-  );
-  $items['admin/config/wimtvpro/pricing'] = array(
- 'file' => 'required/pricing.inc',
- 'access callback' => TRUE,
- 'type' =>  MENU_CALLBACK
-  );
-  $items['wimtvpro/embedded'] = array(
- 'title' => 'Video Embedded',
- 'page callback' => 'wimtvpro_embedded_output',
- 'page arguments' => array('wimtvpro_public'),
- 'access arguments' => array('access content'),
- 'type' =>  MENU_CALLBACK
-  );
-  
-  $items['wimtvpro'] = array(
-    'title' => 'My Streaming Video',
-    'page arguments' => array('wimtvpro_public'),
-    'page callback' => 'wimtvpro_public',
-    'access arguments' => array('access content'),
-   'type' =>  MENU_CALLBACK
-  );
-  $items['wimlive'] = array(
- 'title' => 'Live',
- 'page arguments' => array('wimtvpro_live_public'),
- 'page callback' => 'wimtvpro_live_public',
- 'access arguments' => array('access content'),
- 'type' =>  MENU_NORMAL_ITEM
-  );
-  
- $items['wimtvpro/viewEmbeddedPlayer/%'] = array(
-  'page callback' => 'wimtvpro_plus_embeddedAll_output',
-  'page arguments' => array('wimtvpro_admin'),
-  'access arguments' => array('access content'),
-  'type' =>  MENU_CALLBACK,
-  );
-  $items['wimtvpro/viewEmbeddedPlaylist/%'] = array(
-  'page callback' => 'wimtvpro_plus_embeddedPlaylist_output',
-  'page arguments' => array('wimtvpro_admin'),
-  'access arguments' => array('access content'),
-  'type' =>  MENU_CALLBACK,
-  );
-
-  return $items;
+    $items = array();
+    $items['admin/config/wimtvpro'] =
+        array(
+            'title' => 'Wimtv configuration',
+            'description' => 'On this module config url for Api Wimtv',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('wimtvpro_admin'),
+            'access arguments' => array('administer users'),
+        );
+    $items['admin/config/wimtvpro/wimbox'] =
+        array(
+            'title' => 'WimBox',
+            'description' => 'Allows admins manage media wimtv',
+            'page callback' => 'wimtvpro_wimbox',
+            'page arguments' => array('wimtvpro_wimbox'),
+            'access arguments' => array('administer users'),
+            'weight' => 0
+        );
+    $items['admin/config/wimtvpro/wimvod'] =
+        array(
+            'title' => 'WimVod',
+            'description' => 'Allows admins manage streaming wimtv',
+            'page callback' => 'wimtvpro_wimvod',
+            'page arguments' => array('wimtvpro_wimvod'),
+            'access arguments' => array('administer users'),
+            'weight' => 1
+        );
+    $items['admin/config/wimtvpro/playlist'] =
+        array(
+            'title' => 'Playlist',
+            'description' => 'Manage playlist of media wimtv',
+            'page callback' => 'wimtvpro_playlist',
+            'page arguments' => array('wimtvpro_playlist'),
+            'access arguments' => array('administer users'),
+            'weight' => 1
+        );
+    $items['admin/config/wimtvpro/playlist/modify/%'] =
+        array(
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('wimtvpro_playlist_mod', 5),
+            'access arguments' => array('administer users'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['admin/config/wimtvpro/upload'] =
+        array(
+            'title' => 'Upload Video',
+            'description' => 'Video import',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('wimtvpro_upload_form'),
+            'access arguments' => array('administer users'),
+            'weight' => 2
+        );
+    $items['admin/config/wimtvpro/wimlive'] =
+        array(
+            'title' => 'WimLive',
+            'description' => 'Configure your live event',
+            'page callback' => 'wimtvpro_wimlive',
+            'page arguments' => array('wimtvpro_wimlive'),
+            'access arguments' => array('administer users'),
+            'weight' => 3
+        );
+    $items['admin/config/wimtvpro/mypersonalBlock'] =
+        array(
+            'title' => 'My personal detail',
+            'description' => 'Configuration personal detail Wimtv block',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('wimtvpro_blockUser_config'),
+            'access arguments' => array('administer users'),
+            'weight' => 4
+        );
+    $items['admin/config/wimtvpro/report'] =
+        array(
+            'title' => 'Report',
+            'description' => 'My Report Wimtv',
+            'page callback' => 'wimtvpro_report',
+            'page arguments' => array('wimtvpro_report'),
+            'access arguments' => array('administer users'),
+            'weight' => 5
+        );
+    $items['admin/config/wimtvpro/wimlive/insert'] =
+        array(
+            'title' => 'Add Event',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('wimtvpro_wimlive_form'),
+            'access arguments' => array('administer users'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['admin/config/wimtvpro/wimlive/webproducer/%'] =
+        array(
+            'file' => 'required/live_webproducer.php',
+            'page arguments' => array('wimtvproWebProducer',5),
+            'access arguments' => array('administer users'),
+            'page callback' => 'wimtvproWebProducer',
+            'access callback' => TRUE,
+            'type' =>  MENU_CALLBACK
+        );
+    $items['admin/config/wimtvpro/wimlive/modify/%'] =
+        array(
+            'title' => 'Modify Event',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('wimtvpro_wimlive_formModify', 5),
+            'access arguments' => array('administer users'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['admin/config/wimtvpro/registration'] =
+        array(
+            'file' => 'wimtvpro_registration.php',
+            'title' => 'Registration WimTv',
+            'page arguments' => array('wimtvproRegistration'),
+            'access callback' => TRUE,
+            'type' =>  MENU_CALLBACK
+        );
+    $items['admin/config/wimtvpro/wimlive/delete/%'] =
+        array(
+            'title' => 'Delete Event',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('wimtvpro_wimlive_delete', 5),
+            'access arguments' => array('administer users'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['wimtvpro/elencoLive'] =
+        array(
+            'file' => 'required/wimlive.inc',
+            'page callback' => 'wimtvpro_tableLive',
+            'access arguments' => array('access content'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['wimtvpro/viewEmbeddedPlaylist/%'] =
+        array(
+            'page callback' => 'wimtvpro_embeddedPlaylist_output',
+            'page arguments' => array('wimtvpro_admin'),
+            'access arguments' => array('access content'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['admin/config/wimtvpro/embedded'] =
+        array(
+            'title' => 'Video Embedded',
+            'page callback' => 'wimtvpro_embedded_output',
+            'page arguments' => array('wimtvpro_admin'),
+            'access arguments' => array('administer users'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['admin/config/wimtvpro/embeddedAll'] =
+        array(
+            'title' => 'Preview Embedded',
+            'page callback' => 'wimtvpro_embeddedAll_output',
+            'page arguments' => array('wimtvpro_admin'),
+            'access arguments' => array('administer users'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['admin/config/wimtvpro/wimtvproCallAjax'] =
+        array(
+            'file' => 'wimtvpro.sql.php',
+            'page arguments' => array('wimtvproCallAjax'),
+            'access callback' => TRUE,
+            'type' =>  MENU_CALLBACK
+        );
+    $items['admin/config/wimtvpro/wimtvproCallSync'] =
+        array(
+            'file' => 'wimtvpro.sync.php',
+            'page arguments' => array('wimtvproCallSync'),
+            'access callback' => TRUE,
+            'type' =>  MENU_CALLBACK
+        );
+    $items['admin/config/wimtvpro/pricing'] =
+        array(
+            'file' => 'required/pricing.inc',
+            'access callback' => TRUE,
+            'type' =>  MENU_CALLBACK
+        );
+    $items['wimtvpro/embedded'] =
+        array(
+            'title' => 'Video Embedded',
+            'page callback' => 'wimtvpro_embedded_output',
+            'page arguments' => array('wimtvpro_public'),
+            'access arguments' => array('access content'),
+            'type' =>  MENU_CALLBACK
+        );
+    $items['wimtvpro'] =
+        array(
+            'title' => 'WimVod Video',
+            'page arguments' => array('wimtvpro_public'),
+            'page callback' => 'wimtvpro_public',
+            'access arguments' => array('access content'),
+            'type' =>  MENU_CALLBACK
+        );
+    $items['wimlive'] =
+        array(
+            'title' => 'Live',
+            'page arguments' => array('wimtvpro_live_public'),
+            'page callback' => 'wimtvpro_live_public',
+            'access arguments' => array('access content'),
+            'type' =>  MENU_NORMAL_ITEM
+        );
+    $items['wimtvpro/viewEmbeddedPlayer/%'] =
+        array(
+            'page callback' => 'wimtvpro_plus_embeddedAll_output',
+            'page arguments' => array('wimtvpro_admin'),
+            'access arguments' => array('access content'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['wimtvpro/viewEmbeddedPlaylist/%'] =
+        array(
+            'page callback' => 'wimtvpro_plus_embeddedPlaylist_output',
+            'page arguments' => array('wimtvpro_admin'),
+            'access arguments' => array('access content'),
+            'type' =>  MENU_CALLBACK,
+        );
+    return $items;
 
 }
 
 function wimtvpro_admin_paths_alter(&$paths) {
-  $paths['admin/config/wimtvpro/wimlive/webproducer/*'] = FALSE;
-
+    $paths['admin/config/wimtvpro/wimlive/webproducer/*'] = FALSE;
 }
+
 function wimtvpro_schema_alter(&$schema) {
-
-
-$schema['wimtvpro_playlist'] = array(
-'description' => t('Playlist Api WIMTV'),
-'fields' => array(
-'id' => array('description' => t('Id of Playlist'),
-'type' => 'serial',
-'not null' => TRUE
-),
-
-'name' => array('description' => t('Name of Playlist'),
-'type' => 'text',
-'not null' => FALSE),
-
-'listVideo' => array('description' => t('List video contentidentifier'),
-'type' => 'text',
-'not null' => FALSE),
-'option' => array('description' => t('option playlist'),
-'type' => 'text',
-'not null' => FALSE),
-
-'uid' => array('description' => t('User identifier'),
-'type' => 'varchar',
-'length' => 100,
-'not null' => TRUE
-),
-
-),
-'primary key' => array('id'),
-'unique keys' => array('mycolumn1' => array('id'))
-
-);
-
-return $schema;
+    $schema['wimtvpro_playlist'] =
+        array(
+            'description' => t('Playlist Api WIMTV'),
+            'fields' => array('id' => array('description' => t('Id of Playlist'),
+                              'type' => 'serial',
+                              'not null' => TRUE),
+                              'name' => array('description' => t('Name of Playlist'),
+                                              'type' => 'text',
+                                              'not null' => FALSE),
+                              'listVideo' => array('description' => t('List video contentidentifier'),
+                                                   'type' => 'text',
+                                                   'not null' => FALSE),
+                              'option' => array('description' => t('option playlist'),
+                                                'type' => 'text',
+                                                'not null' => FALSE),
+                              'uid' => array('description' => t('User identifier'),
+                                             'type' => 'varchar',
+                                             'length' => 100,
+                                             'not null' => TRUE),),
+            'primary key' => array('id'),
+            'unique keys' => array('mycolumn1' => array('id'))
+        );
+    return $schema;
 }
+
 function wimtvpro_access() {
   return user_access('administer content') && user_access('use PHP for settings');
 }
-
-function wimtvpro_admin() {
-
-$view_page = wimtvpro_alert_reg();
-
-
-
-drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
-
-
-
-$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, variable_get("basePathWimtv") . "profile");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-curl_setopt($ch, CURLOPT_USERPWD, $credential);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-$response = curl_exec($ch);
-$dati = json_decode($response, true);
-curl_close($ch);
-
-$form = array();
-
-$form ['#attributes'] = array("enctype" => "multipart/form-data");
-
-if (variable_get("sandbox")=="yes") {
-    $form['htmltag'] = array(
-  '#markup' => variable_get('htmltag',
-  t(""))
-  );
-  $form['basePathWimtv'] = array(
-  '#type' => 'hidden',
-  '#value' => 'http://peer.wim.tv/wimtv-webapp/rest/',
-  );
-  
-}
-else {
-
-  $form['htmltag'] = array(
-  '#markup' => variable_get('htmltag',
-  t(""))
-  );
-  $form['basePathWimtv'] = array(
-  '#type' => 'hidden',
-  '#value' => 'https://www.wim.tv:443/wimtv-webapp/rest/',
-  );
-}
-
-$form['fieldConfig'] = array('#type'=>'fieldset','#title'=>'Configuration','#collapsible' => TRUE, '#collapsed' => FALSE);
-
-
-//FieldsetConfig
-$form['fieldConfig']['userWimtv'] = array(
-'#type' => 'textfield',
-'#title' => t('Username Wimtv'),
-'#default_value' => variable_get('userWimtv', 'username'),
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => TRUE,
-);
-
-$form['fieldConfig']['passWimtv'] = array(
-'#type' => 'password',
-'#title' => t('Password Wimtv'),
-'#default_value' => variable_get('passWimtv', 'password'),
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => TRUE,
-'#attributes' => array('value' => variable_get('passWimtv', 'password')),
-);
-
-$form['fieldConfig']['htmltag2'] = array(
-'#markup' => variable_get('htmltag2',
-t("<p>-> Upload and/or choose the skin player into <a target='new' href='http://www.longtailvideo.com/addons/skins'>page Jwplayer</a> for your videos</p>"))
-
-);
-
-//Read directory for skin JWPLAYER
-$elencoSkin = array();
-$directory = "public://skinWim";
-// If directory skinWim don't exist, create the directory (if change Public file system path into admin/config/media/file-system after installation of this module or is the first time)
-if (!is_dir($directory)) {
-    $directory_create = drupal_mkdir('public://skinWim');
-}
-
-$elencoSkin[""] = t("-- Base Skin --");
-if (is_dir($directory)) {
-  if ($directory_handle = opendir($directory)) {
-    while (($file = readdir($directory_handle)) !== FALSE) {
-      if ((!is_dir($file)) && ($file!=".") && ($file!="..")) {
-        $explodeFile = explode("." , $file);
-        if ($explodeFile[1]=="zip")
-          $elencoSkin[$explodeFile[0]] = $explodeFile[0];
-      }
-    }
-    closedir($directory_handle);
-  }
-}
-
-$form['fieldConfig']['nameSkin'] = array(
-'#type' => 'select',
-'#title' => t('Name Skin'),
-'#options' => $elencoSkin,
-'#default_value' => variable_get('nameSkin'),
-'#required' => FALSE,
-);
-
-$form['fieldConfig']['uploadSkin'] = array(
-'#type' => 'file',
-'#title' => t('Upload new skin player'),
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,
-'#description' => t('Only zip. Save into a public URL&nbsp;') . file_create_url($directory) . t('<br/>For running the skin selected, copy the file <a href="http://plugins.longtailvideo.com/crossdomain.xml" target="_new">crossdomain.xml</a> to the root directory (e.g. http://www.mysite.it). You can do it all from your FTP program (e.g. FileZila, Classic FTP, etc).
-So open up your FTP client program. First, identify your root directory. This is the folder titled or beginning with "www" -- and this is where you ultimately need to move that pesky crossdomain.xml. Now all you have to do is find it.'),
-);
-
-
-$form['fieldConfig']['htmltag3'] = array(
-'#markup' => variable_get('htmltag3',
-t("<p>-> Dimensions of player for your videos</p>"))
-
-);
-
-
-$form['fieldConfig']['heightPreview'] = array(
-'#type' => 'textfield',
-'#title' => t('Height (default: 280)'),
-'#default_value' => variable_get('heightPreview', '280'),
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,
-);
-$form['fieldConfig']['widthPreview'] = array(
-'#type' => 'textfield',
-'#title' => t('Width (default: 500)'),
-'#default_value' => variable_get('widthPreview', '500'),
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,
-);
-/*
-$form['fieldConfig']['sandbox'] = array(
-'#title' => t('Please select "no" to use WimTVPro plugin on WimTV server. Select "yes" if you want to to try the service on test server'),
-'#type' => 'select',
-'#maxlength' => 5,
-'#options' => array( 'no' => 'No', 'yes' => 'Yes, for developer and tester'),
-'#required' => TRUE,
-'#default_value' => variable_get('sandbox', 'no'),
-); 
-*/
-$form['fieldConfig']['sandbox'] = array(
-		'#type' => 'hidden',
-		'#value' => t('no')
-	);
-$form['fieldConfig']['addPageMyStreaming'] = array(
-'#title' => t('Would you like to add a public (visible to End Users) MyStreaming page to your web site?'),
-'#type' => 'select',
-'#maxlength' => 5,
-'#options' => array( 'no' => 'No', 'yes' => 'Yes, add a page My WimTv Streaming'),
-'#required' => TRUE,
-'#default_value' => variable_get('addPageMyStreaming', 'no'),
-); 
-
-
-$my_fields = field_info_fields();
-
-if (count($my_fields)>0) {
-  
-  foreach ($my_fields as $key => $value) {
-    if (($my_fields[$key]["type"] == "text_with_summary") || ($my_fields[$key]["type"] == "text_long"))
-      $content[$key]=$key;
-  }
-
-  $form['fieldConfig']['contentItemIntoInsert'] = array(
-  '#title' => t('Select fields where you want to add the video'),
-  '#type' => 'checkboxes',
-  '#options' => $content,
-  ); 
-  if (count(variable_get('contenttypeWithInsertVideo'))>0) 
-    $form['contentItemIntoInsert']['#default_value'] = variable_get('contenttypeWithInsertVideo');
-}
-//End FieldsetConfig
-
-
-
-if ($view_page==""){
-  $openFieldSet = FALSE;
-  if ($openFieldSet)
-	$form['fieldPricing'] = array('#type'=>'fieldset','#title'=>'Pricing','#collapsible' => TRUE, '#collapsed' => FALSE);
-  else
-	$form['fieldPricing'] = array('#type'=>'fieldset','#title'=>'Pricing','#collapsible' => TRUE, '#collapsed' => TRUE);
-    $form['fieldPayment'] = array('#type'=>'fieldset','#title'=>'Payment','#collapsible' => TRUE, '#collapsed' => TRUE);
-    $form['fieldLive'] = array('#type'=>'fieldset','#title'=>'WimLive Configuration','#collapsible' => TRUE, '#collapsed' => TRUE);
-    //$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>'Update Personal Info','#collapsible' => TRUE, '#collapsed' => TRUE);
-    $form['fieldFeatures'] = array('#type'=>'fieldset','#title'=>'Features','#collapsible' => TRUE, '#collapsed' => TRUE);
-  
-  //fieldPricing
-  $pricing = wimtvpro_callPricing();
-  $form['fieldPricing']['htmlFrame'] = array('#markup' => variable_get('htmltag3',$pricing) ); 
-  //End fieldPricing
-  
-  //fieldPayment
-  $form['fieldPayment']['paypalEmail'] = array('#type' => 'textfield',
-'#title' => t('Paypal Email'),
-'#default_value' => !empty($dati['paypalEmail']) ? $dati['paypalEmail'] : '',
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,);
-  $form['fieldPayment']['taxCode'] = array('#type' => 'textfield',
-'#title' => t('Tax Code'),
-'#default_value' => !empty($dati['taxCode']) ? $dati['taxCode'] : '',
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,); 
-  $form['fieldPayment']['vatCode'] = array('#type' => 'textfield',
-'#title' => t('Vat Code'),
-'#default_value' => !empty($dati['vatCode']) ? $dati['vatCode'] : '',
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,);
-  $form['fieldPayment']['htmlBilling']=array('#markup' => variable_get('htmltag3',t("Billing Adress")) ); 
-  $form['fieldPayment']['billingAddress[street]'] = array('#type' => 'textfield',
-'#title' => t('Street'),
-'#default_value' => !empty($dati['billingAddress']['street']) ? $dati['billingAddress']['street'] : '',
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,);
-  $form['fieldPayment']['billingAddress[city]'] = array('#type' => 'textfield',
-'#title' => t('Street'),
-'#default_value' => !empty($dati['billingAddress']['city']) ? $dati['billingAddress']['city'] : '',
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,);
-$form['fieldPayment']['billingAddress[state]'] = array('#type' => 'textfield',
-'#title' => t('State'),
-'#default_value' => !empty($dati['billingAddress']['state']) ? $dati['billingAddress']['state'] : '',
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,);
-$form['fieldPayment']['billingAddress[zipCode]'] = array('#type' => 'textfield',
-'#title' => t('Zip Code'),
-'#default_value' => !empty($dati['billingAddress']['zipCode']) ? $dati['billingAddress']['zipCode'] : '',
-'#size' => 100,
-'#maxlength' => 200,
-'#required' => FALSE,);
-//End fieldPayment
-
-
-//fieldLive
-
-$form['fieldLive']['html']=  array('#markup' => variable_get('htmltag3', t('<p>In this section you can enable the more functional live streaming settings for your needs. Choose between "Live streaming" to stream your own events, or use the features reserved for event Resellers and event Organizers to sell and organize live events.</p>')) );
-$form['fieldLive']['liveStreamEnabled'] = array('#type' => 'checkbox',
-'#title' => t('Live streaming'),
-'#default_value' => !empty($dati['liveStreamEnabled']) ? $dati['liveStreamEnabled'] : '',
-'#return_value' => 'true',
-'#description' => t('Enables the feature that allows you to broadcast your live streaming events with WimTV.'),
-'#required' => FALSE,);
-$form['fieldLive']['liveStreamPwd'] = array('#type' => 'password',
-'#title' => t('Live stream events resale'),
-'#default_value' => !isset($dati['liveStreamPwd']) ? $dati['liveStreamPwd'] : "",
-'#description' => t('This password is required for the live streaming'),
-'#required' => FALSE,);
-$form['fieldLive']['eventResellerEnabled'] = array('#type' => 'checkbox',
-'#title' => t('Live stream events resale'),
-'#default_value' => !empty($dati['eventResellerEnabled']) ? $dati['eventResellerEnabled'] : '',
-'#return_value' => 'true',
-'#description' => t('Enables you to resell the streaming of live events organized bu other Web TVs.'),
-'#required' => FALSE,);
-$form['fieldLive']['eventOrganizerEnabled'] = array('#type' => 'checkbox',
-'#title' => t('Live stream events organizing'),
-'#default_value' => !empty($dati['eventOrganizerEnabled']) ? $dati['eventOrganizerEnabled'] : '',
-'#return_value' => 'true',
-'#description' => t('Enables the feature that allows you to organize live streaming events.'),
-'#required' => FALSE,);
-//End fieldLive
-
-//fieldFeatures
-$form['fieldFeatures']['hidePublicShowtimeVideos'] = array('#type' => 'select',
-'#title' => t('Index and show public videos into WimTv\'s site'),
-'#options' => array( "true" =>" No" , "false" => "Si"),
-'#default_value' => $dati['hidePublicShowtimeVideos'],
-'#required' => FALSE,);
-
-
-//End fieldFeatures
-}
-
-$form['urlVideosWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'videos',
-);
-$form['urlVideosDetailWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'videos?details=true&incomplete=true',
-);
-$form['urlThumbsWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'videos/{contentIdentifier}/thumbnail',
-);
-$form['urlEmbeddedPlayerWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'videos/{contentIdentifier}/embeddedPlayers?get=1',
-);
-$form['urlPostPublicWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'videos/{contentIdentifier}/showtime',
-);
-$form['urlPostPublicAcquiWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'videos/{contentIdentifier}/acquired/{acquiredIdentifier}/showtime',
-);
-$form['urlSTWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'videos/{contentIdentifier}/showtime/{showtimeIdentifier}',
-);
-$form['urlShowTimeWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'users/{username}/showtime',
-);
-$form['urlShowTimeDetailWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'users/{username}/showtime?details=true',
-);
-$form['urlUserProfileWimtv'] = array(
-'#type' => 'hidden',
-'#value' => 'users/{username}/profile',
-);
-$form['replaceContentWimtv'] = array(
-'#type' => 'hidden',
-'#value' => '{contentIdentifier}',
-);
-$form['replaceUserWimtv'] = array(
-'#type' => 'hidden',
-'#value' => '{username}',
-);
-$form['replaceacquiredIdentifier'] = array(
-'#type' => 'hidden',
-'#value' => '{acquiredIdentifier}',
-);
-$form['replaceshowtimeIdentifier'] = array(
-'#type' => 'hidden',
-'#value' => '{showtimeIdentifier}',
-);
-
-
-
-$form['#validate'][] = 'wimtvpro_admin_validate';
-return system_settings_form($form);
-}
-
-function wimtvpro_admin_validate($form, &$form_state) {
-  $view_page = wimtvpro_alert_reg();
-  $file = $_FILES['files']['name']["uploadSkin"];
-  $directory = "public://skinWim";
-  $arrayFile = explode(".", $file);
-  if (!empty($file)) {
-    if ($arrayFile[1] != "zip")
-      form_set_error("", t("This file isn't format correct for jwplayer's skin"));
-    else {
-      $validators = array(
-      'file_validate_extensions' => array('zip')
-      );
-      $file_save = file_save_upload("uploadSkin", $validators, $directory);
-      form_set_value("Upload", $arrayFile[0], $form_state);
-    }
-  }
-
-  if (isset($_POST["addPageMyStreaming"]) && ($_POST["addPageMyStreaming"]=="yes")) {
-    $query = db_update('{menu_links}')
-            ->fields(array(
-            'hidden' => "0",
-            )) -> condition("link_path", "wimtvpro")
-            ->execute();
-  }
-  else {
-    $query = db_update('{menu_links}')
-            ->fields(array(
-            'hidden' => "-1",
-            )) -> condition("link_path", "wimtvpro")
-            ->execute();
-  }
-
-  menu_rebuild();
-  
-  //read check content type where use for insert video
-  if (isset($_POST["contentItemIntoInsert"]))
-    variable_set("contenttypeWithInsertVideo", $_POST["contentItemIntoInsert"]); 
-  else
-    variable_set("contenttypeWithInsertVideo", array());
-	
-  //fieldConfig
-  //fieldPricing
-  //fieldPayment
-  //fieldLive
-  //fieldFeatures
-  
-if ($view_page=="") {
-
-  $urlUpdate = variable_get("basePathWimtv") . "profile";
-
-  $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-  $dati= array();
-  $dati["paypalEmail"]= $_POST["paypalEmail"];
-  $dati["taxCode"]=  $_POST["taxCode"];
-  $dati["vatCode"]=  $_POST["vatCode"];
-  $dati["billingAddress"]["street"]=  $_POST["billingAddress"]["street"];
-  $dati["billingAddress"]["city"]=  $_POST["billingAddress"]["city"];
-  $dati["billingAddress"]["state"]=  $_POST["billingAddress"]["state"];
-  $dati["billingAddress"]["zipCode"]=  $_POST["billingAddress"]["zipCode"];
-  $dati["liveStreamEnabled"]= isset($_POST["liveStreamEnabled"]) ? 'true' : 'false';
-  $dati["eventResellerEnabled"]= isset($_POST["eventResellerEnabled"]) ? 'true' : 'false';
-  $dati["eventOrganizerEnabled"]= isset($_POST["eventOrganizerEnabled"]) ? 'true' : 'false';
-  
-  $dati["hidePublicShowtimeVideos"]= $_POST["hidePublicShowtimeVideos"];
-  
-  $dati["liveStreamPwd"]=  $_POST["liveStreamPwd"];
-  
-  if (count($dati)>0){
-    $jsonValue = json_encode($dati);
-	$ch = curl_init();
-    //form_set_error("eee",var_dump($dati));
-    curl_setopt($ch, CURLOPT_URL, $urlUpdate);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json","Accept: application/json"));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch, CURLOPT_POST, TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonValue); 
-    $response = curl_exec($ch);
-    $arrayjsonst = json_decode($response);
-    curl_close($ch);
-    if (isset($arrayjsonst->result) && ($arrayjsonst->result!="SUCCESS")) {
-      $testoErrore = "";
-      foreach ($arrayjsonst->messages as $message){
-        $testoErrore .=  $message->field . " : " .  $message->message . "<br/>";         	
-      }
-	  form_set_error("Errore Curl", $testoErrore);
-    }
-  }
-}  
-}
-
-//View page for myMedia 
-function wimtvpro_output() {
-  $view_page = wimtvpro_alert_reg();
-  drupal_add_js('
-  //Request new URL for create a wimlive Url
-  jQuery(document).ready(function(){
-	    
-	    jQuery(".icon_download").click(function() {
-			var id = jQuery(this).attr("id").split("|");
-			
-			var uri = "' . variable_get("basePathWimtv") . 'videos/" + id[0] + "/download";
-			if (id[1]!=""){
-				var file = id[1].split(".");
-				uri = uri + "?ext=" + file[1] + "&filename=" + file[0];
-			} 
-			jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
-	
-		});
-	}); ','inline');
-
-  
-  form_set_error("error",$view_page);
-  if ($view_page==""){
-   
-	
-	$title = "<div class='action'><span class='icon_sync0' title='Syncronize'>Syncronize</span></div>";
-    $getThumbs = $title . "<ul class='items' id='FALSE'>" . wimtvpro_getThumbs(FALSE) . "</ul>"; 
-	
-	
-	
-    return $getThumbs;
-  } 
-  return $view_page;
-}
-
-//View page for myStreaming 
-function wimtvpro_streaming_output() {
-$view_page = wimtvpro_alert_reg();
-drupal_add_js('
-  //Request new URL for create a wimlive Url
-  jQuery(document).ready(function(){
-	    
-	    jQuery(".icon_download").click(function() {
-			var id = jQuery(this).attr("id").split("|");
-			
-			var uri = "' . variable_get("basePathWimtv") . 'videos/" + id[0] + "/download";
-			if (id[1]!=""){
-				var file = id[1].split(".");
-				uri = uri + "?ext=" + file[1] + "&filename=" + file[0];
-			} 
-			jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
-	
-		});
-});  ','inline');
-form_set_error("error",$view_page);
-  if ($view_page==""){
-    $title = "<div class='action'><span class='icon_sync0' title='Syncronize'>Syncronize</span></div>";
-    $page = $title . "<div class='clearfix'><ul class='items' id='TRUE'>" . wimtvpro_getThumbs(TRUE) . "</ul></div>";
-    return  $page;
-  } 
-  return $view_page;
-} 
 
 //Create object for support json and array
 function wimtvpro_objectToArray($d) {
@@ -849,90 +291,88 @@ function wimtvpro_objectToArray($d) {
 
 //Install function for jquery and css
 function wimtvpro_install_jquery($sortable=FALSE, $private=FALSE) {
-global $base_url;
-drupal_add_library('system', 'ui');
-drupal_add_js("var url_pathPlugin ='" . $base_url . "';" , "inline", array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/js/jquery.colorbox.js');
-drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/css/colorbox.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
-if ($private==FALSE) {
+    global $base_url;
+    drupal_add_library('system', 'ui');
+    drupal_add_js("var url_pathPlugin ='" . $base_url . "';" , "inline", array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/js/jquery.colorbox.js');
+    drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/css/colorbox.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
+    if ($private==FALSE) {
 
-  drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro_public.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-  drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
-  drupal_add_js('jQuery(document).ready(function() { jQuery("ul.itemsPublic li a").colorbox();});' , 'inline');
-} 
-else {
-  drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-  drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/css/redmond/jquery-ui-1.8.21.custom.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+      drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro_public.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+      drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
+      drupal_add_js('jQuery(document).ready(function() { jQuery("ul.itemsPublic li a").colorbox();});' , 'inline');
+    }
+    else {
+      drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+      drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/css/redmond/jquery-ui-1.8.21.custom.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 
-  drupal_add_js('jQuery(document).ready(function(){
-  
-	jQuery("a.viewThumb").click( function(){
-				  var basePath = Drupal.settings.basePath;
-                  jQuery(this).colorbox({href:url_pathPlugin  + "/admin/config/wimtvpro/"  + jQuery(this).attr("id")});
-                });
-				jQuery("a.wimtv-thumbnail").click( function(){
-				    var basePath = Drupal.settings.basePath;
-					if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
-						var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-						jQuery(this).colorbox({href:url_pathPlugin  + "/admin/config/wimtvpro/" + url});
-					}
-				});
-  });', 'inline');
+      drupal_add_js('jQuery(document).ready(function(){
 
-if ($sortable) {
-  drupal_add_library('system', 'ui.sortable');    
+        jQuery("a.viewThumb").click( function(){
+                      var basePath = Drupal.settings.basePath;
+                      jQuery(this).colorbox({href:url_pathPlugin  + "/admin/config/wimtvpro/"  + jQuery(this).attr("id")});
+                    });
+                    jQuery("a.wimtv-thumbnail").click( function(){
+                        var basePath = Drupal.settings.basePath;
+                        if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
+                            var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
+                            jQuery(this).colorbox({href:url_pathPlugin  + "/admin/config/wimtvpro/" + url});
+                        }
+                    });
+      });', 'inline');
 
-
-  drupal_add_js('
-jQuery(document).ready(function(){ 
-
-/*SORTABLE*/      						
-jQuery( ".items" ).sortable({
-placeholder: "ui-state-highlight",
-handle : ".icon_moveThumbs",		
-});
-
-/*SAVE SORTABLE*/	  								
-jQuery("#save").click(function(){
-var ordina =	jQuery(".items").sortable("toArray") ;
-
-jQuery.ajax({
-context: this,
-url: "' . wimtvpro_checkCleanUrl("admin/config/wimtvpro/", "wimtvproCallAjax") . '", 
-type: "GET",
-dataType: "html",
-data: "namefunction=ReSortable&ordina=" + ordina , 
-
-beforeSend: function(){ 
-jQuery(".icon").hide(); 
-jQuery(".loader").show(); 
-},
-    
-success: function(data) {
-
-jQuery(".icon").show(); 
-jQuery(".loader").hide();
-
-},
-
-error: function(request,error) {
-alert(request.responseText);
-}	
+    if ($sortable) {
+      drupal_add_library('system', 'ui.sortable');
 
 
+      drupal_add_js('
+    jQuery(document).ready(function(){
 
-});	
-});	
+    /*SORTABLE*/
+    jQuery( ".items" ).sortable({
+    placeholder: "ui-state-highlight",
+    handle : ".icon_moveThumbs",
+    });
 
-});	', 'inline');
+    /*SAVE SORTABLE*/
+    jQuery("#save").click(function(){
+    var ordina =	jQuery(".items").sortable("toArray") ;
 
+    jQuery.ajax({
+    context: this,
+    url: "' . wimtvpro_checkCleanUrl("admin/config/wimtvpro/", "wimtvproCallAjax") . '",
+    type: "GET",
+    dataType: "html",
+    data: "namefunction=ReSortable&ordina=" + ordina ,
+
+    beforeSend: function(){
+    jQuery(".icon").hide();
+    jQuery(".loader").show();
+    },
+
+    success: function(data) {
+
+    jQuery(".icon").show();
+    jQuery(".loader").hide();
+
+    },
+
+    error: function(request,error) {
+    alert(request.responseText);
+    }
+
+
+
+    });
+    });
+
+    });	', 'inline');
+
+    }
+    drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
+    }
 }
-drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
-}
-}
-
-
 
 function wimtvpro_embedded_output() {
 $output = "";
@@ -1086,264 +526,6 @@ function wimtvpro_embeddedAll_output() {
   
   echo $output;
 
-}
-
-
-function wimtvpro_report(){
-
-$view_page = wimtvpro_alert_reg();
-form_set_error("error",$view_page);
-if ($view_page==""){
-
-  drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-  drupal_add_library('system', 'ui.datepicker');
-  drupal_add_js('jQuery(document).ready(function(){
-  jQuery( ".pickadate" ).datepicker({
-  dateFormat: "dd/mm/yy",     maxDate: 0,      });
-  jQuery("#customReport").click(function(){
-  jQuery("#fr_custom_date").fadeToggle();
-  jQuery("#changeTitle").html("<a href=\'?page=WimVideoPro_Report\'>Current Month</a> Change Date");
-  });
-  jQuery(".tabs2 span").click(function(){
-  var idSpan = jQuery(this).attr("id");
-  jQuery(".view").fadeOut();
-  jQuery("#view_" + idSpan).fadeIn();
-  jQuery(".tabs2 span").attr("class","");
-  jQuery(this).attr("class","active");
-  });
-  });', 'inline');
-  $table_name = '{wimtvpro_video}';
-  $report = "";
-  $from = "";
-  $to = "";
-  $traffic = "";
-  $storage = "";
-  $baseReport = "http://www.wim.tv:3131/api/";
-  $megabyte = 1024*1024;
-  if ((isset($_POST['from'])) && (isset($_POST['to'])) && (trim($_POST['from'])!="") && (trim($_POST['to'])!="")) {
-    $from = $_POST['from'];
-    $to = $_POST['to'];
-	//convert to  (YYYY-MM-DD)
-	$current_month=FALSE;
-	list($day_from, $month_from, $year_from) = explode('/',$from);
-	//$from_tm = mktime(0, 0, 0, $month, $day, $year);
-	list($day_to, $month_to, $year_to) = explode('/',$to);
-	//$to_tm = mktime(0, 0, 0,  $month, $day, $year);
-	$from_tm = strtotime( $year_from . "-" . $month_from . "-" . $day_from . " 00:00:00.00")*1000;
-	$to_tm = strtotime( $year_to . "-" . $month_to . "-" . $day_to . " 00:00:00.00")*1000;
-	$from_dmy =$month_from . "/" . $day_from . "/" . $year_from;
-	$to_dmy= $month_to . "/" . $day_to . "/" . $year_to;
-  } else {
-    $current_month=TRUE;
-    $d = new DateTime(date('m/d/y'));
-    $d->modify('first day of this month');
-    $from_dmy = $d->format('m/d/y');
-    $d->modify('last day of this month');
-    $to_dmy = $d->format('m/d/y');
-  }
-  
-  if ($current_month==TRUE){
-    $url_view  = $baseReport . "users/" . variable_get("userWimtv") . "/views";
-    $title_views = "Views (current month)";
-    $url_stream = $baseReport . "users/" . variable_get("userWimtv") . "/streams"; 	
-	$title_streams = "Streams (current month)";
-	$url_view_single = $baseReport . "views/@";
-    $url_info_user = $baseReport . "users/" . variable_get("<userWimtv"); 
-	$title_user = "Current Month  <a href='#' id='customReport'>Change Date</a> ";
-	$style_date = "display:none;";
-	$url_packet = $baseReport . "users/" . variable_get("userWimtv") . "/commercialPacket/usage";
-  } else {
-    $url_view = $baseReport . "users/" . variable_get("userWimtv") . "/views_by_time?from=" . $from_tm . "&to=" . $to_tm;
-	$title_views = "Views (from " . $from . " to " . $to . ")";
-    $url_stream = $baseReport . "users/" . variable_get("userWimtv") . "/streams?from=" . $from_tm . "&to=" . $to_tm ;	
-	$title_streams = "Streams (from " . $from . " to " . $to . ")";
-	$url_view_single = $baseReport . "views/@?from=" . $from_tm . "&to=" . $to_tm ;
-    $url_info_user = $baseReport . "users/" . variable_get("userWimtv") . "?from=" . $from_tm . "&to=" . $to_tm . "&format=json";
-	$style_date = "";
-	$title_user = "<a href='?page=WimVideoPro_Report'>Current Month</a> Change Date";
-  }
-  $report .= "<div class='wrap'><h2>User Wimtv " . variable_get("userWimtv") . "</h2>";
-  $report .= "<h3 id='changeTitle'>" . $title_user . "</h3>";
-  $report .= '<div id="fr_custom_date" class="registration" style="' . $style_date . '">
-    <form method="post">
-	From <input  type="text" class="pickadate form-text" id="edit-from" name="from" value="' . $from . '" size="10" maxlength="10"> 
-	To <input  type="text" class="pickadate form-text" id="edit-to" name="to" value="' . $to . '" size="10" maxlength="10">
-	<input type="submit" value=">" class="form-submit" />
-	</form>
-	</div>';
-	
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $url_info_user);
-  curl_setopt($ch, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  if (curl_error($ch)!="")
-    watchdog("Error traffic report",curl_error($ch));
-  $response = curl_exec($ch);
-  curl_close($ch);
-  watchdog("Traffic report: ",$response );
-
-  $traffic_json = json_decode($response);
-  if (isset($traffic_json->traffic))
-    $traffic = $traffic_json->traffic;
-  if (isset($traffic_json->storage))
-    $storage = $traffic_json->storage;
-  if (isset($url_packet)) {
-    $ch2 = curl_init();
-    curl_setopt($ch2, CURLOPT_URL, $url_packet);
-    curl_setopt($ch2, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($ch2, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch2, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	$response2 = curl_exec($ch2);
-	watchdog("Current Packet: ",$response2 );
-	curl_close($ch2);
-	$commercialPacket_json = json_decode($response2);
-	$commercialPacket_json = json_decode($response2);
-	$currentPacket = $commercialPacket_json->current_packet;
-	if (($currentPacket->id)>0) $namePacket =  $currentPacket->name;
-	else $namePacket =  $currentPacket->error;
-	$report .="<p>Your Commercial Packet: <b>" . $namePacket . "</b></p> ";
-		
-	$traffic_of = " of " . $currentPacket->band_human;
-	$storage_of = " of " . $currentPacket->storage_human;
-				
-	$traffic_bar = "<div class='progress'><div class='bar' style='width:" . $commercialPacket_json->traffic->percent . "%'>&nbsp;</div>" . $commercialPacket_json->traffic->percent_human . "%</div>";
-    $storage_bar = "<div class='progress'><div class='bar' style='width:" . $commercialPacket_json->storage->percent . "%'>&nbsp;</div>" . $commercialPacket_json->storage->percent_human . "%</div>";			
-	$byteToMb = "<b>" . $commercialPacket_json->traffic->current_human . '</b>' . $traffic_of . $traffic_bar;
-	$byteToMbS = "<b>" . $commercialPacket_json->storage->current_human . '</b>' . $storage_of . $storage_bar;
-  } else {
-    $byteToMb = "<b>" . round($traffic/ $megabyte, 2) . ' MB</b>';
-	$byteToMbS = "<b>" . round($storage/ $megabyte, 2) . ' MB</b>';
-  }
-  //$commercialPacket = $traffic_json->commercialPacket;
-  if (isset($traffic)=="") {
-    $report .= "<p>You account don't generate traffic in this period.</p>";
-  } else {
-    $report .= "<p>Traffic: " . $byteToMb . "</p>";
-	$report .= "<p>Storage space: " . $byteToMbS . "</p>";
-    $ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url_stream);
-	curl_setopt($ch, CURLOPT_VERBOSE, 0);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	$response = curl_exec($ch);
-	watchdog("Stream report: ",$response );
-	curl_close($ch);
-	$arrayStream = json_decode($response);
-	$report .= '<div class="summary"><div class="tabs2"><span id="stream" class="active">View Streams</span><span id="graph">View graph</span></div>
-	<div id="view_stream" class="view"><table class="wp-list-table widefat fixed posts" style="text-align:center;">
-	<h3>' . $title_streams . '</h3>
-	<tr>
-	<th class="manage-column column-title">Video</th>
-	<th class="manage-column column-title">Views</th>
-	<th class="manage-column column-title">Activate view</th>
-	<th class="manage-column column-title">Max viewers</th>
-	</tr>';
-    $dateNumber = array();
-    $dateTraffic = array();
-	foreach ($arrayStream as $value){
-      $result = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier='" . $value->contentId . "'");
-	  $arrayPlay = $result->fetchAll();
-	  if (isset($arrayPlay[0]->urlThumbs)) $thumbs = $arrayPlay[0]->urlThumbs;
-	  else $thumbs = "<div class='img_empty'></div>";
-	  if ((isset($value->title))) $video = $thumbs . "<br/><b>" . $value->title . "</b><br/>" . $value->type ;
-	  else $video = $thumbs . "<br/>" . $value->id;
-	  $html_view_exp = "<b>Total " . $value->views . " Views</b><br/>";
-	  $view_exp = $value->views_expanded;
-	  if (count($view_exp)>0) {
-	    $html_view_exp .= "<table class='wp-list-table'><tr>
-		<th class='manage-column column-title' style='font-size:10px;'>End Time</th>
-		<th class='manage-column column-title' style='font-size:10px;'>Duration</th>
-		<th class='manage-column column-title' style='font-size:10px;'>Traffic</th>
-		</tr>";
-		foreach ($view_exp as $value_exp){
-		  $value_exp->traffic =  round($value_exp->traffic / $megabyte, 2) . " MB";
-		  $date_human =  date('d/m/Y', ($value_exp->end_time/1000));
-		  $html_view_exp .= "<tr>";
-		  $html_view_exp .= "<td style='font-size:10px;'>" . $date_human . "</td>";
-		  $html_view_exp .= "<td style='font-size:10px;'>" . $value_exp->duration . "s</td>";
-		  $html_view_exp .= "<td style='font-size:10px;'>" . $value_exp->traffic  . "</td>";
-		  $html_view_exp .= "</tr>";
-		  if (isset($dateNumber[$date_human])) {
-		    $dateNumber[$date_human] = $dateNumber[$date_human] + 1;
-	      }
-		  else
-		    $dateNumber[$date_human] = 1; 
-          if (isset($dateTraffic[$date_human])) {
-		    array_push($dateTraffic[$date_human], $value_exp->traffic);
-		  }
-		  else $dateTraffic[$date_human] = array($value_exp->traffic);
-        }
-		$html_view_exp .= "</table>";
-      } 
-	  else {
-	    $html_view_exp .= "";
-      }
-	  $report .= "<tr class='alternate'>
-	  <td class='image'>" .  $video . "</td>
-	  <td>" .  $html_view_exp . "</td>
-	  <td>" . $value->viewers . "</td>
-	  <td>" .  $value->max_viewers . "</td>
-	  </tr>";
-    }
-    $report .= "</table><div class='clear'></div></div>";
-    $report .= "<div id='view_graph' class='view'>";
-	$dateRange = wimtvpro_getDateRange($from_dmy, $to_dmy);
-	$count_date = count($dateRange);
-	$count_single= 0;
-	$traffic_single = 0;
-	$report .= "<div class='cols'>";
-	if (count($dateNumber)>0) {
-	  $number_view_max = max($dateNumber);
-	  $single_percent = (100/$number_view_max);
-	}
-	else {
-	  $number_view_max = 0;
-	  $single_percent = 0;
-	}
-	$single_taffic_media = array();
-	foreach ($dateTraffic as $dateFormat => $traffic_number){
-	  $single_taffic_media[$dateFormat] = round(array_sum($dateTraffic[$dateFormat]) / count($dateTraffic[$dateFormat]),2);
-	}
-	if (count($single_taffic_media)>0) {
-	  $traffic_view_max = max($single_taffic_media);
-	  $single_traffic_percent = (100/$traffic_view_max);
-	} 
-	else  {
-	  $traffic_view_max = 0;
-	  $single_traffic_percent = 0;	
-	}
-	$report .= "<div class='col'><div class='date'>Date</div><div class='title'>Total view</div><div class='title'>Average Traffic</div></div>";
-	for ($i=0;$i<$count_date;$i++){
-	  if (isset($dateNumber[$dateRange[$i]])) $count_single = $single_percent * $dateNumber[$dateRange[$i]];
-	  if (isset($single_taffic_media[$dateRange[$i]])) $traffic_single = $single_traffic_percent * $single_taffic_media[$dateRange[$i]];
-	  $report .= "<div class='col' >
-	  <div class='date'>" . $dateRange[$i] . "</div>
-	  <div class='countview'><div class='bar' style='width:" . $count_single . "%'>";
-	  if (isset($dateNumber[$dateRange[$i]])) {
-	    if ($dateNumber[$dateRange[$i]]>1) $report .= $dateNumber[$dateRange[$i]] . " viewers";
-		if ($dateNumber[$dateRange[$i]]==1) $report .= $dateNumber[$dateRange[$i]] . " viewer";
-	  }
-	  $report .= "</div></div>
-	  <div class='countview'><div class='barTraffic' style='width:" . $traffic_single . "%'>";
-	  if (isset($single_taffic_media[$dateRange[$i]])) {
-	    if ($single_taffic_media[$dateRange[$i]]>0) $report .= $single_taffic_media[$dateRange[$i]] . " MB";
-	  }
-	  $report .= "</div></div></div>";
-	  $count_single = 0;
-	  $traffic_single = 0;
-    }
-    $report .= "</div>";
-    //print_r($dateRange);	
-    $report .= "<div class='clear'></div></div><div class='clear'></div></div>";
-  }
-  $report .= "</div>";
-  return $report;
-}
-return $view_page;
 }
 
 function wimtvpro_plus_embeddedAll_output() {

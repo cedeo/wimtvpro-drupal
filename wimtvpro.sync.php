@@ -18,7 +18,7 @@
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
   $response = curl_exec($ch);
-   watchdog('SYNC - WIMTVPRO', '<pre>' . $response . '</pre>');
+  watchdog('SYNC - WIMTVPRO', '<pre>' . $response . '</pre>');
   $array_json_videos = json_decode($response);
   curl_close($ch);
 

@@ -219,20 +219,20 @@ div.summary{
 	height:auto!important;
 	height:150px;
 }
-div.tabs2 {
+div.tabs {
 	/*position:absolute; top:0; */
 	height: 30px; z-index:10;
 }
-div.tabs2 span{
+div.tabs span{
 	font-size:16px; margin:0 10px 0 0; padding:5px; text-align:center; cursor:pointer;
 	width:150px; border:1px solid #ccc; display:block; float:left; background-color: #f7f7f7;
 }
 
-div.tabs2 span.active{border-bottom:1px solid #fff; background-color: #FFF;}
+div.tabs span.active{border-bottom:1px solid #fff; background-color: #FFF;}
 
 div.view{
 	border:1px solid #ccc; z-index:9;
-	/*position:absolute; top:27px; */  margin-top:5px;
+	/*position:absolute; top:27px; */  margin-top:1px;
 	padding: 10px;
 }
 div#view_graph{
@@ -293,6 +293,10 @@ div#view_graph div.cols div.col div.countview .barTraffic{
 a.wimtv-thumbnail {
 	height:100%; width:100%; display:block; background:#fff url('../img/empty.jpg') no-repeat center center;
 	position:relative;
+}
+img.wimtv-thumbnail {
+    min-height:140px; min-width:200px; background:#fff url('../img/empty.jpg') no-repeat center center;
+    position:relative;
 }
 div.img_empty {
   margin:0; padding:0;

@@ -4,6 +4,7 @@ Maintainers:
   WIMLABS
   Simona Guala
   Sergio Matone
+  Walter Galante
   (http://www.wimlabs.com)
 
 Requires - Drupal 7
