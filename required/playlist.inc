@@ -120,6 +120,7 @@ function wimtvpro_playlist_validate($form, &$form_state) {
     $error="";
 	if ($error!="") form_set_error('', check_plain($error));
 }
+
 function wimtvpro_playlist_submit($form, &$form_state) {
 	
 	$item = check_plain($_POST['identifier']);
@@ -135,10 +136,6 @@ function wimtvpro_playlist_submit($form, &$form_state) {
 	drupal_set_message("Update playlist successfully");
 	
 }
-
-
-
-
 
 function wimtvpro_embeddedPlaylist_output() {
       $playlist = "";

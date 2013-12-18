@@ -321,15 +321,13 @@ if (isset($urlPlay[1])) {
 
     $urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
     $configFile = "'file': '" . $urlPlayIPadIphone . "',";	
-  }	
-  else {
+  }	else {
     $configFile  = "";
     if ($viewFlashPlayer==TRUE) $configFile .= "'flashplayer':'" . $dirJwPlayer . "',";
     $configFile .= "'file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
   }
   return $configFile;
 }
-else
 return false;
 
 }
@@ -388,16 +386,7 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
   }
 
   //Select Showtime
-  $param_st = variable_get("basePathWimtv") . "users/" . variable_get("userWimtv") . "/showtime?details=true";
-  $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-  $ch_st = curl_init();
-  curl_setopt($ch_st, CURLOPT_URL, $param_st);
-  curl_setopt($ch_st, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch_st, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch_st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($ch_st, CURLOPT_USERPWD, $credential);
-  curl_setopt($ch_st, CURLOPT_SSL_VERIFYPEER, FALSE);
-  $details_st  =curl_exec($ch_st);
+  $details_st = apiGetShowtimes();
   $arrayjson_st = json_decode( $details_st);
   $st_license = array();
   foreach ($arrayjson_st->items as $st){

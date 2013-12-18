@@ -98,10 +98,7 @@ $form['videoFile'] = array(
 
 
 $url_categories = variable_get("basePathWimtv") . "videoCategories";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url_categories);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-$response = curl_exec($ch);
+$response = apiGetVideoCategories(); // curl_exec($ch);
 $category_json = json_decode($response);
 $category = array();
 if (isset($category_json)) {
@@ -113,7 +110,6 @@ if (isset($category_json)) {
 	  }
 	}
 }
-curl_close($ch);
 $form['videoCategory'] = array(
 '#type' => 'select',
 '#title' => t('Category-Subcategory'),

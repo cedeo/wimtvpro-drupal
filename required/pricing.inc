@@ -91,36 +91,15 @@ if ($credential!="username:password") {
   if (isset($_GET['success'])) {
     $openFieldSet = TRUE;
     //controlla stato pagamento
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, variable_get("basePathWimtv") . "userpacket/payment/check");
-    curl_setopt($ch, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: en-US,en;q=0.5'));
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
     $fileCookie = "cookies_" . variable_get("userWimtv") . "_" . $_GET['success'] . ".txt";
-
-    // Recupera cookie sessione
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $fileCookie);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
+    $result = apiCheckPayment($fileCookie); //curl_exec($ch);
     $arrayjsonst = json_decode($result);
   }
 
   $url_packet_user = variable_get("basePathWimtv") . "userpacket/" . variable_get("userWimtv");
 
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $url_packet_user);
-  curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: en-US,en;q=0.5'));
-  curl_setopt($ch, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-  $response = curl_exec($ch);
+  $response = apiGetPacket();
   $packet_user_json = json_decode($response);
 
   $id_packet_user = $packet_user_json->id;
@@ -134,26 +113,10 @@ if ($credential!="username:password") {
   $count_date = $packet_user_json->daysLeft;
   //$count_date = count($dateRange)-1;
 
-  curl_close($ch);
-
-
-  $url_packet = variable_get("basePathWimtv") . "commercialpacket"; 
-
-  $header = array("Accept-Language: en-US,en;q=0.5");
-
-  $ch2 = curl_init();
-  curl_setopt($ch2, CURLOPT_URL, $url_packet);
-  curl_setopt($ch2, CURLOPT_HTTPHEADER, $header);
-  curl_setopt($ch2, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, FALSE);
-  curl_setopt($ch2, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch2, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-  $response2 = curl_exec($ch2);
+  $response2 = apiCommercialPacket();
 
   //$info = curl_getinfo($ch2);
   $packet_json = json_decode($response2);
-  curl_close($ch2);
   //var_dump ($response2);
 
   $pricing .= "<table class='wp-list-table widefat fixed pages'>";

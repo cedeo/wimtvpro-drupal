@@ -126,9 +126,13 @@
     }
   }
   else {
-    echo t("It isn't element");
+    echo t("It isn't element"); //TODO: eh?
   }
 }
 
-if (!(isset($insert)))
-  die();
+/*
+ * if (!(isset($insert)))
+ *   die();
+ *
+ * TODO: ma a cosa servirebbe questo codice piazzato qui?
+*/

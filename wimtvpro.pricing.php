@@ -90,24 +90,8 @@ function wimtvpro_callPricing() {
         }
 
         if (isset($_GET['success'])) {
-            $openFieldSet = TRUE;
-            //controlla stato pagamento
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, variable_get("basePathWimtv") . "userpacket/payment/check");
-            curl_setopt($ch, CURLOPT_VERBOSE, 0);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Language: en-US,en;q=0.5'));
-            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($ch, CURLOPT_USERPWD, $credential);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
             $fileCookie = "cookies_" . variable_get("userWimtv") . "_" . $_GET['success'] . ".txt";
-
-            // Recupera cookie sessione
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $fileCookie);
-
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = apiCheckPayment($fileCookie);
             $arrayjsonst = json_decode($result);
         }
 

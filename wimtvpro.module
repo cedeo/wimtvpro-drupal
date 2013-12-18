@@ -268,12 +268,12 @@ function wimtvpro_access() {
   return user_access('administer content') && user_access('use PHP for settings');
 }
 
-//Create object for support json and array
+//Create object to support json and array
 function wimtvpro_objectToArray($d) {
   if (is_object($d)) {
-  // Gets the properties of the given object
-  // with get_object_vars function
-    $d = get_object_vars($d);
+      // Gets the properties of the given object
+      // with get_object_vars function
+      $d = get_object_vars($d);
   }
 
   if (is_array($d)) {

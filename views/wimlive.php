@@ -29,21 +29,7 @@ function wimtvpro_wimlive_formModify($form_state, $id) {
 //Call a delete event live
 function wimtvpro_wimlive_delete($form_state, $id) {
     $identifier = $id['build_info']['args'][0];
-    $userpeer = variable_get("userWimtv");
-    $url_live = variable_get("basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts";
-    $url_live .= "/" . $identifier;
-    $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url_live);
-    curl_setopt($ch, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch, CURLOPT_POST, TRUE);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-    $response = curl_exec($ch);
-    curl_close($ch);
+    apiDeleteLive($identifier);
     header('Location:' . url("admin/config/wimtvpro/wimlive"));
 }
 
@@ -111,17 +97,7 @@ function wimtvpro_form($type, $identifier) {
 	 ', "inline");
 
     if ($type=="modify") {
-        $userpeer = variable_get("userWimtv");
-        $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-        $url_live = variable_get("basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts/" . $identifier . "/embed";
-        $ch_embedded = curl_init();
-        curl_setopt($ch_embedded, CURLOPT_URL, $url_live);
-        curl_setopt($ch_embedded, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch_embedded, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch_embedded, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch_embedded, CURLOPT_USERPWD, $credential);
-        curl_setopt($ch_embedded, CURLOPT_SSL_VERIFYPEER, FALSE);
-        $dati = curl_exec($ch_embedded);
+        $dati = apiEmbeddedLive($identifier);
         $arraydati = json_decode($dati);
         $name = $arraydati->name;
         if ($arraydati->paymentMode=="FREEOFCHARGE")
@@ -442,19 +418,9 @@ function wimtvpro_tableLive() {
     $id =  $_POST['id'];
     $onlyActive = $_POST['onlyActive'];
     $userpeer = variable_get("userWimtv");
-    $url_live_select = variable_get("basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts";
-    if ($onlyActive)  $url_live_select .= "?active=true";
 
     $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-    $ch_select = curl_init();
-
-    curl_setopt($ch_select, CURLOPT_URL, $url_live_select);
-    curl_setopt($ch_select, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch_select, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch_select, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch_select, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch_select, CURLOPT_SSL_VERIFYPEER, FALSE);
-    $json  =curl_exec($ch_select);
+    $json = apiGetLiveEvents($timezone, !(!$onlyActive));
     $arrayjson_live = json_decode($json);
     $count = -1;
     $output = "";
