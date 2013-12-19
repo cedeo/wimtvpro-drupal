@@ -4,17 +4,17 @@
 	* This file is use for module wimtvpro.
 	*
 	*/
-require_once(drupal_get_path('module', 'wimtvpro') . "/wimtvpro.function.php");
 // Load default implementations of insert hooks for core modules.
-require_once(drupal_get_path('module', 'wimtvpro') . '/required/form.inc');
-require_once(drupal_get_path('module', 'wimtvpro') . '/required/block.inc');
-require_once(drupal_get_path('module', 'wimtvpro') . '/required/insert.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/upload.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/blocks.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/node_insert.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/playlist.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/embedded.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/report.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/help.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/api/wimtv_api.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.admin.php');
-require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.help.php');
-require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.report.php');
-require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.embedded.php');
+require_once(drupal_get_path('module', 'wimtvpro') . "/wimtvpro.function.php");
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimbox.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimvod.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimlive.php');
@@ -112,7 +112,7 @@ function wimtvpro_menu() {
         );
     $items['admin/config/wimtvpro/wimlive/webproducer/%'] =
         array(
-            'file' => 'required/live_webproducer.php',
+            'file' => 'required/webproducer.inc',
             'page arguments' => array('wimtvproWebProducer',5),
             'access arguments' => array('administer users'),
             'page callback' => 'wimtvproWebProducer',
@@ -129,7 +129,7 @@ function wimtvpro_menu() {
         );
     $items['admin/config/wimtvpro/registration'] =
         array(
-            'file' => 'wimtvpro_registration.php',
+            'file' => 'required/registration.inc',
             'title' => 'Registration WimTv',
             'page arguments' => array('wimtvproRegistration'),
             'access callback' => TRUE,

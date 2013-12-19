@@ -1,196 +1,117 @@
-
 <?php
 /**
-  * @file
-  * This file is use for configure Packet.
-  *
-  */
+ * Created by JetBrains PhpStorm.
+ * User: walter
+ * Date: 17/12/13
+ * Time: 12.02
+ * To change this template use File | Settings | File Templates.
+ */
 
-$pricing = "";
-$openFieldSet = FALSE;
-$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+function wimtvpro_callPricing() {
+    $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
 
-if ($credential!="username:password") {
+    if ($credential!="username:password") {
 
-  $directoryCookie = "public://cookieWim";
-  // If directory cookieWim don't exist, create the directory (if change Public file system path into admin/config/media/file-system after installation of this module or is the first time)
-  if (!is_dir($directoryCookie)) {
-    $directory_create = drupal_mkdir('public://cookieWim',777); 
-  }
-  
-  if (isset($_GET['upgrade'])){
-   drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/js/jquery.colorbox.js');
-   drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/css/colorbox.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));		    		    
-   $fileCookie = "cookies_" . variable_get("userWimtv") . "_" . $_GET['upgrade'] . ".txt";
+        $directoryCookie = "public://cookieWim";
+        $script = "";
+        // If directory cookieWim don't exist, create the directory (if change Public file system path into admin/config/media/file-system after installation of this module or is the first time)
+        if (!is_dir($directoryCookie)) {
+            $directory_create = drupal_mkdir('public://cookieWim',777);
+        }
 
-   if (!is_file($directoryCookie. "/" . $fileCookie)) {
-     $f = fopen($directoryCookie. "/" . $fileCookie,"w");
-     fwrite($f,"");
-     fclose($f);
-   }
-   //Update Packet
-   $data = array("name" => $_GET['upgrade']);                                                                    
-   $data_string = json_encode($data);
+        if (isset($_GET['upgrade'])){
+            drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/js/jquery.colorbox.js');
+            drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/css/colorbox.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+            $fileCookie = "cookies_" . variable_get("userWimtv") . "_" . $_GET['upgrade'] . ".txt";
 
-   // chiama
-   $ch = curl_init();
-  
-   global $base_url;
-   $my_page =  url($base_url . "/admin/config/wimtvpro?pack=1&success=" . $_GET['upgrade']);
-   curl_setopt($ch, CURLOPT_URL,  variable_get("basePathWimtv") . "userpacket/payment/pay?externalRedirect=true&success=" . urlencode($my_page));
-   curl_setopt($ch, CURLOPT_VERBOSE, 0);
+            if (!is_file($directoryCookie. "/" . $fileCookie)) {
+                $f = fopen($directoryCookie. "/" . $fileCookie,"w");
+                fwrite($f,"");
+                fclose($f);
+            }
+            //Update Packet
+            $data = array("name" => $_GET['upgrade']);
+            $data_string = json_encode($data);
 
-   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-   curl_setopt($ch, CURLOPT_USERPWD, $credential);
+            // chiama
+            $ch = curl_init();
 
-   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            global $base_url;
+            $my_page =  url($base_url . "/admin/config/wimtvpro?pack=1&success=" . $_GET['upgrade']);
+            curl_setopt($ch, CURLOPT_URL,  variable_get("basePathWimtv") . "userpacket/payment/pay?externalRedirect=true&success=" . urlencode($my_page));
+            curl_setopt($ch, CURLOPT_VERBOSE, 0);
 
-   curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-   curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-     'Content-Type: application/json', 'Accept-Language: en-US,en;q=0.5',                                                                               
-	 'Content-Length: ' . strlen($data_string))                                                                       
-   );  
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($ch, CURLOPT_USERPWD, $credential);
 
-   // salva cookie di sessione
-   curl_setopt($ch, CURLOPT_COOKIEJAR, $fileCookie);	
-   $result = curl_exec($ch);
-   curl_close($ch);
-   $arrayjsonst = json_decode($result);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
-   if ($arrayjsonst->result=="REDIRECT") {
-     $pricing .= "
-	 <script>
-		  jQuery(document).ready(function() {
-			jQuery.colorbox({
-				onLoad: function() {
-					jQuery('#cboxClose').remove();
-				},
-				html:'<h2>" . $arrayjsonst->message . "</h2><h2><a href=\"" . $arrayjsonst->successUrl . "\">Yes</a> | <a onClick=\"jQuery(this).colorbox.close();\" href=\"#\">" . t("No") . "</a></h2>'
-			})
-		 });   		
-	 </script> 
-	  ";
-	 
-   } else {
-  
-	  $pricing .= "
-		 <script>
-			  jQuery(document).ready(function() {
-				jQuery.colorbox({
-					
-					html:'" . $arrayjsonst->html . "'
-				})
-			 });   		
-		 </script> 
-		  ";
-  
-   }
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json', 'Accept-Language: en-US,en;q=0.5',
+                    'Content-Length: ' . strlen($data_string))
+            );
 
-  if (isset($_GET['success'])) {
-    $openFieldSet = TRUE;
-    //controlla stato pagamento
+            // salva cookie di sessione
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $fileCookie);
+            $result = curl_exec($ch);
+            curl_close($ch);
+            $arrayjsonst = json_decode($result);
 
-    $fileCookie = "cookies_" . variable_get("userWimtv") . "_" . $_GET['success'] . ".txt";
-    $result = apiCheckPayment($fileCookie); //curl_exec($ch);
-    $arrayjsonst = json_decode($result);
-  }
+            if ($arrayjsonst->result=="REDIRECT") {
+                $script = "
+                 <script>
+                      jQuery(document).ready(function() {
+                        jQuery.colorbox({
+                            onLoad: function() {
+                                jQuery('#cboxClose').remove();
+                            },
+                            html:'<h2>" . $arrayjsonst->message . "</h2><h2><a href=\"" . $arrayjsonst->successUrl . "\">Yes</a> | <a onClick=\"jQuery(this).colorbox.close();\" href=\"#\">" . t("No") . "</a></h2>'
+                        })
+                     });
+                 </script>
+                  ";
+            } else {
+                $script = "
+                 <script>
+                      jQuery(document).ready(function() {
+                        jQuery.colorbox({
+                            html:'" . $arrayjsonst->html . "'
+                        })
+                     });
+                 </script>
+                  ";
+            }
 
-  $url_packet_user = variable_get("basePathWimtv") . "userpacket/" . variable_get("userWimtv");
+        }
 
-  $response = apiGetPacket();
-  $packet_user_json = json_decode($response);
-
-  $id_packet_user = $packet_user_json->id;
-  $createDate_packet_user = $packet_user_json->createDate;
-  $updateDate_packet_user = $packet_user_json->updateDate;
-
-  $createDate = date('d/m/Y', $createDate_packet_user/1000);
-  $updateDate = date('d/m/Y', $updateDate_packet_user/1000);
-  $dateRange = getDateRange($createDate , $updateDate );
-
-  $count_date = $packet_user_json->daysLeft;
-  //$count_date = count($dateRange)-1;
-
-  $response2 = apiCommercialPacket();
-
-  //$info = curl_getinfo($ch2);
-  $packet_json = json_decode($response2);
-  //var_dump ($response2);
-
-  $pricing .= "<table class='wp-list-table widefat fixed pages'>";
-  $pricing .= "<thead><tr><th></th>";
-  foreach ($packet_json -> items as $a) {
-    $pricing .= "<th><b>" . $a->name . "</b></th>";	
-  }
-
-  $pricing .= "</thead>";
-  $pricing .= "<tbody>";
-  $pricing .= "<tr class='alternate'>";
-  $pricing .= "<td>" . t("Band") . "</td>";
-  foreach ($packet_json -> items as $a) {
-    $pricing .= "<td>" . $a->band . " GB</td>";		    
-  }
-
-  $pricing .= "</tr>";
-
-  $pricing .= "<tr>";
-  $pricing .= "<td>" . t("Storage") . "</td>";
-  foreach ($packet_json -> items as $a) {
-    $pricing .= "<td>" . $a->storage . " GB</td>";		    
-  }
-
-  $pricing .= "</tr>";
-
-  $pricing .= "<tr class='alternate'>";
-  $pricing .= "<td>" . t("Support") . "</td>";
-  foreach ($packet_json -> items as $a) {
-    $pricing .= "<td>" . $a->support . "</td>";		    
-  }
-
-  $pricing .= "</tr>";
+        if (isset($_GET['success'])) {
+            $fileCookie = "cookies_" . variable_get("userWimtv") . "_" . $_GET['success'] . ".txt";
+            $result = apiCheckPayment($fileCookie);
+            $arrayjsonst = json_decode($result);
+        }
 
 
-  $pricing .= "<tr>";
-  $pricing .= "<td>" . t("Price") . "</td>";
-  foreach ($packet_json -> items as $a) {
-    $pricing .= "<td>" . number_format($a->price,2) . " &euro; / month</td>";		    
-  }
+        $response = apiGetPacket();
+        $packet_user_json = json_decode($response);
 
-  $pricing .= "</tr>";
+        $id_packet_user = $packet_user_json->id;
+        $createDate_packet_user = $packet_user_json->createDate;
+        $updateDate_packet_user = $packet_user_json->updateDate;
 
-  $pricing .= "<tr class='alternate'>";
-  $pricing .= "<td></td>";
-  foreach ($packet_json -> items as $a) {
-  //$pricing .= "<td>" . $a->dayDuration . " - " . $a->id . "</td>";
-    $pricing .= "<td>";
-    if ($id_packet_user==$a->id) {
-      $pricing .= "<img  src='" .  base_path()  . drupal_get_path('module', 'wimtvpro') . "/img/check.png' title='Checked'><br/>";
-      $pricing .= $count_date . " " . t("day left");
+        $createDate = date('d/m/Y', $createDate_packet_user/1000);
+        $updateDate = date('d/m/Y', $updateDate_packet_user/1000);
+        $dateRange = getDateRange($createDate , $updateDate );
+
+        $count_date = $packet_user_json->daysLeft;
+        $response2 = apiCommercialPacket();
+
+        $packet_json = json_decode($response2);
+        $args = array('packet_json' => $packet_json,
+            'id_packet_user' => $id_packet_user,
+            'script' => $script);
+        return render_template('templates/pricing.php', $args);
     }
-    else {
-      $pricing .= "<a href='?pack=1";
-      $pricing .= "&upgrade=" . $a->name;
-      $pricing .= "'><img class='icon_upgrade' src='" . base_path()  . drupal_get_path('module', 'wimtvpro') . "/img/uncheck.png' title='Upgrade'><br/>";
-      $pricing .= "</a>";
-    }
-    $pricing .= "</td>"; 		    
-  }
-
-  $pricing .= "</tr>";
-
-  $pricing .= "</tbody>";
-  $pricing .= "</table>";
-
-  $pricing .= "
-  <p>You have a free trial of 30 days to try the WimTVPro plugin.<br/> 
-  After 30 days you can subscribe a plan that suit your needs.<br/> 
-  All plans come with all features, only changes the amount of bandwidth and storage available.<br/> 
-  Enyoy your WimTVPro video plugin!</p>
-  ";
-
-  $pricing .= "</div>";
-
-  }
 }
