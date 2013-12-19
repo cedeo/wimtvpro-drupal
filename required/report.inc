@@ -6,7 +6,6 @@
  * Time: 15.37
  * To change this template use File | Settings | File Templates.
  */
-include_once('api/analytics_api.php');
 
 function serializeStatistics($arrayStreams) {
     $streams = array();
