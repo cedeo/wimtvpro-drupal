@@ -289,13 +289,15 @@ jQuery(document).ready(function(){
 				jQuery("ul.items").html(response);
 				jQuery("a.viewThumb").click( function(){
 				  var basePath = Drupal.settings.basePath;
-                  jQuery(this).colorbox({href:url_pathPlugin  + "/admin/config/wimtvpro/"  + jQuery(this).attr("id")});
+                  console.log(basePath);
+                  jQuery(this).colorbox({href:basePath + jQuery(this).attr("id")});
                 });
 				jQuery("a.wimtv-thumbnail").click( function(){
 				    var basePath = Drupal.settings.basePath;
-					if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
+                    console.log(basePath);
+                    if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
 						var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-						jQuery(this).colorbox({href:url_pathPlugin  + "/admin/config/wimtvpro/" + url});
+						jQuery(this).colorbox({href:basePath + url});
 					}
 					
 				});

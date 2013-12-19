@@ -165,8 +165,10 @@ So open up your FTP client program. First, identify your root directory. This is
             '#type' => 'checkboxes',
             '#options' => $content,
         );
-        if (count(variable_get('contenttypeWithInsertVideo'))>0)
+        if (count(variable_get('contenttypeWithInsertVideo'))) {
             $form['contentItemIntoInsert']['#default_value'] = variable_get('contenttypeWithInsertVideo');
+        }
+        $form['contentItemIntoInsert']['comment_body']['#attributes']['selected'] = TRUE;
     }
     //End FieldsetConfig
 

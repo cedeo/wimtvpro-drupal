@@ -81,7 +81,7 @@ function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
   jQuery(".wimtv-thumbnail").colorbox({});
 
   jQuery("a.addThumb").click(function(){
-  var text = "[wimtv]" + jQuery(this).attr("id") + "|" + jQuery(this).parent().parent().children(".w").val() + "|" + jQuery(this).parent().parent().children(".h").val() + "[/wimtv]";
+  var text = "[wimtv]" + jQuery(this).attr("id") + "|" + jQuery(this).parent().parent().parent().children(".w").val() + "|" + jQuery(this).parent().parent().parent().children(".h").val() + "[/wimtv]";
   jQuery(this).parent().parent().children(".w").attr("disabled", "disabled");
   jQuery(this).parent().parent().children(".h").attr("disabled", "disabled");
   jQuery("' . $field_to_insert . '").insertAtCaret(text);
@@ -90,7 +90,7 @@ function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
   });
   jQuery("a.removeThumb").click(function(){
   var testo = jQuery("#edit-body-und-0-value").val() + "";
-  testo = testo.replace("[wimtv]" + jQuery(this).attr("id") + "|" + jQuery(this).parent().parent().children(".w").val() + "|" + jQuery(this).parent().parent().children(".h").val() + "[/wimtv]","");
+  testo = testo.replace("[wimtv]" + jQuery(this).attr("id") + "|" + jQuery(this).parent().parent().parent().children(".w").val() + "|" + jQuery(this).parent().parent().parent().children(".h").val() + "[/wimtv]","");
   jQuery(this).parent().parent().children(".w").removeAttr("disabled");
   jQuery(this).parent().parent().children(".h").removeAttr("disabled");
 

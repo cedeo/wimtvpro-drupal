@@ -14,6 +14,7 @@ require_once(drupal_get_path('module', 'wimtvpro') . '/api/wimtv_api.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.admin.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.help.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.report.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.embedded.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimbox.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimvod.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimlive.php');
@@ -311,13 +312,13 @@ function wimtvpro_install_jquery($sortable=FALSE, $private=FALSE) {
 
         jQuery("a.viewThumb").click( function(){
                       var basePath = Drupal.settings.basePath;
-                      jQuery(this).colorbox({href:url_pathPlugin  + "/admin/config/wimtvpro/"  + jQuery(this).attr("id")});
+                      jQuery(this).colorbox({href:url_pathPlugin + jQuery(this).attr("id")});
                     });
                     jQuery("a.wimtv-thumbnail").click( function(){
                         var basePath = Drupal.settings.basePath;
                         if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
                             var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-                            jQuery(this).colorbox({href:url_pathPlugin  + "/admin/config/wimtvpro/" + url});
+                            jQuery(this).colorbox({href:url_pathPlugin + url});
                         }
                     });
       });', 'inline');
