@@ -368,6 +368,11 @@ function wimtvpro_admin_validate($form, &$form_state) {
     else
         variable_set("contenttypeWithInsertVideo", array());
 
+    variable_set('heightPreview', $_POST['heightPreview']);
+    variable_set('widthPreview', $_POST['widthPreview']);
+
+    //echo variable_get('heightPreview');
+    //echo variable_get('widthPreview');
     //fieldConfig
     //fieldPricing
     //fieldPayment
