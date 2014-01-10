@@ -8,19 +8,12 @@
   $url_video = variable_get("basePathWimtv") . variable_get("urlVideosDetailWimtv");
   $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
   $array_all_videos = array();
-  //Call API for read all my video into wim.tv
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL,  $url_video);
-  curl_setopt($ch, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($ch, CURLOPT_USERPWD, $credential);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
-  $response = curl_exec($ch);
+  //Call API to read all my video into wim.tv
+  $response = apiGetVideos();
+
   watchdog('SYNC - WIMTVPRO', '<pre>' . $response . '</pre>');
   $array_json_videos = json_decode($response);
-  curl_close($ch);
 
   if ($array_json_videos==NULL) {
 	if (!(isset($insert)))
@@ -122,7 +115,9 @@
       ->execute();
     }
     if (isset($_GET['sync'])) {
-      echo wimtvpro_getThumbs($_GET['showtime'], TRUE);
+      $return = wimtvpro_getThumbs($_GET['showtime'], TRUE);
+      trigger_error($return);
+      echo $return;
     }
   }
   else {
@@ -130,9 +125,5 @@
   }
 }
 
-/*
- * if (!(isset($insert)))
- *   die();
- *
- * TODO: ma a cosa servirebbe questo codice piazzato qui?
-*/
+if (!(isset($insert)))
+    die();

@@ -235,27 +235,10 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned
 function wimtvpro_detail_showtime($single, $st_id) {
-  if (!$single) {
-    $url_detail = variable_get("basePathWimtv") . str_replace(variable_get("replaceUserWimtv"), variable_get("userWimtv"), variable_get("urlShowTimeDetailWimtv"));
-  }
-
-  else {
-    $showtime_item = $st_id;
-    $url_embedded =  variable_get("urlShowTimeWimtv") . "/" . variable_get('replaceshowtimeIdentifier') . "/details";
-    $replace_content = variable_get('replaceContent');
-    $url_detail = str_replace(variable_get('replaceshowtimeIdentifier'), $showtime_item , $url_embedded);
-    $url_detail = str_replace(variable_get("replaceUserWimtv"), variable_get("userWimtv"), $url_detail);
-    $url_detail = variable_get("basePathWimtv") . $url_detail;
-  }
-  $st = curl_init();
-  curl_setopt($st, CURLOPT_URL, $url_detail);
-  curl_setopt($st, CURLOPT_VERBOSE, 0);
-  curl_setopt($st, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($st, CURLOPT_SSL_VERIFYPEER, FALSE);
-  $array_detail = curl_exec($st);
-  curl_close($st);
-  return $array_detail;
+  if (!$single)
+      return apiGetShowtimes();
+  else
+      return apiGetDetailsShowtime($st_id);
 }
 
 //Return  format url friendly o not
@@ -313,54 +296,50 @@ function wimtvpro_viever_jwplayer($userAgent, $video, $viewFlashPlayer=true){
 
 }
 
+
+function dbBuildVideosIn($listVideos, $in=true) {
+    if (count($listVideos)) {
+        $where = " AND contentidentifier ";
+        if (!$in)
+            $where .= "NOT";
+        $where .= " IN (";
+        foreach ($listVideos as $index=>$video) {
+            $where .= "'" . $video . "'";
+            if ($index < count($listVideos)-1)
+                $where .= ", ";
+        }
+        $where .= ")";
+        return $where;
+    }
+    return "";
+}
+
+
 function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
   
   
   global $user;
   $replace_content = variable_get("replaceContentWimtv");
   $my_media= "";
-  $response_st = "";
-  $sql_where  = "  ";
   $videoList = explode (",",$list);
-  if ($showtime)
-    $sql_where  = "  state='showtime'";
-  else
-    if ($playlist)
-	  $sql_where  = "  1=2";
-	else
-	  $sql_where  = "  1=1";
-  if ($playlist) {
-	  for ($i=0;$i<count($videoList);$i++){
-	    if ($videoList[$i]!="")
-		  $sql_where .= "  OR contentidentifier='" . $videoList[$i] . "' ";
-	  }
-	$sql_where = "AND (" . $sql_where . ")";  
-  }  else {
-
-	  for ($i=0;$i<count($videoList);$i++){
-	    if ($videoList[$i]!="")
-		  $sql_where .= "  AND contentidentifier!='" . $videoList[$i] . "' ";
-	  }
-	  
-	$sql_where = "AND (" . $sql_where . ")"; 
-  
-  
+  if ($showtime) {
+    $and_showtime  = "AND state='showtime'";
+  } else {
+    $and_showtime = "";
   }
-
-  $result_new = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' " . $sql_where);
+  $where = dbBuildVideosIn($videoList, $playlist);
+  $result_new = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' " . $and_showtime . $where);
 
   $array_videos  = $result_new->fetchAll();
   $array_videos_new_drupal = array();
 
   if ($playlist==TRUE) {
-      
 	  for ($i=0;$i<count($videoList);$i++){
 		 foreach ($array_videos  as $record_new) {
 			if ($videoList[$i] == $record_new->contentidentifier){
 				array_push($array_videos_new_drupal, $record_new);	
 			}
-		}
-	  
+		 }
 	  }
   } else {
      $array_videos_new_drupal = $array_videos;
@@ -393,7 +372,7 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 function wimtvpro_alert_reg() {
     //If user isn't registered or had not insert user and password
     if ((variable_get("userWimtv")=="username") && (variable_get("passWimtv")=="password")){
-        return t("If you are not a WIMTV's member yet <a href='@url'>REGISTER</a> or You have not insert the credentials  <a href='@url2'>SIGN IT</a>",array('@url' => url('admin/config/wimtvpro/registration'),'@url2' => url('admin/config/wimtvpro')));
+        return t("If you are not a WIMTV's member yet <a href='@url'>REGISTER</a> or You have not insert the credentials  <a href='@url2'>SIGN IN</a>",array('@url' => url('admin/config/wimtvpro/registration'),'@url2' => url('admin/config/wimtvpro')));
     } else {
         return "";
     }

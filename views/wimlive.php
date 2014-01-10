@@ -330,24 +330,25 @@ function wimtvpro_wimlive_validate($form, &$form_state) {
     else {
         $duration = 0;
     }
-    $userpeer = variable_get("userWimtv");
-    //url-ify the data for the POST
-    $fields_string = "name=" . $name . "&url=" . $url . "&eventDate=" . $giorno . "&paymentMode=" . $typemode;
-    $fields_string .= "&eventHour=" . $ora[0] . "&eventMinute=" . $ora[1] . "&duration=" . $duration . "&durationUnit=Minute&publicEvent=" . $public . "&recordEvent=" . $record;
 
-    $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-    $url_live = variable_get("basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts";
-    if ($_POST['typeValue']=="modify")  $url_live .= "/" . $_POST['identifier'];
-    $url_live .= "?timezone=" . $_POST['timelivejs'];
+    //trigger_error($_POST['timelivejs']);
+    $params = array("name" => $name,
+                    "url" => $url,
+                    "eventDate" => $giorno,
+                    "paymentMode" => $typemode,
+                    "eventHour" => $ora[0],
+                    "eventMinute" => $ora[1],
+                    "duration" => $duration,
+                    "durationUnit" => "Minute",
+                    "publicEvent" => $public,
+                    //"timezone" => $_POST['timelivejs'],
+                    "recordEvent" => $record);
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url_live);
-    curl_setopt($ch, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch, CURLOPT_POST, TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    $response = curl_exec($ch);
-    curl_close($ch);
+    if ($_POST['typeValue'] == "modify")
+        $response = apiModifyLive($_POST['identifier'], $params);
+    else
+        $response = apiAddLive($params);
+
     if ($response!="") {
         $message = json_decode($response);
 
@@ -456,34 +457,8 @@ function wimtvpro_tableLive() {
                 $durata =  $value->duration . " " . $value -> durationUnit;
 
             $identifier = $value -> identifier;
-            $url_live_embedded = variable_get("basePathWimtv") . "liveStream/" . $userpeer . "/" . $userpeer . "/hosts/" . $identifier . "/embed?timezone=" . $timezone;
-
-            $header[] = "Accept: text/xml,application/xml,application/xhtml+xml,";
-            if (variable_get('nameSkin')!="") {
-                $directory = file_create_url('public://skinWim');
-                $skin = "&skin=" . $directory . "/" . variable_get('nameSkin') . ".zip";
-            }
-            else
-                $skin = $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
-
-            $url_live_embedded .= "?skin=" . $skin;
-            $ch_embedded = curl_init();
-            curl_setopt($ch_embedded, CURLOPT_URL, $url_live_embedded);
-            curl_setopt($ch_embedded, CURLOPT_VERBOSE, 0);
-            curl_setopt($ch_embedded, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch_embedded, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch_embedded, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($ch_embedded, CURLOPT_USERPWD, $credential);
-            curl_setopt($ch_embedded, CURLOPT_SSL_VERIFYPEER, FALSE);
-            $embedded_iframe = curl_exec($ch_embedded);
-            $ch_details = curl_init();
-            curl_setopt($ch_details, CURLOPT_URL, $url_live_embedded);
-            curl_setopt($ch_details, CURLOPT_VERBOSE, 0);
-            curl_setopt($ch_details, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch_details, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($ch_details, CURLOPT_USERPWD, $credential);
-            curl_setopt($ch_details, CURLOPT_SSL_VERIFYPEER, FALSE);
-            $details_live = curl_exec($ch_details);
+            $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
+            $details_live = apiEmbeddedLive($identifier);
             $livedate = json_decode($details_live);
 
             $data = $livedate->eventDate;

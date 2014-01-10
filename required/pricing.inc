@@ -32,31 +32,9 @@ function wimtvpro_callPricing() {
             $data = array("name" => $_GET['upgrade']);
             $data_string = json_encode($data);
 
-            // chiama
-            $ch = curl_init();
-
             global $base_url;
             $my_page =  url($base_url . "/admin/config/wimtvpro?pack=1&success=" . $_GET['upgrade']);
-            curl_setopt($ch, CURLOPT_URL,  variable_get("basePathWimtv") . "userpacket/payment/pay?externalRedirect=true&success=" . urlencode($my_page));
-            curl_setopt($ch, CURLOPT_VERBOSE, 0);
-
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($ch, CURLOPT_USERPWD, $credential);
-
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json', 'Accept-Language: en-US,en;q=0.5',
-                    'Content-Length: ' . strlen($data_string))
-            );
-
-            // salva cookie di sessione
-            curl_setopt($ch, CURLOPT_COOKIEJAR, $fileCookie);
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = apiUpgradePacket(urlencode($my_page), $fileCookie, $data_string);
             $arrayjsonst = json_decode($result);
 
             if ($arrayjsonst->result=="REDIRECT") {

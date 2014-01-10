@@ -286,6 +286,7 @@ jQuery(document).ready(function(){
 				jQuery(this).addClass("icon_sync0");
 			},
 			success: function(response) {
+
 				jQuery("ul.items").html(response);
 				jQuery("a.viewThumb").click( function(){
 				  var basePath = Drupal.settings.basePath;
@@ -302,23 +303,21 @@ jQuery(document).ready(function(){
 					
 				});
 				jQuery(".icon_Putshowtime,.icon_AcquiPutshowtime").click(function(){
-				callViewForm(jQuery(this));
-			});
-			jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function(){
-				callRemoveShowtime(jQuery(this));
-			});
-			jQuery(".free,.cc,.pay").click(function(){
-				callPutShowtime(jQuery(this));
-			});
-			jQuery(".icon_remove").click(function(){
-			callRemoveVideo(jQuery(this));
-			});
+                    callViewForm(jQuery(this));
+                });
+                jQuery(".icon_AcqRemoveshowtime,.icon_Removeshowtime,.icon_RemoveshowtimeInto").click(function(){
+                    callRemoveShowtime(jQuery(this));
+                });
+                jQuery(".free,.cc,.pay").click(function(){
+                    callPutShowtime(jQuery(this));
+                });
+                jQuery(".icon_remove").click(function(){
+                callRemoveVideo(jQuery(this));
+                });
 
-			callviewVideothumbs(jQuery(this));
-			},
+                //callviewVideothumbs(jQuery(this));
+                },
 			error: function(response) {
-			   
-				
 				jQuery("ul.items").html(response);
 			}
 		});
