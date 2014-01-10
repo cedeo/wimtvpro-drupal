@@ -155,8 +155,11 @@ return $form;
 }
 
 // Validate for video upload
+//TODO: test this code!
 function wimtvpro_upload_validate($form, &$form_state) {
-   
+
+
+  /*
   $file = $_FILES['files']['name']["videoFile"];
    
   $error = "";
@@ -236,5 +239,71 @@ function wimtvpro_upload_validate($form, &$form_state) {
   }
   else
     form_set_error('' , t('Upload error'));
+  */
+    $file = @$_FILES['files']['name']['videoFile'];
+    $sizefile = filesize($file);
+
+    $error = "";
+
+    if (empty($file)) {
+        $error .= t('You must upload a file.');
+    }
+    if (empty($titlefile)) {
+        $error .=  t('You must write a title.');
+    }
+
+    if ($error!="") {
+        form_set_error('', check_plain($error));
+        return false;
+    }
+
+
+    $directory = "public://";
+    $unique_temp_filename = $directory . "/" . time() . '.' . preg_replace('/.*?\//', '', "tmp");
+    $unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
+    if (!@move_uploaded_file( $file , $unique_temp_filename)) {
+        form_set_error('Upload', 'Cannot obtain access to file');
+    }
+
+    $error = 0;
+    $titlefile = check_plain($_POST['titlefile']);
+    $descriptionfile = check_plain($_POST['descriptionfile']);
+    $video_category = check_plain($_POST['videoCategory']);
+    $contentIdentifier = check_plain($_POST['uploadIdentifier']);
+
+    if ((strlen(trim($file))>0) && ($error==0)) {
+        //UPLOAD VIDEO INTO WIMTV
+        set_time_limit(0);
+        $post= array("file" => $unique_temp_filename,
+              "title" => $titlefile,
+              "description" => $descriptionfile,
+              'uploadIdentifier' => $contentIdentifier);
+        if (count($video_category)>0) {
+            $id=0;
+            foreach ($video_category as $cat) {
+                $subcat = explode("|", $cat);
+                if ($subcat[0]!=""){
+                    $post['category[' . $id . ']'] = $subcat[0];
+                    $post['subcategory[' . $id . ']'] = $subcat[1];
+                    $id++;
+                }
+            }
+        }
+
+        $response = apiUpload($post);
+        $arrayjsonst = json_decode($response);
+
+        if (isset($arrayjsonst->contentIdentifier)) {
+            drupal_set_message( t("Upload Successfully") );
+            $query = db_query("INSERT INTO {wimtvpro_videos} (uid,contentidentifier,mytimestamp,position,state, viewVideoModule,status,acquiredIdentifier,urlThumbs,category,title,duration,showtimeIdentifier) VALUES (
+    '" . variable_get("userWimtv") . "','" . $arrayjsonst->contentIdentifier . "','" . time() . "',0,'','3','OWNED|" .  $file . "','','','','" . $titlefile . "','','')");
+
+        }
+        else
+            form_set_error('' , t('Upload error'));
+
+    } else {
+        $error++;
+        form_set_error('' , t('Upload error'));
+    }
 }
-//END VIDEO UPLOAD

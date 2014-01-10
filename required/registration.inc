@@ -163,6 +163,7 @@ function wimtvproRegistration_validate($form, &$form_state) {
   }
 }
 
-
 function wimtvproRegistration_submit($form, &$form_state) {
+    //Unuseful function called on form submit...it's really necessary?
+
 }

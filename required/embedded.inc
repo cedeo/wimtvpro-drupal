@@ -6,6 +6,7 @@
  * Time: 15.30
  * To change this template use File | Settings | File Templates.
  */
+
 function wimtvpro_embedded() {
     global $base_url;
     $code = explode("embedded/", $_GET['q']);
@@ -25,7 +26,7 @@ function wimtvpro_embedded() {
         $arrayST["thumbnailUrl"] = $arrayjSonST->{"thumbnailUrl"};
         $arrayST["contentId"] = $arrayjSonST->{"contentId"};
         $arrayST["url"] = $arrayjSonST->{"url"};
-        $ch = curl_init();
+
         if (variable_get('nameSkin')!="") {
             $directory = file_create_url('public://skinWim');
             $skin = "&skin=" . $directory . "/" . variable_get('nameSkin') . ".zip";
@@ -208,10 +209,10 @@ function wimtvpro_plus_embeddedAll() {
 function wimtvpro_embeddedPlaylist() {
     $playlist = "";
     $code = explode("viewEmbeddedPlaylist/", $_GET['q']);
-    $output = "<html><head><script type='text/javascript' src='" . $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/jwplayer.js'></script>";
-    $output .= "</head><body><div style='text-align:center;'>";
-    $output .= "<div id='container'></div>";
-    $dirJwPlayer = $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/player.swf";
+
+    $JwPlayerPath = $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/player.swf";
+    $JwPlayerScript = $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/jwplayer.js";
+
     if (count($code)>1) {
 
         $arrayVid = explode(",",$code[1]);
@@ -224,16 +225,15 @@ function wimtvpro_embeddedPlaylist() {
         $options = $array_playlist[0]->option;
         $array_option = explode (",",$options);
         $videoList = explode (",",$list);
-        $sql_where  = " 1=2 ";
+        $identifiers = "";
         for ($i=0;$i<count($videoList);$i++){
-
-            $sql_where .= "  OR contentidentifier='" . $videoList[$i] . "' ";
-
+            if ($i < count($videoList) - 1)
+                $identifiers .= "'" . $videoList[$i] . "', ";
+            else
+                $identifiers .= "'" . $videoList[$i] . "'";
         }
 
-        $sql_where = "AND (" . $sql_where . ")";
-
-        $result_new = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' " . $sql_where);
+        $result_new = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' AND contentidentifier IN (" . $identifiers . ")");
 
 
         $array_videos  = $result_new->fetchAll();
@@ -253,18 +253,17 @@ function wimtvpro_embeddedPlaylist() {
             $result_video = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier='" . $videoT->contentidentifier . "' ");
             $video  = $result_video->fetchAll();
 
-            $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$videoT->contentidentifier,$video,FALSE);
+            $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$video,FALSE);
             if (!isset($videoT->urlThumbs)) $thumbs[1] = "";
             else $thumbs = explode ('"',$videoT->urlThumbs);
             $playlist .= "{" . $configFile . " 'image':'" . $thumbs[1]  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
 
         }
 
-        $dimension = "width:" . variable_get('widthPreview') . ",height:" . variable_get('heightPreview')-10;
+        $width = variable_get('widthPreview');
+        $height = variable_get('heightPreview')-10;
 
-        $output .= "<div id='container_playlist'></div>";
         $playlistSize = "30%";
-        $dimensions = "width: '100%',";
 
         if (variable_get('nameSkin')!="") {
             $directory = file_create_url('public://skinWim');
@@ -273,16 +272,8 @@ function wimtvpro_embeddedPlaylist() {
             $directory = base_path() . drupal_get_path('module', 'wimtvpro');
         }
         $dimension_embedded = " width='" . (variable_get('widthPreview')+50) . "px' height='" . (variable_get('heightPreview')+70)  . "px'";
-        $embedded = str_replace("+", " " , urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvproplus/viewEmbeddedPlaylist/" . $code[1] . "'" . $dimension_embedded. "></iframe>"));
-        $output .= "<script type='text/javascript'>jwplayer('container_playlist').setup({";
+        $embedded = str_replace("+", " " , urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvpro/viewEmbeddedPlaylist/" . $code[1] . "'" . $dimension_embedded. "></iframe>"));
 
-        $output .= "'plugins': {
-
-			   'sharing-3': {
-
-				   'code': '" . $embedded . "'
-
-			   }},";
         /*$output .= " logo: {
         hide: 'false', position:'bottom-right',
         file: '" . $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvproplus') . "/img/logo_player.png',
@@ -295,20 +286,32 @@ function wimtvpro_embeddedPlaylist() {
                 $options[$array[0]] = $array[1];
 
         }
-        if ($options["loop"]!="no") $output .= "'repeat':'always',";
+
+        $repeat = $options["loop"]!="no" ? 'always' : 'no';
 
         $isiPhone = (bool)strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
         $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
-        if (!$isiPad  AND !$isiPhone)
-            $output .= "'flashplayer':'" . $dirJwPlayer . "',";
-        if (variable_get('nameSkin')!="") $output .= "skin: '" . $directory . "/" . variable_get('nameSkin') . ".zip',";
-        else $output .= "skin: '" . $directory . "/skin/default.zip',";
+        $isApple = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'Safari') && !(bool) strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome');
 
-        $output .= $dimensions . "'playlist': [" .  $playlist . "],'playlist.position': 'right',	'playlist.size': '" . $playlistSize  . "'});</script>&nbsp;";
+        $flash = !$isiPad && !$isiPhone && !$isApple;
+
+        if (variable_get('nameSkin')!="") $skin = $directory . "/" . variable_get('nameSkin') . ".zip";
+        else $skin = $directory . "/skin/default.zip";
     }
     else {
         echo "Videos does not exist.";
     }
-    echo $output;
-    echo "</div></body></html>";
+
+    $args = array('JwPlayerPath' => $JwPlayerPath,
+                  'JwPlayerScript' => $JwPlayerScript,
+                  'embedded' => $embedded,
+                  'playlist' => $playlist,
+                  'playlistSize' => $playlistSize,
+                  'repeat' => $repeat,
+                  'width' => $width,
+                  'height' => $height,
+                  'flash' => $flash,
+                  'skin' => $skin);
+
+    echo render_template('embedded/playlist.php', $args);
 }

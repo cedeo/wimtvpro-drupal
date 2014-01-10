@@ -4,7 +4,6 @@
  * User: walter
  * Date: 17/12/13
  * Time: 12.02
- * To change this template use File | Settings | File Templates.
  */
 
 function wimtvpro_callPricing() {

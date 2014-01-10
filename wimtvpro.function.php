@@ -115,16 +115,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   $title = stripslashes($title);
   $showtime_identifier = $record_new -> showtimeIdentifier;
   if ((!isset($replace_video)) || ($replace_video == "")) {
-    $param_thumb = variable_get("basePathWimtv") . str_replace(variable_get("replaceContentWimtv"), $content_item_new, variable_get("urlThumbsWimtv"));
-    $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-    $ch_thumb = curl_init();
-    curl_setopt($ch_thumb, CURLOPT_URL, $param_thumb);
-    curl_setopt($ch_thumb, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch_thumb, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch_thumb, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch_thumb, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch_thumb, CURLOPT_SSL_VERIFYPEER, FALSE);
-    $replace_video  =curl_exec($ch_thumb);
+    $replace_video = apiGetThumbsVideo($content_item_new);
 	$license_type = "";
 	if (($showtime_identifier!="") && (count($st_license)>0)){	
 		$license_type = $st_license[$showtime_identifier];	
@@ -293,42 +284,32 @@ function wimtvpro_getDateRange($startDate, $endDate, $format="d/m/Y"){
   return $datesArray;
 }
 
-function wimtvpro_viever_jwplayer($userAgent,$contentId,$video,$viewFlashPlayer=TRUE){
+function wimtvpro_viever_jwplayer($userAgent, $video, $viewFlashPlayer=true){
+    $dirJwPlayer = base_path() . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/player.swf";
+    $isiPad = (bool) strpos($userAgent,'iPad');
+    $isiPhone = (bool) strpos($userAgent,'iPhone');
+    $isApple = (bool) strpos($userAgent, 'Safari') && !(bool) strpos($userAgent, 'Chrome');
+    $isAndroid = (bool) strpos($userAgent,'Android');
+    $urlPlay = explode("$$",$video[0]->urlPlay);
+    if (isset($urlPlay[1])) {
+        if ($isiPad  || $isiPhone || $isApple) {
+            $urlPlayIPadIphone = "";
+            $contentId = $video[0]->contentidentifier;
+            $response = apiGetDetailsVideo($contentId);
+            $arrayjson   = json_decode($response);
 
-$dirJwPlayer = base_path() . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/player.swf";
-$isiPad = (bool) strpos($userAgent,'iPad');
-$urlPlay = explode("$$",$video[0]->urlPlay); 
-$isiPhone = (bool) strpos($userAgent,'iPhone');
-if (isset($urlPlay[1])) {
-  if ($isiPad  || $isiPhone) {
-    $urlPlayIPadIphone = "";
-    $contentId = $video[0]->contentidentifier;
-
-    $url_video = variable_get("basePathWimtv") . variable_get("urlVideosWimtv") . "/" . $contentId . "?details=true";
-    $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,  $url_video);
-    curl_setopt($ch, CURLOPT_USERAGENT,$userAgent); 
-    curl_setopt($ch, CURLOPT_VERBOSE, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, $credential);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-    $response = curl_exec($ch);
-    $arrayjson   = json_decode($response);
-
-    $urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
-    $configFile = "'file': '" . $urlPlayIPadIphone . "',";	
-  }	else {
-    $configFile  = "";
-    if ($viewFlashPlayer==TRUE) $configFile .= "'flashplayer':'" . $dirJwPlayer . "',";
-    $configFile .= "'file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
-  }
-  return $configFile;
-}
-return false;
+            $urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
+            $configFile = "'file': '" . $urlPlayIPadIphone . "',";
+        } else if ($isAndroid) {
+            $configFile = "file: '" . $urlPlay[1] . "',";
+        } else {
+            $configFile  = "";
+            if ($viewFlashPlayer==TRUE) $configFile .= "'flashplayer':'" . $dirJwPlayer . "',";
+                $configFile .= "'file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
+        }
+        return $configFile;
+    }
+    return false;
 
 }
 
