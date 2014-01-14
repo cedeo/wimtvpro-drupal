@@ -28,7 +28,7 @@ function apiEmbeddedLive($hostId) {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('liveStream/' . $apiAccessor->username . '/' . $apiAccessor->username . '/hosts/' . $hostId);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, Mime::JSON);
+    return $apiAccessor->execute($request, Mime::JSON, false);
 }
 
 function apiGetProfile() {

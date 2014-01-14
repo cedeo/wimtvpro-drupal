@@ -74,7 +74,6 @@ class Api {
         if ($clientLanguage)
             $request->addHeader('Accept-Language', $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
         $request->_curlPrep();
-        //d($request);
         try {
             $result = $request->send();
         } catch (\Exception $exception) {

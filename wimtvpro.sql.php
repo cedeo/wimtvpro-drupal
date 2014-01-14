@@ -245,3 +245,5 @@ switch ($function) {
         break;
 
 }
+//Die to deny drupal to display its layout
+die();
