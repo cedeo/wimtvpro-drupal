@@ -40,7 +40,7 @@
                     <img  src='<?php echo base_path()  . drupal_get_path('module', 'wimtvpro') ?>/img/check.png' title='Checked'><br/>
                     <?php if ($a->id>1) echo $count_date . " " . t("day left") ?>
                 <?php } else { ?>
-                    <a href='?pack=1&upgrade=<?php echo $a->name ?>'>
+                    <a href='<?php echo base_path() . '?q=admin/config/wimtvpro&pack=1&upgrade=' . $a->name ?>'>
                         <img class='icon_upgrade' src='<?php echo base_path() . drupal_get_path('module', 'wimtvpro') ?>/img/uncheck.png' title='Upgrade'><br/>
                     </a>
                 <?php } ?>
