@@ -147,7 +147,7 @@ function wimtvpro_menu() {
         );
     $items['wimtvpro/elencoLive'] =
         array(
-            'file' => 'required/wimlive.inc',
+            'file' => 'views/wimlive.php',
             'page callback' => 'wimtvpro_tableLive',
             'access arguments' => array('access content'),
             'type' =>  MENU_CALLBACK,

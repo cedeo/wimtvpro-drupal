@@ -331,7 +331,7 @@ function wimtvpro_wimlive_validate($form, &$form_state) {
         $duration = 0;
     }
 
-    //trigger_error($_POST['timelivejs']);
+    trigger_error($_POST['timelivejs']);
     $params = array("name" => $name,
                     "url" => $url,
                     "eventDate" => $giorno,
@@ -341,13 +341,13 @@ function wimtvpro_wimlive_validate($form, &$form_state) {
                     "duration" => $duration,
                     "durationUnit" => "Minute",
                     "publicEvent" => $public,
-                    //"timezone" => $_POST['timelivejs'],
+                    "timezone" => $_POST['timelivejs'],
                     "recordEvent" => $record);
 
     if ($_POST['typeValue'] == "modify")
-        $response = apiModifyLive($_POST['identifier'], $params);
+        $response = apiModifyLive($_POST['identifier'], $params, $_POST['timelivejs']);
     else
-        $response = apiAddLive($params);
+        $response = apiAddLive($params, $_POST['timelivejs']);
 
     if ($response!="") {
         $message = json_decode($response);
@@ -414,7 +414,7 @@ function wimtvpro_elencoLive($number, $type, $onlyActive=true) {
 
 function wimtvpro_tableLive() {
     global $base_url,$base_path,$base_root;
-    $timezone = $_POST['timezone'];
+    $timezone = $_POST['timezone_'];
     $type = $_POST['type'];
     $id =  $_POST['id'];
     $onlyActive = $_POST['onlyActive'];
@@ -458,10 +458,11 @@ function wimtvpro_tableLive() {
 
             $identifier = $value -> identifier;
             $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
-            $details_live = apiEmbeddedLive($identifier);
+            $details_live = apiEmbeddedLive($identifier, $timezone);
             $livedate = json_decode($details_live);
 
             $data = $livedate->eventDate;
+            $millis = $livedate->eventDateMillisec;
             if (intval($livedate->eventMinute)<10) $livedate->eventMinute = "0" .  $livedate->eventMinute;
             $oraMin = $livedate->eventHour . ":" . $livedate->eventMinute;
             $timeToStart= $livedate->timeToStart;
@@ -490,8 +491,7 @@ function wimtvpro_tableLive() {
            */
 
                 $liveIsNow = false;
-                if ($dataNow == $dataLive[0]){
-                    //if (($timeStampNow>=$timeStampInizio) && ($timeStampNow<$timeStampFine )) {
+                if ($timeToStart <= 0 && $timeLeft > 0) {
                     $liveIsNow = true;
                 }
                 $producer = "";
