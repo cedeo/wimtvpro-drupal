@@ -326,6 +326,7 @@ So open up your FTP client program. First, identify your root directory. This is
         '#type' => 'hidden',
         '#value' => '{showtimeIdentifier}',
     );
+    unset($form['addPageMyStreaming']);
 
     $form['#validate'][] = 'wimtvpro_admin_validate';
     return system_settings_form($form);

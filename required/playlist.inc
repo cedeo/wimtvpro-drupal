@@ -115,11 +115,11 @@ function wimtvpro_playlist_mod($form_state, $id) {
 	return $form;
 	
 }
-
+/*
 function wimtvpro_playlist_validate($form, &$form_state) {
     $error="";
 	if ($error!="") form_set_error('', check_plain($error));
-}
+}*/
 
 function wimtvpro_playlist_submit($form, &$form_state) {
 	

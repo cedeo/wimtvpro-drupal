@@ -97,6 +97,11 @@ function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
 
     }
 
+    if (isset($form["#field"]["columns"]["wimvideo"]))
+        $form['field']['cardinality']['#options'] = array("1"=>"1");
+    if (isset($form["#field"]["columns"]["wimplaylist"]))
+        $form['field']['cardinality']['#options'] = array("1"=>"1");
+
 }
 
 function wimtvpro_node_view_alter(&$build) {

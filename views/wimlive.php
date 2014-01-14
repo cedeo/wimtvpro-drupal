@@ -331,7 +331,6 @@ function wimtvpro_wimlive_validate($form, &$form_state) {
         $duration = 0;
     }
 
-    trigger_error($_POST['timelivejs']);
     $params = array("name" => $name,
                     "url" => $url,
                     "eventDate" => $giorno,
