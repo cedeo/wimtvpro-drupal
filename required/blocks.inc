@@ -11,7 +11,7 @@ function wimtvpro_block_configure($delta = '') {
 
 function wimtvpro_blockUser_config() {
     $view_page = wimtvpro_alert_reg();
-    form_set_error("error",$view_page);
+    //form_set_error("error",$view_page);
     if ($view_page==""){
         $desc = "Would you like view ## into block user profile?";
         $form['ImageLogoProfile'] = array(
