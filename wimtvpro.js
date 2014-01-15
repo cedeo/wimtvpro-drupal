@@ -4,7 +4,10 @@ jQuery(document).ready(function(){
 		if ( document.location.href.indexOf("?q=") > -1 ) {
 			return "?q=" + base + url;
 		} else {
-			return back + url;
+            if (back)
+                return back + url;
+            else
+                return base + url;
 		}
 	}
 

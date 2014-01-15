@@ -242,12 +242,12 @@ function wimtvpro_detail_showtime($single, $st_id) {
 }
 
 //Return  format url friendly o not
-function wimtvpro_checkCleanUrl($base, $url, $back=NULL) {
+function wimtvpro_checkCleanUrl($base, $url, $back=null) {
   if (strpos(request_uri(), '?q=') === FALSE || !empty($_SESSION['clean_url'])) {
-    if ($back!=NULL)
+    if ($back!=null)
       return $back . $url;
     else
-      return $url;
+      return $base . $url;
   }
   else {
     return "?q=" . $base . $url;

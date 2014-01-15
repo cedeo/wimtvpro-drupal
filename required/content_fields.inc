@@ -525,7 +525,10 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
 		if ( document.location.href.indexOf("?q=") > -1 ) {
 			return "?q=" + base + url;
 		} else {
-			return back + url;
+		    if (back)
+			    return back + url;
+			else
+			    return base + url;
 		}
 	}
 
