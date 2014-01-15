@@ -50,12 +50,8 @@ function wimtvpro_embedded() {
 }
 
 function wimtvpro_embeddedAll() {
-    $urlEmbedded = variable_get("urlEmbeddedPlayerWimtv");
-    $replaceContent = variable_get('replaceContentWimtv');
-    //echo $_GET['q'];
     $code = explode("embeddedAll/", $_GET['q']);
-    //echo $code;
-    //echo $code[1];
+
     if (count($code)>1) {
         $codeArra = explode("/", $code[1]);
         $contentItem = $codeArra[0];

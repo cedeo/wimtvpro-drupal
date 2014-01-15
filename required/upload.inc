@@ -158,6 +158,7 @@ return $form;
 //TODO: test this code!
 function wimtvpro_upload_validate($form, &$form_state) {
 
+  /*
   $file = $_FILES['files']['name']["videoFile"];
    
   $error = "";
@@ -237,9 +238,11 @@ function wimtvpro_upload_validate($form, &$form_state) {
   }
   else
     form_set_error('' , t('Upload error'));
-
-    $file = @$_FILES['files']['name']['videoFile'];
-    $sizefile = filesize($file);
+    */
+    $file = $_FILES['files']['name']['videoFile'];
+    $urlfile  = $_FILES['files']['tmp_name']["videoFile"];
+    $titlefile = check_plain($_POST['titlefile']);
+    //$sizefile = filesize($file);
 
     $error = "";
 
@@ -259,20 +262,20 @@ function wimtvpro_upload_validate($form, &$form_state) {
     $directory = "public://";
     $unique_temp_filename = $directory . "/" . time() . '.' . preg_replace('/.*?\//', '', "tmp");
     $unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
-    if (!@move_uploaded_file( $file , $unique_temp_filename)) {
+    $moved = @move_uploaded_file( $urlfile , $unique_temp_filename);
+    if (!$moved) {
         form_set_error('Upload', 'Cannot obtain access to file');
+        $error++;
     }
 
-    $error = 0;
-    $titlefile = check_plain($_POST['titlefile']);
     $descriptionfile = check_plain($_POST['descriptionfile']);
-    $video_category = check_plain($_POST['videoCategory']);
-    $contentIdentifier = check_plain($_POST['uploadIdentifier']);
+    $video_category = isset($_POST['videoCategory']) ? check_plain($_POST['videoCategory']) : "";
+    $contentIdentifier = isset($_POST['uploadIdentifier']) ? check_plain($_POST['uploadIdentifier']) : "";
 
     if ((strlen(trim($file))>0) && ($error==0)) {
         //UPLOAD VIDEO INTO WIMTV
         set_time_limit(0);
-        $post= array("file" => $unique_temp_filename,
+        $post= array("file" => drupal_realpath($unique_temp_filename),
               "title" => $titlefile,
               "description" => $descriptionfile,
               'uploadIdentifier' => $contentIdentifier);
