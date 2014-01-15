@@ -155,7 +155,7 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
 
 function wimtvpro_field_widget_info() {
   return array(
-    'wimtvpro_upload' => array(
+    'wimtvpro_upload_content' => array(
       'label' => t('Upload video wimtv'),
       'field types' => array('wimtvpro_wimvideo')
     ),
@@ -181,7 +181,7 @@ function wimtvpro_field_info() {
     'wimtvpro_wimvideo' => array(
       'label' => t('Video Wimtv'),
       'description' => t('MultiUpload'),
-      'default_widget' => 'wimtvpro_upload',
+      'default_widget' => 'wimtvpro_upload_content',
       'default_formatter' => 'wimtvpro_wimvideo_inline',
     ),
 	
@@ -236,8 +236,8 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
         $query = db_query($sql);
       }
 
-	  $identifier = isset($items[$delta]['wimplaylist']) ? $items[$delta]['wimplaylist'] : '';
-	  
+	  $identifier = isset($items[$delta]['wimplaylist']['idPlaylist']) ? $items[$delta]['wimplaylist']['idPlaylist'] : '';
+
 	  drupal_add_library('system', 'ui.sortable');    
       drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
       drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/css/redmond/jquery-ui-1.8.21.custom.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
@@ -353,7 +353,7 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
 	$element['wimplaylist'] = $widget;
 	break;
   
-    case 'wimtvpro_upload':
+    case 'wimtvpro_upload_content':
 	
 	global $user;
 	$vids = isset($items[$delta]['wimvideo']) ? $items[$delta]['wimvideo'] : '';
@@ -389,7 +389,7 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
 		});
 		
 		jQuery(".field_upload").click(function(){
-			//ajaxFileUpload(this);		
+			//ajaxFileUpload(this);
 		});
 		
 
@@ -623,6 +623,7 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
 				dataType: "json",
 				done: function (e, data,jqXHR) {
 					var response = data.jqXHR.responseText;
+					alert(response);
 					var elencoVideo = jQuery(".videosId");
 					response= jQuery.parseJSON(response);
 					if(response.error4 != ""){
@@ -732,7 +733,7 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
     $widget += array(
      '#type' => 'fieldset',
 	 '#description' => t('Pick a video file to upload.'),
-	 '#element_validate' => array('wimtvpro_upload_validate'),
+	 '#element_validate' => array('wimtvpro_upload_validate_content'),
 	 );
 	 $widget["titleVideo"] =array(
 	 '#type' => 'textfield',
@@ -805,7 +806,7 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
   // to access external value information which otherwise would be
   // unavailable.
   '#description' => t('Pick a video file to upload.'),
-  '#element_validate' => array('wimtvpro_upload_validate'),
+  '#element_validate' => array('wimtvpro_upload_validate_content'),
   );
   $widget["Upload"] =array(
   '#type' => 'file',
@@ -833,7 +834,7 @@ return $element;
 
 //Function for upload video into content type custom
 //Call this function and passed title and temp file $_FILES['files']['tmp_name']["videoFile"];
-function wimtvpro_upload($titlefile,$urlfile,$namefile) {
+function wimtvpro_upload_content($titlefile,$urlfile,$namefile) {
   set_time_limit(0);
   //connect at API for upload video to wimtv
   $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
@@ -907,7 +908,7 @@ function wimtvpro_upload($titlefile,$urlfile,$namefile) {
   return $id;
 }
 
-function wimtvpro_upload_validate($element, &$form_state, $form) {
+function wimtvpro_upload_validate_content($element, &$form_state, $form) {
 
   $delta = $element['#delta']; // TODO: Isn't there a better way to find out which element?
   $field = $form_state['field'][$element['#field_name']][$element['#language']]['field'];

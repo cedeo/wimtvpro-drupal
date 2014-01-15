@@ -11,7 +11,14 @@ function wimtvpro_block_configure($delta = '') {
 
 function wimtvpro_blockUser_config() {
     $view_page = wimtvpro_alert_reg();
-    //form_set_error("error",$view_page);
+    if ($view_page)
+        form_set_error("error",$view_page);
+
+    $params = array("ImageLogoProfile", "pageNameProfile", "personaleDateProfile", "EmailProfile", "SocialProfile");
+    foreach ($params as $variable)
+        if (isset($_POST[$variable]))
+            variable_set($variable, $_POST[$variable]);
+
     if ($view_page==""){
         $desc = "Would you like view ## into block user profile?";
         $form['ImageLogoProfile'] = array(
@@ -57,7 +64,7 @@ function wimtvpro_blockUser_config() {
 function wimtvpro_block_info() {
     // This example comes from node.module.
     $blocks['user_profile'] = array( 'info' => t('Block User Profile'));
-    $blocks['video_thumbs'] = array('info' => t('Block list video My Streaming'));
+    $blocks['video_thumbs'] = array('info' => t('Block list video WimVod'));
     return $blocks;
 }
 
@@ -67,7 +74,7 @@ function wimtvpro_block_view($delta = '') {
     $block = array();
     switch ($delta) {
         case 'user_profile':
-            $block['subject'] = "My Wimtv Profile";
+            $block['subject'] = "My WimTv Profile";
             //request by api info user
             $response = apiGetProfile();
             $arrayjsuser = json_decode($response);
@@ -101,14 +108,13 @@ function wimtvpro_block_view($delta = '') {
                 $profileuser .= "<a target='_new' href='" . $arrayjsuser->facebookURI . "'><img src='" . $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/img/facebook.png'></a>";
               $profileuser .= "</p>";
             }
-
             $block['content'] = $profileuser;
 
             break;
 
 
         case 'video_thumbs':
-            $block['subject'] = "My Video";
+            $block['subject'] = "My Videos";
             $block['content']= "<ul class='itemsPublic'>" . wimtvpro_getThumbs(TRUE, FALSE, FALSE, "block") . "</ul><div class='empty'></div>";
 
             break;

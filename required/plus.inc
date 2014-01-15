@@ -379,7 +379,7 @@ function wimtvpro_uploadFile() {
             $titlefile = $user_name . "_" . $date_hour;
         }
 
-        $vid = wimtvproplus_upload($titlefile,$urlfile,$namefile);
+        $vid = wimtvpro_upload_content($titlefile,$urlfile,$namefile);
         $urlThumbs = "";
         $urlVideo = "";
         $titleVideo = "";
@@ -395,7 +395,6 @@ function wimtvpro_uploadFile() {
             $titleVideo = $video[0]->title;
             $contentId = $video[0]->contentidentifier;
             $error = "";
-            wimtvproplus_createLive();
         } else
             $error = "Error: Failed connection with Wimtv.";
         watchdog ("Error Upload Video", $error );
@@ -416,13 +415,6 @@ function wimtvpro_uploadFile() {
 
 function my_groovy_theme_preprocess_html(&$vars) {
     drupal_add_css(drupal_get_path('module', 'wimtvpro') . 'css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-}
-
-function wimtvpro_menu_alter(&$items) {
-    unset ($items["wimlive"]);
-}
-
-function wimtvpro_createLive(){
 }
 
 function  wimtvpro_output_filter($args) {

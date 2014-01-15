@@ -58,7 +58,7 @@ return drupal_get_form('wimtvpro_upload');
 }
 
 // Form for video upload
-/*function wimtvpro_upload($form_state) {
+function wimtvpro_upload($form_state) {
 
 $view_page = wimtvpro_alert_reg();
  form_set_error("error",$view_page);
@@ -158,8 +158,6 @@ return $form;
 //TODO: test this code!
 function wimtvpro_upload_validate($form, &$form_state) {
 
-
-  /*
   $file = $_FILES['files']['name']["videoFile"];
    
   $error = "";
@@ -307,4 +305,3 @@ function wimtvpro_upload_validate($form, &$form_state) {
         form_set_error('' , t('Upload error'));
     }
 }
-*/
