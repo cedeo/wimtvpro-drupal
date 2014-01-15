@@ -197,9 +197,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     $my_media .= "<span class='icon_moveThumbs' title='Change Position'></span>";
     $my_media .= "<span class='icon_viewVideo' rel='" . $view_video_state . "' title='View Thumb in page and/or block'></span>";
   }
-  if (isset($status_array[1])) $filename= $status_array[1];
-  else $filename = "";
-  $my_media .= "<span class='icon_download' id='" . $content_item_new . "|" . $filename . "' title='Download'></span>";
+  $my_media .= "<span class='icon_download' id='" . $content_item_new . "' title='Download'></span>";
   if ($showtime_identifier!="") {
     $style_view = "";
     $href_view = wimtvpro_checkCleanUrl("admin/config/wimtvpro/", "embedded/" . $content_item_new . "/" . $showtime_identifier);
