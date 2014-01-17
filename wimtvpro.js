@@ -1,6 +1,5 @@
 jQuery(document).ready(function(){
     function hideAffiliateFields(state) {
-        console.log(state);
         if (state) {
             jQuery(".form-item-companyName").show();
             jQuery(".form-item-affiliateConfirm").show();
@@ -12,7 +11,6 @@ jQuery(document).ready(function(){
 
     var input_field = jQuery('#edit-affiliate');
     if (jQuery(input_field)) {
-        console.log(jQuery(input_field));
         hideAffiliateFields(jQuery(input_field).attr('checked'));
         jQuery(input_field).change(function () { hideAffiliateFields(this.checked) });
     }
