@@ -23,7 +23,7 @@ jQuery(document).ready(function(){
             if (back)
                 return back + url;
             else
-                return base + url;
+                return url_pathPlugin + '/' + base + url;
 		}
 	}
 
