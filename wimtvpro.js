@@ -1,13 +1,31 @@
 jQuery(document).ready(function(){
+    function hideAffiliateFields(state) {
+        if (state) {
+            jQuery(".form-item-companyName").show();
+            jQuery(".form-item-affiliateConfirm").show();
+        } else {
+            jQuery(".form-item-companyName").hide();
+            jQuery(".form-item-affiliateConfirm").hide();
+        }
+    }
+
+    var input_field = jQuery('#edit-affiliate');
+    if (jQuery(input_field)) {
+        hideAffiliateFields(jQuery(input_field).attr('checked'));
+        jQuery(input_field).change(function () { hideAffiliateFields(this.checked) });
+    }
+
 	function wimtvpro_checkCleanUrl(base,url,back){
 		var baseUrl = window.location;
 		if ( document.location.href.indexOf("?q=") > -1 ) {
 			return "?q=" + base + url;
 		} else {
-			return back + url;
+            if (back)
+                return back + url;
+            else
+                return base + url;
 		}
 	}
-
 
 	
 	function callRemoveVideo(element){
@@ -340,7 +358,7 @@ jQuery(document).ready(function(){
 		callRemoveVideo(jQuery(this));
 	});
 
-jQuery('#edit-sandbox').change (function() {
+    jQuery('#edit-sandbox').change (function() {
         if(jQuery(this).attr('value') == "no") {
             jQuery('#sandbox').attr('href','http://www.wim.tv/wimtv-webapp/userRegistration.do?execution=e1s1');
             jQuery('#site').html('www.wim.tv');
@@ -352,10 +370,7 @@ jQuery('#edit-sandbox').change (function() {
         }
      });
 
-	 
-	 
-});
-
+    });
 
 	
 	function downloadVideo(contentid){

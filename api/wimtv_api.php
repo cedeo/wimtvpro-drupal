@@ -24,11 +24,14 @@ function apiCreateUrl($name) {
     return $apiAccessor->execute($request);
 }
 
-function apiEmbeddedLive($hostId) {
+function apiEmbeddedLive($hostId, $timezone=null) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest('liveStream/' . $apiAccessor->username . '/' . $apiAccessor->username . '/hosts/' . $hostId);
+    $url = 'liveStream/' . $apiAccessor->username . '/' . $apiAccessor->username . '/hosts/' . $hostId;
+    if ($timezone)
+        $url .= "?timezone=" .$timezone;
+    $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, Mime::JSON, false);
+    return $apiAccessor->execute($request, Mime::JSON, 'it-it');
 }
 
 function apiGetProfile() {
@@ -139,7 +142,7 @@ function apiAddLive($parameters, $timezone=null) {
     $request = $apiAccessor->postRequest($url);
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'application/json', false);
+    return $apiAccessor->execute($request, 'application/json', 'it-it');
 }
 
 function apiModifyLive($host_id, $parameters, $timezone=null) {
@@ -150,7 +153,7 @@ function apiModifyLive($host_id, $parameters, $timezone=null) {
     $request = $apiAccessor->postRequest($url);
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request,  'application/json', false);
+    return $apiAccessor->execute($request,  'application/json', 'it-it');
 }
 
 function apiPublishOnShowtime($id, $parameters) {

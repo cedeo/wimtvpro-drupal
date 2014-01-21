@@ -23,7 +23,7 @@
 </p>
 
 <h2>Your videos</h2>
-<p>Go to <a href="<?php echo url('admin/config/wimtvpro/mymedia') ?>">WimBox</a><br />
+<p>Go to <a href="<?php echo url('admin/config/wimtvpro/wimbox') ?>">WimBox</a><br />
     In this page you can view your videos uploaded with this module, to see the work done within the WimTV site you should click "synchronize".<br />
     You can:
 <ul>
@@ -34,8 +34,8 @@
 </p>
 
 <h2>Your Streamings</h2>
-<p>Go to <a href="<?php echo url('admin/config/wimtvpro/mystreaming') ?>">WimVod</a><br />
-    In this page you can view your videos moved to My Streaming and you can syncronize videos with WimTV.<br />
+<p>Go to <a href="<?php echo url('admin/config/wimtvpro/wimvod') ?>">WimVod</a><br />
+    In this page you can view your videos moved to WimVod and you can syncronize videos with WimTV.<br />
     You can:
 <ul>
     <li>Unpublish your video</li>
@@ -48,11 +48,11 @@
 <p>Go to <a href="<?php echo  url('admin/config/wimtvpro/mypersonalBlock') ?>">My personal detail</a>
     and you can change the visualization of your personal information (entered at the time of registration on WimTV) in a block "Block User Profile" block.</p>
 
-<h2>View all videos in My Streaming (page and block)</h2>
-<p>You can show your videos moved to My Streaming in the page "My Streaming Video" or in the block "Block list video My Streaming".</p>
+<h2>View all videos in WimVod (page and block)</h2>
+<p>You can show your videos moved to WimVod in the page "WimVod Video" or in the block "Block list video WimVod".</p>
 
-<h2>Add your videos in My Streaming to content page</h2>
-<p>When you create a content page you view a block called "My Streaming Video". In this block you can add or remove videos that you want to show.
+<h2>Add your videos in WimVod to content page</h2>
+<p>When you create a content page you view a block called "WimVod Video". In this block you can add or remove videos that you want to show.
     The videos are added in the body text like BBCODE ([wimtv]code[/wimtv]).<br />
     In the page to be created you will see the player (JWPLAYER) with the video.</p>
 

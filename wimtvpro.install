@@ -138,8 +138,18 @@ return $schema;
 
 }
 
-
-
+//Create entity VIDEO
+function wimtvpro_entity_info() {
+  return array(
+    'wimtvVideo' => array(
+      'label' => t('WimTVPro'),
+      'base table' => 'wimtvpro_videos',
+      'entity keys' => array(
+        'id' => 'vid',
+      ),
+    ),
+  );
+}
 
 
 function wimtvpro_install() {
@@ -147,9 +157,47 @@ function wimtvpro_install() {
   drupal_install_schema('wimtvpro_playlist');
   variable_set('contenttypeWithInsertVideo', array());
   variable_set('addPageMyStreaming', '0');
+  variable_set('nocategoryUpload',0);
+  variable_set('basePathWimtv', 'https://www.wim.tv/wimtv-webapp/rest/');
+
+  $t = get_t();
+  $node = array(
+    'type' => 'node_playlistWimtvpro',
+    'name' => $t('Playlist'),
+    'base' => 'node_content',
+    'description' => $t('It is a content type for create playlist.'),
+  );
+
+  $content_type = node_type_set_defaults($node);
+  node_add_body_field($content_type);
+  // Check if we create content type or update.
+  $status = node_type_save($content_type);
+  // Replacement rule for the messages.
+  $t_args = array('%name' => $content_type->name);
+
+  if ($status == SAVED_UPDATED) { // update case
+    drupal_set_message($t('The content type %name has been updated.', $t_args));
+  }
+  elseif ($status == SAVED_NEW) { // create case
+    drupal_set_message($t('The content type %name has been added.', $t_args));
+    watchdog('node', 'Added content type %name.', $t_args, WATCHDOG_NOTICE, l($t('view'), 'admin/structure/types'));
+  }
 }
 
 function wimtvpro_uninstall() {
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+  //$result = db_query($sql, array(':type' => 'node_playlistWimtvpro'));
+  $nids = array();
+  foreach ($result as $row) {
+    $nids[] = $row->nid;
+  }
+  // Delete all the nodes at once
+  // http://api.drupal.org/api/function/node_delete_multiple/7
+  node_delete_multiple($nids);
+  // Delete our content type
+  // http://api.drupal.org/api/function/node_type_delete/7
+  node_type_delete('node_playlistWimtvpro');
+
   drupal_uninstall_schema('wimtvpro');
   drupal_uninstall_schema('wimtvpro_playlist');
   variable_del('userWimtv');
@@ -177,4 +225,55 @@ function wimtvpro_uninstall() {
   variable_del('sandbox');
   variable_del('addPageMyStreaming');
   variable_del('contenttypeWithInsertVideo');
+  variable_del('nocategoryUpload');
+  variable_del('logoplayer');
+}
+
+
+function wimtvpro_add_vocabulary($name, $machine_name, $description, $weight)  {
+  $vocabulary = taxonomy_vocabulary_load(variable_get($machine_name . '_vocabulary', 0));
+  if (!$vocabulary)  {
+    $edit = array(
+      'name' => $name,
+      'machine_name' => $machine_name,
+      'description' => $description,
+      'hierarchy' => 1,
+      'module' => 'wimtvproplus',
+      'weight' => $weight,
+    );
+    $vocabulary = (object) $edit;
+    taxonomy_vocabulary_save($vocabulary);
+    variable_set($machine_name . '_vocabulary', $vocabulary->vid);
+  }
+}
+
+
+//Create Field video add
+function wimtvpro_field_schema($field) {
+  $columns = array(
+    'wimvideo' => array('type' => 'varchar', 'length' => 500, 'not null' => FALSE),
+	'wimplaylist' => array('type' => 'varchar', 'length' => 500, 'not null' => FALSE),
+  );
+  $indexes = array(
+    'wimvideo' => array('wimvideo'),
+	'wimplaylist' => array('wimplaylist'),
+  );
+
+  return array(
+    'columns' => $columns,
+    'indexes' => $indexes,
+  );
+}
+
+function wimtvpro_update_7100(&$sandbox) {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 500,
+    'not null' => FALSE,
+  );
+  $data_table_name = 'field_data_field_videos';
+  $revision_table_name = 'field_revision_field_videos';
+  $field_name = 'field_videos_wimplaylist';
+  db_add_field($data_table_name, $field_name, $spec);
+  db_add_field($revision_table_name, $field_name, $spec);
 }

@@ -155,93 +155,10 @@ return $form;
 }
 
 // Validate for video upload
-//TODO: test this code!
 function wimtvpro_upload_validate($form, &$form_state) {
-
-
-  /*
-  $file = $_FILES['files']['name']["videoFile"];
-   
-  $error = "";
-  $titlefile = check_plain($_POST['titlefile']);
-  if (empty($file)) {
-    $error .= t('You must upload a file.');
-  }
-  if (empty($titlefile)) {
-    $error .=  t('You must write a title.');
-  }
-
-
-  if ($error!="") {
-    form_set_error('', check_plain($error));
-	return false;
-  }
- 
-  $file = $_FILES['files']['name']["videoFile"];
-  $urlfile  = $_FILES['files']['tmp_name']["videoFile"];
-  $titlefile = check_plain($_POST['titlefile']);
-  $descriptionfile = check_plain($_POST['descriptionfile']);
-  if (isset($_POST['videoCategory']))
-    $video_category = filter_xss($_POST['videoCategory']);
-  set_time_limit(0);
-  //connect at API for upload video to wimtv
-  $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-  $ch = curl_init();
-  $url_upload = variable_get("basePathWimtv") . 'videos';
-
-  curl_setopt($ch, CURLOPT_URL, $url_upload);
-  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
-  curl_setopt($ch, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($ch, CURLOPT_USERPWD, $credential);
-  curl_setopt($ch, CURLOPT_POST, TRUE);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-  //add category/ies (if exist)
-  $category_tmp = array();
-  $subcategory_tmp = array();
-  $directory = "public://";
-  $unique_temp_filename = $directory . "/" . time() . '.' . preg_replace('/.*?\//', '', "tmp");
-  $unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
-  if (!@move_uploaded_file( $urlfile , $unique_temp_filename)) {
-    echo "non copiato";
-  }
-
-  $post= array("file" => "@" . drupal_realpath($unique_temp_filename),
-  "title" => $titlefile,
-  "description" => $descriptionfile
-  );
-
-
-  if (isset($video_category)) {
-    $id=0;
-    foreach ($video_category as $cat) {
-      $subcat = explode("|", $cat);
-      $post['category[' . $id . ']'] = $subcat[0];
-      $post['subcategory[' . $id . ']'] = $subcat[1];
-      $id++;
-    }
-  }
-
-  watchdog('wimvideo', '<pre>' . print_r($post, TRUE) . '</pre>');
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-  $response = curl_exec($ch);
-  curl_close($ch);
-
-  $arrayjsonst = json_decode($response);
-
-  if (isset($arrayjsonst->contentIdentifier)) {
-    drupal_set_message( t("Upload Successfully") );
-    $query = db_query("INSERT INTO {wimtvpro_videos} (uid,contentidentifier,mytimestamp,position,state, viewVideoModule,status,acquiredIdentifier,urlThumbs,category,title,duration,showtimeIdentifier) VALUES (
-    '" . variable_get("userWimtv") . "','" . $arrayjsonst->contentIdentifier . "','" . time() . "',0,'','3','OWNED|" .  $file . "','','','','" . $titlefile . "','','')");
-
-  }
-  else
-    form_set_error('' , t('Upload error'));
-  */
-    $file = @$_FILES['files']['name']['videoFile'];
-    $sizefile = filesize($file);
+    $file = $_FILES['files']['name']['videoFile'];
+    $urlfile  = $_FILES['files']['tmp_name']["videoFile"];
+    $titlefile = check_plain($_POST['titlefile']);
 
     $error = "";
 
@@ -261,20 +178,19 @@ function wimtvpro_upload_validate($form, &$form_state) {
     $directory = "public://";
     $unique_temp_filename = $directory . "/" . time() . '.' . preg_replace('/.*?\//', '', "tmp");
     $unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
-    if (!@move_uploaded_file( $file , $unique_temp_filename)) {
+    $moved = @move_uploaded_file( $urlfile , $unique_temp_filename);
+    if (!$moved) {
         form_set_error('Upload', 'Cannot obtain access to file');
+        $error++;
     }
 
-    $error = 0;
-    $titlefile = check_plain($_POST['titlefile']);
     $descriptionfile = check_plain($_POST['descriptionfile']);
-    $video_category = check_plain($_POST['videoCategory']);
-    $contentIdentifier = check_plain($_POST['uploadIdentifier']);
+    $video_category = isset($_POST['videoCategory']) ? check_plain($_POST['videoCategory']) : "";
+    $contentIdentifier = isset($_POST['uploadIdentifier']) ? check_plain($_POST['uploadIdentifier']) : "";
 
     if ((strlen(trim($file))>0) && ($error==0)) {
-        //UPLOAD VIDEO INTO WIMTV
         set_time_limit(0);
-        $post= array("file" => $unique_temp_filename,
+        $post= array("file" => drupal_realpath($unique_temp_filename),
               "title" => $titlefile,
               "description" => $descriptionfile,
               'uploadIdentifier' => $contentIdentifier);

@@ -97,6 +97,11 @@ function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
 
     }
 
+    //if (isset($form["#field"]["columns"]["wimvideo"]))
+        $form['field']['cardinality']['#options'] = array("1"=>"1");
+    //if (isset($form["#field"]["columns"]["wimplaylist"]))
+        $form['field']['cardinality']['#options'] = array("1"=>"1");
+
 }
 
 function wimtvpro_node_view_alter(&$build) {
@@ -134,7 +139,7 @@ function wimtvpro_node_view_alter(&$build) {
               $testoformat = str_replace("[wimtv]" . $value . "[/wimtv]", $iframe, $testoformat);
             }
             else {
-              $testoformat = str_replace("[wimtv]" . $value . "[/wimtv]", t("The video isn't into My Streaming"), $testoformat);
+              $testoformat = str_replace("[wimtv]" . $value . "[/wimtv]", t("The video isn't into WimVod"), $testoformat);
             }
             $build[$valueKey]["#items"][0][$key_testo] = $testoformat;
             $build[$valueKey][0]["#markup"] = $testoformat;

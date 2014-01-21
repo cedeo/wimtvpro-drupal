@@ -50,12 +50,8 @@ function wimtvpro_embedded() {
 }
 
 function wimtvpro_embeddedAll() {
-    $urlEmbedded = variable_get("urlEmbeddedPlayerWimtv");
-    $replaceContent = variable_get('replaceContentWimtv');
-    //echo $_GET['q'];
     $code = explode("embeddedAll/", $_GET['q']);
-    //echo $code;
-    //echo $code[1];
+
     if (count($code)>1) {
         $codeArra = explode("/", $code[1]);
         $contentItem = $codeArra[0];
@@ -78,7 +74,7 @@ function wimtvpro_embeddedAll() {
         $output .= "<div id='container'></div>";
 
         $dimension = " width='" . (variable_get('widthPreview')+50) . "px' height='" . (variable_get('heightPreview')+50)  . "px'";
-        $configFile  = wimtvpro_viever_jwplayer ($_SERVER['HTTP_USER_AGENT'],$video[0]->contentidentifier,$video);
+        $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$video);
 
         $output .= "<script type='text/javascript'>jwplayer('container').setup({";
         if (variable_get('nameSkin')!="") $output .= "skin: '" . $directory . "/" . variable_get('nameSkin') . ".zip',";
@@ -220,9 +216,9 @@ function wimtvpro_embeddedPlaylist() {
         $result = db_query("SELECT * FROM {wimtvpro_playlist} WHERE id = '" . $code[1] . "'");
         $array_playlist=$result->fetchAll();
 
-        $list = $array_playlist[0]->listVideo;
+        $list = isset($array_playlist[0]->listVideo) ? $array_playlist[0]->listVideo : "";
 
-        $options = $array_playlist[0]->option;
+        $options = isset($array_playlist[0]->option) ? $array_playlist[0]->option : "";
         $array_option = explode (",",$options);
         $videoList = explode (",",$list);
         $identifiers = "";
@@ -254,9 +250,10 @@ function wimtvpro_embeddedPlaylist() {
             $video  = $result_video->fetchAll();
 
             $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$video,FALSE);
-            if (!isset($videoT->urlThumbs)) $thumbs[1] = "";
+
+            if (!isset($videoT->urlThumbs)) $thumbs[0] = "";
             else $thumbs = explode ('"',$videoT->urlThumbs);
-            $playlist .= "{" . $configFile . " 'image':'" . $thumbs[1]  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
+            $playlist .= "{" . $configFile . " 'image':'" . $thumbs[0]  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
 
         }
 
@@ -287,7 +284,7 @@ function wimtvpro_embeddedPlaylist() {
 
         }
 
-        $repeat = $options["loop"]!="no" ? 'always' : 'no';
+        $repeat = isset($options["loop"]) && $options["loop"]!="no" ? 'always' : 'no';
 
         $isiPhone = (bool)strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
         $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');

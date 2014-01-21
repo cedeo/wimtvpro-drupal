@@ -69,9 +69,11 @@ class Api {
         return $request->authenticateWith($this->username, $this->password);
     }
 
-    function execute($request, $expectedMimeType='text/html', $clientLanguage=true) {
+    function execute($request, $expectedMimeType='text/html', $clientLanguage=null) {
         $request->expects($expectedMimeType);
         if ($clientLanguage)
+            $request->addHeader('Accept-Language', $clientLanguage);
+        else
             $request->addHeader('Accept-Language', $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
         $request->_curlPrep();
         try {

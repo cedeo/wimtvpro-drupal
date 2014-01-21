@@ -5,8 +5,6 @@
   *
   */
 
-  $url_video = variable_get("basePathWimtv") . variable_get("urlVideosDetailWimtv");
-  $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
   $array_all_videos = array();
 
   //Call API to read all my video into wim.tv
@@ -116,7 +114,6 @@
     }
     if (isset($_GET['sync'])) {
       $return = wimtvpro_getThumbs($_GET['showtime'], TRUE);
-      trigger_error($return);
       echo $return;
     }
   }
@@ -124,6 +121,4 @@
     echo t("It isn't element"); //TODO: eh?
   }
 }
-
-if (!(isset($insert)))
-    die();
+die();

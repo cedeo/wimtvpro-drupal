@@ -11,13 +11,9 @@ function wimtvpro_wimbox() {
     //Request new URL for create a wimlive Url
     jQuery(document).ready(function(){
         jQuery(".icon_download").click(function() {
-            var id = jQuery(this).attr("id").split("|");
-            var uri = "' . variable_get("basePathWimtv") . 'videos/" + id[0] + "/download";
+            var id = jQuery(this).attr("id");
+            var uri = "' . variable_get("basePathWimtv") . 'videos/" + id + "/download";
 
-            if (id[1]!="") {
-                var file = id[1].split(".");
-                uri = uri + "?ext=" + file[1] + "&filename=" + file[0];
-            }
             jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
         });
     }); ','inline');

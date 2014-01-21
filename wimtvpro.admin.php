@@ -189,6 +189,24 @@ So open up your FTP client program. First, identify your root directory. This is
         //End fieldPricing
 
         //fieldPayment
+        $form['fieldPayment']['affiliate'] = array('#type' => 'checkbox',
+            '#title' => t("I'm affiliated to a company"),
+            '#default_value' => !empty($dati['affiliate']) ? $dati['affiliate'] : '',
+            '#return_value' => 'true',
+            '#description' => t('Check if you are affiliated to a company'),
+            '#required' => FALSE,);
+        $form['fieldPayment']['companyName'] = array('#type' => 'textfield',
+            '#title' => t('Company name'),
+            '#default_value' => !empty($dati['companyName']) ? $dati['companyName'] : '',
+            '#size' => 100,
+            '#maxlength' => 200,
+            '#required' => FALSE,);
+        $form['fieldPayment']['affiliateConfirm'] = array('#type' => 'checkbox',
+            '#title' => t("I have legal rights to act as an affiliate of the company"),
+            '#default_value' => !empty($dati['affiliateConfirm']) ? $dati['affiliateConfirm'] : '',
+            '#return_value' => 'true',
+            '#description' => t('Checking this you agree that you have legal rights to act as an affiliate of the specified company'),
+            '#required' => FALSE,);
         $form['fieldPayment']['paypalEmail'] = array('#type' => 'textfield',
             '#title' => t('Paypal Email'),
             '#default_value' => !empty($dati['paypalEmail']) ? $dati['paypalEmail'] : '',
@@ -326,6 +344,7 @@ So open up your FTP client program. First, identify your root directory. This is
         '#type' => 'hidden',
         '#value' => '{showtimeIdentifier}',
     );
+    unset($form['addPageMyStreaming']);
 
     $form['#validate'][] = 'wimtvpro_admin_validate';
     return system_settings_form($form);
@@ -383,6 +402,9 @@ function wimtvpro_admin_validate($form, &$form_state) {
 
     if ($view_page=="") {
         $dati= array();
+        $dati["affiliate"] = isset($_POST["affiliate"]) ? 'true' : 'false';
+        $dati["companyName"] = $_POST["companyName"];
+        $dati["affiliateConfirm"] = isset($_POST["affiliateConfirm"]) ? 'true' : 'false';
         $dati["paypalEmail"]= $_POST["paypalEmail"];
         $dati["taxCode"]=  $_POST["taxCode"];
         $dati["vatCode"]=  $_POST["vatCode"];
