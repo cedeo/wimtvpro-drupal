@@ -7,6 +7,7 @@
 // Load default implementations of insert hooks for core modules.
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/upload.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/blocks.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/download.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/node_insert.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/playlist.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/embedded.inc');
@@ -253,6 +254,12 @@ function wimtvpro_menu() {
         'page callback' => 'wimtvpro_embeddedPlaylist_output',
         'page arguments' => array('wimtvpro_admin'),
         'access arguments' => array('access content'),
+        'type' =>  MENU_CALLBACK,
+    );
+    $items['admin/config/wimtvpro/download'] = array(
+        'page callback' => 'wimtvpro_download',
+        'page arguments' => array('wimtvpro_admin'),
+        'access arguments' => array('administer users'),
         'type' =>  MENU_CALLBACK,
     );
     return $items;

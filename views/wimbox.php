@@ -7,17 +7,6 @@
  */
 function wimtvpro_wimbox() {
     $view_page = wimtvpro_alert_reg();
-    drupal_add_js('
-    //Request new URL for create a wimlive Url
-    jQuery(document).ready(function(){
-        jQuery(".icon_download").click(function() {
-            var id = jQuery(this).attr("id");
-            var uri = "' . variable_get("basePathWimtv") . 'videos/" + id + "/download";
-
-            jQuery("body").append("<iframe src=\"" + uri + "\" style=\"display:none;\" />");
-        });
-    }); ','inline');
-
     form_set_error("error", $view_page);
 
     if ($view_page==""){

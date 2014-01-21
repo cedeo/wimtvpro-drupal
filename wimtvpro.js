@@ -369,13 +369,13 @@ jQuery(document).ready(function(){
 			jQuery('input[value="basePathWimtv"]').attr('value','http://peer.wim.tv/wimtv-webapp/rest/');
         }
      });
-
+    jQuery(".icon_download").click(function() {
+        var id = jQuery(this).attr("id");
+        downloadVideo(id);
     });
-
-	
-	function downloadVideo(contentid){
-		var basePath = Drupal.settings.basePath;
-		var uri = basePath  + "admin/config/wimtvpro/wimtvproCallAjax?namefunction=downloadVideo&id=" + contentid;
-		jQuery("body").append("<iframe  style=\"display:none\" id=\"iframeDownload\" src=\"" + uri + "\" />"); 
-	}
+     function downloadVideo(contentid){
+        var uri = wimtvpro_checkCleanUrl("admin/config/wimtvpro/", "download/" + contentid);
+        jQuery("body").append("<iframe  style=\"display:none\" id=\"iframeDownload\" src=\"" + uri + "\" />");
+     }
+    });
 	
