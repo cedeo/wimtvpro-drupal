@@ -156,7 +156,7 @@ function wimtvpro_menu() {
         );
     $items['wimtvpro/viewEmbeddedPlaylist/%'] =
         array(
-            'page callback' => 'wimtvpro_embeddedPlaylist_output',
+            'page callback' => 'wimtvpro_embeddedPlaylist',
             'page arguments' => array('wimtvpro_admin'),
             'access arguments' => array('access content'),
             'type' =>  MENU_CALLBACK,
@@ -200,7 +200,7 @@ function wimtvpro_menu() {
     $items['wimtvpro/embedded'] =
         array(
             'title' => 'Video Embedded',
-            'page callback' => 'wimtvpro_embedded_output',
+            'page callback' => 'wimtvpro_embedded',
             'page arguments' => array('wimtvpro_public'),
             'access arguments' => array('access content'),
             'type' =>  MENU_CALLBACK

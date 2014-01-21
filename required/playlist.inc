@@ -6,17 +6,17 @@
   */
 
 function wimtvpro_playlist_mod($form_state, $id) {
-   global $base_url;
-  drupal_add_library('system', 'ui.sortable');    
-  drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-  drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/css/redmond/jquery-ui-1.8.21.custom.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    global $base_url;
+    drupal_add_library('system', 'ui.sortable');
+    drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/css/redmond/jquery-ui-1.8.21.custom.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
   
-  drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
-  drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/js/jquery.colorbox.js');
-  drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/css/colorbox.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-  drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
-  drupal_add_js("var url_pathPlugin ='" . $base_url . "';" , "inline");
-  drupal_add_js('
+    drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
+    drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/js/jquery.colorbox.js');
+    drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/css/colorbox.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+    drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
+    drupal_add_js("var url_pathPlugin ='" . $base_url . "';" , "inline");
+    drupal_add_js('
 		jQuery(document).ready(function(){ 
 		
 				jQuery("a.wimtv-thumbnail").click( function(){
@@ -54,7 +54,7 @@ function wimtvpro_playlist_mod($form_state, $id) {
     $form['identifier'] = array('#type' => 'hidden', '#value' => $identifier);
 
 	$result = db_query("SELECT * FROM {wimtvpro_playlist} WHERE id = '" . $identifier . "' ORDER BY name ASC");
-    $array_playlist=$result->fetchAll();
+    $array_playlist = $result->fetchAll();
 	
 	$option = $array_playlist[0]->option;
 	$array_option = explode(",",$option);
@@ -89,9 +89,13 @@ function wimtvpro_playlist_mod($form_state, $id) {
 				'#default_value' => $options["loop"], 
 				'#title' => t('Do you want to see videos cyclically?')
 		);
-	
-	$dimension = " width='" . (variable_get('widthPreview')+50) . "px' height='" . (variable_get('heightPreview')+70)  . "px'";
-	$embedded = "<iframe frameBorder='0' src='" . $GLOBALS['base_url'] . "/wimtvpro/viewEmbeddedPlaylist/" . $identifier . "'" . $dimension . "></iframe>";
+
+    $iframe_width = (variable_get('widthPreview')+50) . "px";
+    $iframe_height = (variable_get('heightPreview')+70)  . "px";
+    $options = array('absolute' => TRUE,
+                     'query' => array('width' => $iframe_width,
+                                      'height' => $iframe_height,));
+	$embedded = "<iframe frameBorder='0' src='" . url("/wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options) . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
 	
 	
 	

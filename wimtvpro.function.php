@@ -129,9 +129,9 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
   $wimtvpro_url = "";
   if ($isfound) {
     if ((!$private) && (!$insert_into_page))
-      $wimtvpro_url = wimtvpro_checkCleanUrl("", "wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, $GLOBALS['base_path']);
+      $wimtvpro_url = url("wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, array('absolute' => TRUE));
     if ($insert_into_page)
-      $wimtvpro_url = wimtvpro_checkCleanUrl("", "wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, $GLOBALS['base_path']);
+      $wimtvpro_url = url("wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, array('absolute' => TRUE));
 	$video  = "<a class='wimtv-thumbnail' href='" . $wimtvpro_url . "'>" . $replace_video . "</a>";
   } else {
     $replace_video = false;
@@ -314,8 +314,6 @@ function dbBuildVideosIn($listVideos, $in=true) {
 
 
 function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {
-  
-  
   global $user;
   $replace_content = variable_get("replaceContentWimtv");
   $my_media= "";
@@ -345,7 +343,7 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 
   //Select Showtime
   $details_st = apiGetShowtimes();
-  $arrayjson_st = json_decode( $details_st);
+  $arrayjson_st = json_decode($details_st);
   $st_license = array();
   foreach ($arrayjson_st->items as $st){
   	$st_license[$st->showtimeIdentifier] = $st->licenseType;

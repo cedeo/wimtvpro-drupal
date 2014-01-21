@@ -250,9 +250,10 @@ function wimtvpro_embeddedPlaylist() {
             $video  = $result_video->fetchAll();
 
             $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$video,FALSE);
-            if (!isset($videoT->urlThumbs)) $thumbs[1] = "";
+
+            if (!isset($videoT->urlThumbs)) $thumbs[0] = "";
             else $thumbs = explode ('"',$videoT->urlThumbs);
-            $playlist .= "{" . $configFile . " 'image':'" . $thumbs[1]  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
+            $playlist .= "{" . $configFile . " 'image':'" . $thumbs[0]  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
 
         }
 
