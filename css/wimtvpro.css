@@ -350,7 +350,7 @@ div.img_empty {
 	background: transparent url('../img/add.png') no-repeat center center; width:20px; height:20px;display:block;float:left;  cursor:pointer;
 }
 .icon_deletePlay {
-	background: transparent url('../img/remove.png') no-repeat center center; width:20px; height:20px;display:block; float:right; cursor:pointer;
+	background: transparent url('../img/remove2.png') no-repeat center center; width:20px; height:20px;display:block; float:right; cursor:pointer;
 }
 
 
@@ -366,7 +366,7 @@ ul.items_playlist li {
 	display: block;
 	float: left; width:110px;
 	height: 120px;
-	margin: 0 5px 10px 0!Important;
+	margin: 0 5px 10px 0 !important;
 	border: 1px solid #FFF;
 	position: relative;
 	text-align: center; cursor:pointer;
