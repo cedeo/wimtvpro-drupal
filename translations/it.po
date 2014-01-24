@@ -132,7 +132,7 @@ msgstr ""
 
 #: wimtvpro.admin.php:202
 msgid "I'm affiliated to a company"
-msgstr Sono affiliato ad una azienda"
+msgstr "Sono affiliato ad una azienda"
 
 #: wimtvpro.admin.php:205
 msgid "Check if you are affiliated to a company"
