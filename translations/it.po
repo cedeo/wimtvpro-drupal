@@ -12,6 +12,7 @@
 #  views/wimlive.php: n/a
 #  wimtvpro.sync.php: n/a
 #  wimtvpro.install: n/a
+#  required/plus.inc: n/a
 #  required/node_insert.inc: n/a
 #  required/content_fields.inc: n/a
 #  wimtvpro.info: n/a
@@ -19,7 +20,6 @@
 #  required/blocks.inc: n/a
 #  required/playlist.inc: n/a
 #  required/upload.inc: n/a
-#  required/plus.inc: n/a
 #  required/report.inc: n/a
 #  templates/report.php: n/a
 #  templates/help.php: n/a
@@ -31,8 +31,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-01-24 16:10+0100\n"
-"PO-Revision-Date: 2014-01-24 16:10+0100\n"
+"POT-Creation-Date: 2014-01-24 18:10+0100\n"
+"PO-Revision-Date: 2014-01-24 18:10+0100\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Italian <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -97,7 +97,9 @@ msgstr "no"
 
 #: wimtvpro.admin.php:145
 msgid "Would you like to add a public (visible to End Users) Video page to your web site?"
-msgstr "Vuoi aggiungere un pagina video pubblica (visibile agli utenti finali)  per il tuo sito web?"
+msgstr ""
+"Vuoi aggiungere un pagina video pubblica (visibile agli utenti finali) "
+" per il tuo sito web?"
 
 #: wimtvpro.admin.php:162
 msgid "Select fields where you want to add the video"
@@ -121,7 +123,12 @@ msgstr "Funzionalità"
 
 #: wimtvpro.admin.php:199
 msgid "Please complete the following fields if you wish to make or receive payments on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You can fill your data now or do it later by returning to this section of your Settings."
-msgstr "Completa i seguenti campi se vuoi ricevere o fare pagamenti all'interno di WimTVPro (es. pubblicare video in modalità pay-per-view, comprare o vendere video, ecc.). Puoi fornire questi dati in un secondo momento, ritornando nella sezione “Monetizzazione” nei tuoi Settings."
+msgstr ""
+"Completa i seguenti campi se vuoi ricevere o fare pagamenti "
+"all'interno di WimTVPro (es. pubblicare video in modalità "
+"pay-per-view, comprare o vendere video, ecc.). Puoi fornire questi "
+"dati in un secondo momento, ritornando nella sezione "
+"“Monetizzazione” nei tuoi Settings."
 
 #: wimtvpro.admin.php:202
 msgid "I'm affiliated to a company"
@@ -156,7 +163,7 @@ msgid "Vat Code"
 msgstr "Partita Iva"
 
 #: wimtvpro.admin.php:237
-msgid "Billing Address"
+msgid "Billing Adsress"
 msgstr "Indirizzo di fatturazione"
 
 #: wimtvpro.admin.php:239;245
@@ -195,6 +202,7 @@ msgstr "Rivendita di Eventi"
 msgid "Select if you want to distribute live events organised by other parties (Event Organisers)."
 msgstr "Scegli di diventare un distributore di Eventi organizzati da altri (Organizzatori di Eventi)"
 
+
 #: wimtvpro.admin.php:284
 msgid "Live stream event organisation"
 msgstr "Organizzazione di Eventi"
@@ -221,13 +229,13 @@ msgstr "Questo file non è corretto. Si prega di caricare un file zip."
 
 #: wimtvpro.function.php:154;224
 msgid "Remove"
-msgstr "Rimuovi"
+msgstr "Elimina"
 
 #: wimtvpro.function.php:158
 msgid "Add to WimVod"
 msgstr "Aggiungi a WimVod"
 
-#: wimtvpro.function.php:159
+#: wimtvpro.function.php:159;197
 msgid "Remove from WimVod"
 msgstr "Rimuovi da WimVod"
 
@@ -239,7 +247,7 @@ msgstr "Guarda il video"
 msgid "Preview Video"
 msgstr "Anteprima del video"
 
-#: wimtvpro.function.php:224 templates/wimlive.php:2 views/wimlive.php:279
+#: wimtvpro.function.php:224 templates/wimlive.php:2 views/wimlive.php:280
 msgid "Add"
 msgstr "Aggiungi"
 
@@ -253,15 +261,15 @@ msgstr "Non si riesce a stabilire una connessione con WimTV. Contatta il servizi
 
 #: wimtvpro.sync.php:121
 msgid "It isn't element"
-msgstr "Non è un elemento"
+msgstr "Non ci sono elementi"
 
 #: wimtvpro.module:74
 msgid "Upload Video"
-msgstr "Upload Video"
+msgstr "Upload Vide"
 
 #: wimtvpro.module:90
 msgid "My personal detail"
-msgstr "I miei dettagli personali"
+msgstr "Miei dettagli personali"
 
 #: wimtvpro.module:99
 msgid "Analytics"
@@ -269,19 +277,19 @@ msgstr "Analytics"
 
 #: wimtvpro.module:107
 msgid "Add new Event"
-msgstr "Aggiunti nuovo evento"
+msgstr "Aggiungi nuovi eventi"
 
 #: wimtvpro.module:124
 msgid "Modify Event"
-msgstr "Modifica evento"
+msgstr "Modifica Eventi"
 
 #: wimtvpro.module:133
 msgid "WimTV Registration"
-msgstr "WimTV Registration"
+msgstr "Registrazione WimTV"
 
 #: wimtvpro.module:140
 msgid "Delete Event"
-msgstr "Elimina evento"
+msgstr "Cancella eventi"
 
 #: wimtvpro.module:162;198
 msgid "Video Embedded"
@@ -297,35 +305,35 @@ msgstr "Nome della playlist"
 
 #: wimtvpro.module:277 wimtvpro.install:118
 msgid "List video contentidentifier"
-msgstr "Lista dei contentidentifier dei video"
+msgstr "Lista video contentidentifier"
 
 #: wimtvpro.module:280 wimtvpro.install:121
 msgid "option playlist"
-msgstr ""
+msgstr "opzioni playlist"
 
 #: wimtvpro.module:283 wimtvpro.install:16;125
 msgid "User identifier"
-msgstr ""
+msgstr "User identifier"
 
-#: wimtvpro.module:34
+#: wimtvpro.module:34 required/plus.inc:620
 msgid "WimTvPro"
-msgstr ""
+msgstr "WimTvPro"
 
 #: wimtvpro.module:43
 msgid "WimBox"
-msgstr ""
+msgstr "WimBox"
 
 #: wimtvpro.module:51 required/node_insert.inc:28
 msgid "WimVod"
-msgstr ""
+msgstr "WimVod"
 
 #: (duplicate) wimtvpro.module:59 wimtvpro.install:166  required/content_fields.inc:170;213
 msgid "Playlist"
-msgstr ""
+msgstr "Playlist"
 
 #: wimtvpro.module:82
 msgid "WimLive"
-msgstr ""
+msgstr "WimLive"
 
 #: wimtvpro.module:91
 msgid "Configuration personal detail of Wimtv block"
@@ -333,71 +341,71 @@ msgstr "Configura i dettagli personali del blocco Wimtv"
 
 #: wimtvpro.module:206
 msgid "WimVod Video"
-msgstr ""
+msgstr "WimVod Video"
 
 #: wimtvpro.install:13
 msgid "Video Api WIMTV"
-msgstr ""
+msgstr "Video Api WIMTV"
 
 #: wimtvpro.install:23
 msgid "Identifier Video"
-msgstr ""
+msgstr "Identifier Video"
 
 #: wimtvpro.install:29
 msgid "Contentidentifier Video"
-msgstr ""
+msgstr "Contentidentifier Video"
 
 #: wimtvpro.install:35
-msgid "Showtime or no"
-msgstr ""
+msgid "WimVod or no"
+msgstr "WimVod o no"
 
 #: wimtvpro.install:41
 msgid "OWNED-ACQUIRED-PERFORMING"
-msgstr ""
+msgstr "OWNED-ACQUIRED-PERFORMING"
 
 #: wimtvpro.install:52
 msgid "My timestamp"
-msgstr ""
+msgstr "Timestamp"
 
 #: wimtvpro.install:57
 msgid "Position video user"
-msgstr ""
+msgstr "Posizione del video dell'utente"
 
 #: wimtvpro.install:62
 msgid "View video into page or block"
-msgstr ""
+msgstr "Vedi video dentro la pagina o blocco"
 
 #: wimtvpro.install:68
 msgid "Url thumbs video"
-msgstr ""
+msgstr "Url miniatura dei video"
 
 #: wimtvpro.install:73
 msgid "Url preview video"
-msgstr ""
+msgstr "Url anteprima video"
 
 #: wimtvpro.install:78
 msgid "Category and subcategory video[Json]"
-msgstr ""
+msgstr "Categorie and sottocategorie dei video[Json]"
 
 #: wimtvpro.install:83
 msgid "Title videos"
-msgstr ""
+msgstr "Titolo dei video"
 
 #: wimtvpro.install:89
 msgid "Duration videos"
-msgstr ""
+msgstr "Durata dei video"
 
 #: wimtvpro.install:95
 msgid "showtimeIdentifier videos"
-msgstr ""
+msgstr "showtimeIdentifier dei video"
 
 #: wimtvpro.install:107
 msgid "Playlist Api WIMTV"
-msgstr ""
+msgstr "Playlist Api WIMTV"
 
 #: wimtvpro.install:145
 msgid "WimTVPro"
-msgstr ""
+msgstr "WimTVPro"
 
 #: wimtvpro.install:179
 msgid "The content type %name has been updated."
@@ -409,7 +417,7 @@ msgstr "Il tipo di contenuto %name è stato aggiunto."
 
 #: (duplicate) wimtvpro.install:168 
 msgid "It is a content type for create playlist."
-msgstr ""
+msgstr "E' il tipo di contenuto per creare playlist"
 
 #: (duplicate) wimtvpro.install:183 
 msgid "view"
@@ -425,7 +433,7 @@ msgstr "Aggiunto tipo di contenuto %name"
 
 #: wimtvpro.info:0
 msgid "Wim TV Pro"
-msgstr ""
+msgstr "Wim TV Pro"
 
 #: wimtvpro.info:0
 msgid "WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website."
@@ -433,7 +441,7 @@ msgstr "WimTVPro è il plugin video che aggiunge diverse funzionalità per gesti
 
 #: wimtvpro.info:0
 msgid "WIMTV"
-msgstr ""
+msgstr "WIMTV"
 
 #: wimtvpro.js:0
 msgid "Save"
@@ -457,7 +465,7 @@ msgstr "Contatto"
 
 #: required/content_fields.inc:159
 msgid "Upload video wimtv"
-msgstr ""
+msgstr "Upload video wimtv"
 
 #: required/content_fields.inc:165
 msgid "Disabled Upload video wimtv"
@@ -465,15 +473,15 @@ msgstr "Disabilita l'upload video"
 
 #: required/content_fields.inc:182
 msgid "Video Wimtv"
-msgstr ""
+msgstr "Video Wimtv"
 
 #: required/content_fields.inc:183
 msgid "MultiUpload"
-msgstr ""
+msgstr "Upload multiplo"
 
 #: required/content_fields.inc:189;190
 msgid "Playlist Wimtv"
-msgstr ""
+msgstr "Playlist Wimtv"
 
 #: required/content_fields.inc:203
 msgid "Inline"
@@ -485,11 +493,11 @@ msgstr "Blocco"
 
 #: required/content_fields.inc:292
 msgid "PlayList"
-msgstr ""
+msgstr "PlayList"
 
 #: required/content_fields.inc:325 required/playlist.inc:88
 msgid "ON"
-msgstr ""
+msgstr "ON"
 
 #: required/content_fields.inc:327 required/playlist.inc:90
 msgid "Do you want to see videos cyclically?"
@@ -517,7 +525,7 @@ msgstr ": <b>mov mpg avi flv mpeg mp4 mkv m4v</b>"
 
 #: required/content_fields.inc:762
 msgid "<div class='action'><div id='progress'><div class='percent'></div><div class='bar' style='width: 0%;'></div></div></div>"
-msgstr ""
+msgstr "<div class='action'><div id='progress'><div class='percent'></div><div class='bar' style='width: 0%;'></div></div></div>"
 
 #: required/content_fields.inc:816
 msgid "Add a new file"
@@ -533,12 +541,11 @@ msgstr "Aggiorna"
 
 #: required/plus.inc:73 required/upload.inc:213
 msgid "Upload successful"
-msgstr "Caricamento avvenuto con successo"
-
+msgstr  "Caricamento avvenuto con successo"
 
 #: required/plus.inc:620
 msgid "Video vid is: %vid"
-msgstr ""
+msgstr "Video vid is: %vid"
 
 #: required/registration.inc:17
 msgid "Personal Information"
@@ -547,10 +554,6 @@ msgstr "Informazioni personali"
 #: required/registration.inc:21
 msgid "Fist Name"
 msgstr "Nome"
-
-#: views/wimlive.php:181
-msgid "Title"
-msgstr "Titolo"
 
 #: required/registration.inc:29
 msgid "Last Name"
@@ -573,7 +576,7 @@ msgid "F"
 msgstr "F"
 
 #: required/registration.inc:55
-msgid "Login CredentialS"
+msgid "Login Credentials"
 msgstr "Credenziali per il Login"
 
 #: required/registration.inc:76
@@ -585,7 +588,7 @@ msgid "Terms of Use"
 msgstr "Termini d'uso"
 
 #: required/registration.inc:85
-msgid "I have read and agreed to WimTV"
+msgid "I have read and agree to the wim.tv"
 msgstr "Ho letto e accetto "
 
 #: required/registration.inc:85
@@ -666,7 +669,7 @@ msgstr "Non hai accesso al file"
 
 #: required/upload.inc:219;223
 msgid "Upload error"
-msgstr ""
+msgstr "Errore caricamento"
 
 #: templates/help.php:1
 msgid "Read support Wimtv"
@@ -720,15 +723,15 @@ msgstr "l'80% riceverai una notifica via mail"
 msgid "100% of your package (either storage or bandwidth) you will be asked to upgrade to another package."
 msgstr "il 100% ti sarà richiesto l'upgrade a un pacchetto più grande."
 
-#: templates/pricing.php:72
+#: templates/pricing.php:73
 msgid "Note that, if you stay within the usage limits of the Free Package, use of WimTV is free"
 msgstr "Da notare che, se resti al di sotto dei limiti di utilizzo del pacchetto Free, l'uso di WimTV è gratis."
 
-#: templates/pricing.php:73
+#: templates/pricing.php:74
 msgid "If you license content and/or provide services in WimTV, revenue sharing will apply"
 msgstr "Se dai in licenza contenuti in pay per view all'interno di WimTVPro, si applicherà il revenue sharing."
 
-#: templates/pricing.php:75
+#: templates/pricing.php:76
 msgid "Enjoy your WimTVPro plugin!"
 msgstr "Goditi WimTVPro!"
 
@@ -796,7 +799,7 @@ msgstr "Visualizzatori contemporanei"
 msgid "Total"
 msgstr "Totale"
 
-#: templates/report.php:117
+#: templates/report.php:117 views/wimlive.php:259
 msgid "Duration"
 msgstr "Durata"
 
@@ -811,6 +814,10 @@ msgstr "nuovo eventi"
 #: views/wimlive.php:171
 msgid "Return event list"
 msgstr "Ritorna alla lista eventi"
+
+#: views/wimlive.php:181
+msgid "Title"
+msgstr "Titolo"
 
 #: views/wimlive.php:182
 msgid "Title of the event"
@@ -829,42 +836,42 @@ msgid "Url"
 msgstr "Url"
 
 #: views/wimlive.php:212
-msgid "Event Status"
+msgid "Event status "
 msgstr "Status dell'evento"
 
 #: views/wimlive.php:222
 msgid "Record event"
 msgstr "Registra evento"
 
-#: views/wimlive.php:231
+#: views/wimlive.php:226
+msgid "Select \"Yes\" if you want to record your event. The recorded video will appear in WimBox"
+msgstr ""
+
+#: views/wimlive.php:232
 msgid "Start date dd/mm/yy"
 msgstr "Data di inizio gg/mm/aa"
 
-#: views/wimlive.php:241
+#: views/wimlive.php:242
 msgid "Start time"
 msgstr "Ora di inizio"
 
-#: views/wimlive.php:242
+#: views/wimlive.php:243
 msgid "We recommend applying a tolerance on the start time to facilitate payment transactions to the viewers."
 msgstr "Si consiglia di applicare una tolleranza sul tempo di avvio per facilitare le operazioni di pagamento per gli spettatori."
 
-#: views/wimlive.php:258
-msgid "Duration"
-msgstr "Durata"
-
-#: views/wimlive.php:268;508
+#: views/wimlive.php:269;509
 msgid "Edit"
 msgstr "Modifica"
 
-#: views/wimlive.php:368
-msgid "Event creatrion failure. You need to enable \"Live Transmission\" on configuration"
+#: views/wimlive.php:369
+msgid "Event creation failure. You need to enable \"Live Transmission\" on your wimtv's personal page"
 msgstr "Creazione evento fallita. Devi abilitare \"Live Transmission\" nelle configurazioni"
 
-#: views/wimlive.php:508
+#: views/wimlive.php:509
 msgid "Delete"
 msgstr "Elimina"
 
-#: views/wimlive.php:529
+#: views/wimlive.php:530
 msgid "No event scheduled at this time"
 msgstr "Non ci sono eventi live"
 
