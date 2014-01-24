@@ -83,7 +83,7 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
     </form>
 </div>
 <p><?php echo t("You commercial packet") ?>:
-    <b><?php echo $namePacket ?></b> - <a href='?page=WimTvPro&pack=1&return=WimTVPro_Report'><?php echo t("Change") ?></a>
+    <b><?php echo $namePacket ?></b> - <a href='../../wimtvpro-drupal/templates/?page=WimTvPro&pack=1&return=WimTVPro_Report'><?php echo t("Change") ?></a>
 </p>
 <?php if ($traffic == "") { ?>
     <p><?php echo t("You did not generate any traffic in this period") ?></p>

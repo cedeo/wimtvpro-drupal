@@ -61,8 +61,7 @@ function wimtvpro_admin() {
 
     $form['fieldConfig']['htmltag2'] = array(
         '#markup' => variable_get('htmltag2',
-            t("<p>-> Upload and/or choose the skin player into <a target='new' href='http://www.longtailvideo.com/addons/skins'>page Jwplayer</a> for your videos</p>"))
-
+           "<p>" . t("Upload and/or choose a skin for your player") . "</p>")
     );
 
     //Read directory for skin JWPLAYER
@@ -89,7 +88,7 @@ function wimtvpro_admin() {
 
     $form['fieldConfig']['nameSkin'] = array(
         '#type' => 'select',
-        '#title' => t('Name Skin'),
+        '#title' => t('Skin name'),
         '#options' => $elencoSkin,
         '#default_value' => variable_get('nameSkin'),
         '#required' => FALSE,
@@ -97,18 +96,17 @@ function wimtvpro_admin() {
 
     $form['fieldConfig']['uploadSkin'] = array(
         '#type' => 'file',
-        '#title' => t('Upload new skin player'),
+        '#title' => t('upload a new skin for your player'),
         '#size' => 100,
         '#maxlength' => 200,
         '#required' => FALSE,
-        '#description' => t('Only zip. Save into a public URL&nbsp;') . file_create_url($directory) . t('<br/>For running the skin selected, copy the file <a href="http://plugins.longtailvideo.com/crossdomain.xml" target="_new">crossdomain.xml</a> to the root directory (e.g. http://www.mysite.it). You can do it all from your FTP program (e.g. FileZila, Classic FTP, etc).
-So open up your FTP client program. First, identify your root directory. This is the folder titled or beginning with "www" -- and this is where you ultimately need to move that pesky crossdomain.xml. Now all you have to do is find it.'),
+        '#description' => t('Only .zip files are supported. Save to a public url: ') . file_create_url($directory) . "<br/>" . t('For running the skin selected, copy the file') . " <a href='http://plugins.longtailvideo.com/crossdomain.xml'>crossdomain.xml</a> " . t('to the root directory (e.g. http://www.mysite.it). You can do it all from your FTP program (e.g. FileZila, Classic FTP, etc). So open up your FTP client program. First, identify your root directory. This is the folder titled or beginning with "www" -- and this is where you ultimately need to move that pesky crossdomain.xml. Now all you have to do is find it.'),
     );
 
 
     $form['fieldConfig']['htmltag3'] = array(
-        '#markup' => variable_get('htmltag3',
-            t("<p>-> Dimensions of player for your videos</p>"))
+        '#markup' => variable_get('htmltag3', "<p>" . 
+            t("Size of player for your videos") .  "</p>")
 
     );
 
@@ -144,10 +142,10 @@ So open up your FTP client program. First, identify your root directory. This is
         '#value' => t('no')
     );
     $form['fieldConfig']['addPageMyStreaming'] = array(
-        '#title' => t('Would you like to add a public (visible to End Users) MyStreaming page to your web site?'),
+        '#title' => t('Would you like to add a public (visible to End Users) Video page to your web site?'),
         '#type' => 'select',
         '#maxlength' => 5,
-        '#options' => array( 'no' => 'No', 'yes' => 'Yes, add a page My WimTv Streaming'),
+        '#options' => array( 'no' => 'No', 'yes' => 'Yes, add a page'),
         '#required' => TRUE,
         '#default_value' => variable_get('addPageMyStreaming', 'no'),
     );
@@ -174,14 +172,17 @@ So open up your FTP client program. First, identify your root directory. This is
 
     if ($view_page==""){
         $openFieldSet = FALSE;
-        if ($openFieldSet)
-            $form['fieldPricing'] = array('#type'=>'fieldset','#title'=>'Pricing','#collapsible' => TRUE, '#collapsed' => FALSE);
+        
+		$form['fieldLive'] = array('#type'=>'fieldset','#title'=>t('Configuration'),'#collapsible' => TRUE, '#collapsed' => TRUE);
+		
+		if ($openFieldSet)
+            $form['fieldPricing'] = array('#type'=>'fieldset','#title'=>t('Pricing'),'#collapsible' => TRUE, '#collapsed' => FALSE);
         else
-            $form['fieldPricing'] = array('#type'=>'fieldset','#title'=>'Pricing','#collapsible' => TRUE, '#collapsed' => TRUE);
-        $form['fieldPayment'] = array('#type'=>'fieldset','#title'=>'Payment','#collapsible' => TRUE, '#collapsed' => TRUE);
-        $form['fieldLive'] = array('#type'=>'fieldset','#title'=>'WimLive Configuration','#collapsible' => TRUE, '#collapsed' => TRUE);
-        //$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>'Update Personal Info','#collapsible' => TRUE, '#collapsed' => TRUE);
-        $form['fieldFeatures'] = array('#type'=>'fieldset','#title'=>'Features','#collapsible' => TRUE, '#collapsed' => TRUE);
+            $form['fieldPricing'] = array('#type'=>'fieldset','#title'=>t('Pricing'),'#collapsible' => TRUE, '#collapsed' => TRUE);
+        $form['fieldPayment'] = array('#type'=>'fieldset','#title'=>t('Monetisation'),'#collapsible' => TRUE, '#collapsed' => TRUE);
+        
+        //$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>t('Personal Info'),'#collapsible' => TRUE, '#collapsed' => TRUE);
+        $form['fieldFeatures'] = array('#type'=>'fieldset','#title'=>t('Features'),'#collapsible' => TRUE, '#collapsed' => TRUE);
 
         //fieldPricing
         $pricing = wimtvpro_callPricing();
@@ -189,7 +190,10 @@ So open up your FTP client program. First, identify your root directory. This is
         //End fieldPricing
 
         //fieldPayment
-        $form['fieldPayment']['affiliate'] = array('#type' => 'checkbox',
+        
+		 $form['fieldPayment']['html']=  array('#markup' => variable_get('htmltag3', "<p>" . t('Please complete the following fields if you wish to make or receive payments on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You can fill your data now or do it later by returning to this section of your Settings.') . "</p>") );
+		
+		$form['fieldPayment']['affiliate'] = array('#type' => 'checkbox',
             '#title' => t("I'm affiliated to a company"),
             '#default_value' => !empty($dati['affiliate']) ? $dati['affiliate'] : '',
             '#return_value' => 'true',
@@ -253,36 +257,36 @@ So open up your FTP client program. First, identify your root directory. This is
         //End fieldPayment
 
         //fieldLive
-        $form['fieldLive']['html']=  array('#markup' => variable_get('htmltag3', t('<p>In this section you can enable the more functional live streaming settings for your needs. Choose between "Live streaming" to stream your own events, or use the features reserved for event Resellers and event Organizers to sell and organize live events.</p>')) );
+        $form['fieldLive']['html']=  array('#markup' => variable_get('htmltag3', "<p>" . t('In this section you can enable live streaming and set the parameters that better match your needs. Choose between "Live streaming" to stream your events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser of live events or distributor (on behalf of Event Organiser).') . "</p>") );
         $form['fieldLive']['liveStreamEnabled'] = array('#type' => 'checkbox',
             '#title' => t('Live streaming'),
             '#default_value' => !empty($dati['liveStreamEnabled']) ? $dati['liveStreamEnabled'] : '',
             '#return_value' => 'true',
-            '#description' => t('Enables the feature that allows you to broadcast your live streaming events with WimTV.'),
+            '#description' => t('Select if you want to stream live events with WimTV'),
             '#required' => FALSE,);
         $form['fieldLive']['liveStreamPwd'] = array('#type' => 'password',
-            '#title' => t('Live stream events resale'),
+            '#title' => t('Password'),
             '#default_value' => !isset($dati['liveStreamPwd']) ? $dati['liveStreamPwd'] : "",
-            '#description' => t('This password is required for the live streaming'),
+            '#description' => t('A password is required for live streaming (in order to authenticate yourself with the streaming server).'),
             '#required' => FALSE,);
         $form['fieldLive']['eventResellerEnabled'] = array('#type' => 'checkbox',
             '#title' => t('Live stream events resale'),
             '#default_value' => !empty($dati['eventResellerEnabled']) ? $dati['eventResellerEnabled'] : '',
             '#return_value' => 'true',
-            '#description' => t('Enables you to resell the streaming of live events organized bu other Web TVs.'),
+            '#description' => t('Select if you want to distribute live events organised by other parties (Event Organisers).'),
             '#required' => FALSE,);
         $form['fieldLive']['eventOrganizerEnabled'] = array('#type' => 'checkbox',
-            '#title' => t('Live stream events organizing'),
+            '#title' => t('Live stream event organisation'),
             '#default_value' => !empty($dati['eventOrganizerEnabled']) ? $dati['eventOrganizerEnabled'] : '',
             '#return_value' => 'true',
-            '#description' => t('Enables the feature that allows you to organize live streaming events.'),
+            '#description' => t('Select if you want to organise live evants and collaborate with Event Resellers for their distribution.'),
             '#required' => FALSE,);
         //End fieldLive
 
         //fieldFeatures
         $form['fieldFeatures']['hidePublicShowtimeVideos'] = array('#type' => 'select',
-            '#title' => t('Index and show public videos into WimTv\'s site'),
-            '#options' => array( "true" =>" No" , "false" => "Si"),
+            '#title' => t('Index and show public videos on WimTV '),
+            '#options' => array( "true" => t("No") , "false" => t("Yes")),
             '#default_value' => $dati['hidePublicShowtimeVideos'],
             '#required' => FALSE,);
         //End fieldFeatures
@@ -357,7 +361,7 @@ function wimtvpro_admin_validate($form, &$form_state) {
     $arrayFile = explode(".", $file);
     if (!empty($file)) {
         if ($arrayFile[1] != "zip")
-            form_set_error("", t("This file isn't format correct for jwplayer's skin"));
+            form_set_error("", t("This file isn not correct. Please upload a Zip file."));
         else {
             $validators = array(
                 'file_validate_extensions' => array('zip')
@@ -426,7 +430,7 @@ function wimtvpro_admin_validate($form, &$form_state) {
                 foreach ($arrayjsonst->messages as $message){
                     $testoErrore .=  $message->field . " : " .  $message->message . "<br/>";
                 }
-                form_set_error("Errore Curl", $testoErrore);
+                form_set_error("Error Curl: ", $testoErrore);
             }
         }
     }
