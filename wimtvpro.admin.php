@@ -100,7 +100,7 @@ function wimtvpro_admin() {
         '#size' => 100,
         '#maxlength' => 200,
         '#required' => FALSE,
-        '#description' => t('Only .zip files are supported. Save to a public url: ') . file_create_url($directory) . "<br/>" . t('For running the skin selected, copy the file') . " <a href='http://plugins.longtailvideo.com/crossdomain.xml'>crossdomain.xml</a> " . t('to the root directory (e.g. http://www.mysite.it). You can do it all from your FTP program (e.g. FileZila, Classic FTP, etc). So open up your FTP client program. First, identify your root directory. This is the folder titled or beginning with "www" -- and this is where you ultimately need to move that pesky crossdomain.xml. Now all you have to do is find it.'),
+        '#description' => t('Only .zip files are supported. Save to a public url: ') . file_create_url($directory) . "<br/>" . t('For running the skin selected, copy the file') . " <a href='http://plugins.longtailvideo.com/crossdomain.xml'>crossdomain.xml</a> " . t('to the root directory (e.g. http://www.mysite.it). You can do it all from your FTP program (e.g. FileZilla, Classic FTP, etc).'),
     );
 
 
@@ -234,7 +234,7 @@ function wimtvpro_admin() {
             '#size' => 100,
             '#maxlength' => 200,
             '#required' => FALSE,);
-        $form['fieldPayment']['htmlBilling']=array('#markup' => variable_get('htmltag3',t("Billing Adress")) );
+        $form['fieldPayment']['htmlBilling']=array('#markup' => variable_get('htmltag3',t("Billing Adsress")) );
         $form['fieldPayment']['billingAddress[street]'] = array('#type' => 'textfield',
             '#title' => t('Street'),
             '#default_value' => !empty($dati['billingAddress']['street']) ? $dati['billingAddress']['street'] : '',
@@ -366,7 +366,7 @@ function wimtvpro_admin_validate($form, &$form_state) {
     $arrayFile = explode(".", $file);
     if (!empty($file)) {
         if ($arrayFile[1] != "zip")
-            form_set_error("", t("This file isn not correct. Please upload a Zip file."));
+            form_set_error("", t("This file is not correct. Please upload a Zip file."));
         else {
             $validators = array(
                 'file_validate_extensions' => array('zip')

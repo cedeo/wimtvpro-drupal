@@ -12,6 +12,7 @@
 #  views/wimlive.php: n/a
 #  wimtvpro.sync.php: n/a
 #  wimtvpro.install: n/a
+#  required/plus.inc: n/a
 #  required/node_insert.inc: n/a
 #  required/content_fields.inc: n/a
 #  wimtvpro.info: n/a
@@ -19,7 +20,6 @@
 #  required/blocks.inc: n/a
 #  required/playlist.inc: n/a
 #  required/upload.inc: n/a
-#  required/plus.inc: n/a
 #  required/report.inc: n/a
 #  templates/report.php: n/a
 #  templates/help.php: n/a
@@ -31,7 +31,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-01-24 12:13+0100\n"
+"POT-Creation-Date: 2014-01-24 17:53+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -41,11 +41,11 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: wimtvpro.admin.php:45 required/registration.inc:60
-msgid "Username Wimtv"
+msgid "Username"
 msgstr ""
 
-#: wimtvpro.admin.php:54 required/registration.inc:68
-msgid "Password Wimtv"
+#: wimtvpro.admin.php:54;273 required/registration.inc:68
+msgid "Password"
 msgstr ""
 
 #: wimtvpro.admin.php:64
@@ -73,7 +73,7 @@ msgid "For running the skin selected, copy the file"
 msgstr ""
 
 #: wimtvpro.admin.php:103
-msgid "to the root directory (e.g. http://www.mysite.it). You can do it all from your FTP program (e.g. FileZila, Classic FTP, etc). So open up your FTP client program. First, identify your root directory. This is the folder titled or beginning with \"www\" -- and this is where you ultimately need to move that pesky crossdomain.xml. Now all you have to do is find it."
+msgid "to the root directory (e.g. http://www.mysite.it). You can do it all from your FTP program (e.g. FileZilla, Classic FTP, etc)."
 msgstr ""
 
 #: wimtvpro.admin.php:109
@@ -153,7 +153,7 @@ msgid "Vat Code"
 msgstr ""
 
 #: wimtvpro.admin.php:237
-msgid "Billing Adress"
+msgid "Billing Adsress"
 msgstr ""
 
 #: wimtvpro.admin.php:239;245
@@ -178,10 +178,6 @@ msgstr ""
 
 #: wimtvpro.admin.php:270
 msgid "Select if you want to stream live events with WimTV"
-msgstr ""
-
-#: wimtvpro.admin.php:273
-msgid "Password"
 msgstr ""
 
 #: wimtvpro.admin.php:275
@@ -217,7 +213,7 @@ msgid "Yes"
 msgstr ""
 
 #: wimtvpro.admin.php:369
-msgid "This file isn not correct. Please upload a Zip file."
+msgid "This file is not correct. Please upload a Zip file."
 msgstr ""
 
 #: wimtvpro.function.php:154;224
@@ -225,11 +221,11 @@ msgid "Remove"
 msgstr ""
 
 #: wimtvpro.function.php:158
-msgid "Add to My Streaming"
+msgid "Add to WimVod"
 msgstr ""
 
-#: wimtvpro.function.php:159
-msgid "Remove from My Streaming"
+#: wimtvpro.function.php:159;197
+msgid "Remove from WimVod"
 msgstr ""
 
 #: wimtvpro.function.php:205
@@ -240,16 +236,16 @@ msgstr ""
 msgid "Preview Video"
 msgstr ""
 
-#: wimtvpro.function.php:224 templates/wimlive.php:2 views/wimlive.php:279
+#: wimtvpro.function.php:224 templates/wimlive.php:2 views/wimlive.php:280
 msgid "Add"
 msgstr ""
 
 #: wimtvpro.function.php:372
-msgid "If you are not a WIMTV's member yet <a href='@url'>REGISTER</a> or You have not insert the credentials  <a href='@url2'>SIGN IN</a>"
+msgid "If you don't have a WimTV account <a href='@url'>REGISTER</a> | <a href='@url2'>LOGIN</a> with your WimTV credentials"
 msgstr ""
 
 #: wimtvpro.sync.php:18
-msgid "Sync: you can not establish a connection with Wimtv. Contact your administrator."
+msgid "Cannot establish a connection with WimTV. Contact WimTV support."
 msgstr ""
 
 #: wimtvpro.sync.php:121
@@ -277,7 +273,7 @@ msgid "Modify Event"
 msgstr ""
 
 #: wimtvpro.module:133
-msgid "WimTv Registration"
+msgid "WimTV Registration"
 msgstr ""
 
 #: wimtvpro.module:140
@@ -308,7 +304,7 @@ msgstr ""
 msgid "User identifier"
 msgstr ""
 
-#: wimtvpro.module:34
+#: wimtvpro.module:34 required/plus.inc:620
 msgid "WimTvPro"
 msgstr ""
 
@@ -533,11 +529,7 @@ msgid "Update"
 msgstr ""
 
 #: required/plus.inc:73 required/upload.inc:213
-msgid "Upload Successfully"
-msgstr ""
-
-#: required/plus.inc:620
-msgid "drgrandine"
+msgid "Upload successful"
 msgstr ""
 
 #: required/plus.inc:620
@@ -548,12 +540,12 @@ msgstr ""
 msgid "Personal Information"
 msgstr ""
 
-#: required/registration.inc:21 views/wimlive.php:181
-msgid "Name"
+#: required/registration.inc:21
+msgid "Fist Name"
 msgstr ""
 
 #: required/registration.inc:29
-msgid "Surname"
+msgid "Last Name"
 msgstr ""
 
 #: required/registration.inc:37
@@ -573,11 +565,11 @@ msgid "F"
 msgstr ""
 
 #: required/registration.inc:55
-msgid "Login Credential"
+msgid "Login Credentials"
 msgstr ""
 
 #: required/registration.inc:76
-msgid "Repeat Password Wimtv"
+msgid "Repeat Password"
 msgstr ""
 
 #: required/registration.inc:84
@@ -585,7 +577,19 @@ msgid "Terms of Use"
 msgstr ""
 
 #: required/registration.inc:85
-msgid "I have read and agree to the wim.tv&reg; <a target=\"new\" href=\"http://www.wim.tv/wimtv-webapp/term.do\">Terms of Service</a> and <a target=\"new\" href=\"http://www.wim.tv/wimtv-webapp/privacy.do\">Privacy Policies</a>"
+msgid "I have read and agree to the wim.tv"
+msgstr ""
+
+#: required/registration.inc:85
+msgid "Terms of Service"
+msgstr ""
+
+#: required/registration.inc:85
+msgid "and"
+msgstr ""
+
+#: required/registration.inc:85
+msgid "Privacy Policies"
 msgstr ""
 
 #: required/registration.inc:109
@@ -593,7 +597,7 @@ msgid "Register"
 msgstr ""
 
 #: required/registration.inc:151
-msgid "Registration Successfully"
+msgid "Successfully registered"
 msgstr ""
 
 #: required/registration.inc:162
@@ -641,11 +645,15 @@ msgid "Upload"
 msgstr ""
 
 #: required/upload.inc:166
-msgid "You must upload a file."
+msgid "Please upload a file"
 msgstr ""
 
 #: required/upload.inc:169
-msgid "You must write a title."
+msgid "Please add title"
+msgstr ""
+
+#: required/upload.inc:183
+msgid "Cannot obtain access to file"
 msgstr ""
 
 #: required/upload.inc:219;223
@@ -656,59 +664,63 @@ msgstr ""
 msgid "Read support Wimtv"
 msgstr ""
 
-#: templates/pricing.php:12
+#: templates/pricing.php:3
+msgid "Use of WimTV requires subscription to a monthly storage and bandwidth package"
+msgstr ""
+
+#: templates/pricing.php:15
 msgid "Bandwidth"
 msgstr ""
 
-#: templates/pricing.php:18
+#: templates/pricing.php:21
 msgid "Storage"
 msgstr ""
 
-#: templates/pricing.php:24
+#: templates/pricing.php:27
 msgid "Support"
 msgstr ""
 
-#: templates/pricing.php:31
+#: templates/pricing.php:34
 msgid "Hours of transmission(*)"
 msgstr ""
 
-#: templates/pricing.php:38
+#: templates/pricing.php:41
 msgid "Price/mo. for 1 Mo (**)"
 msgstr ""
 
-#: templates/pricing.php:49
+#: templates/pricing.php:52
 msgid "day left"
 msgstr ""
 
-#: templates/pricing.php:62
+#: templates/pricing.php:65
 msgid "(*) Assuming that video+audio payload is 1 Mbps"
 msgstr ""
 
-#: templates/pricing.php:63
+#: templates/pricing.php:66
 msgid "(**) VAT to be added"
 msgstr ""
 
-#: templates/pricing.php:65
+#: templates/pricing.php:68
 msgid "If before the end of the month you consume"
 msgstr ""
 
-#: templates/pricing.php:67
+#: templates/pricing.php:70
 msgid "80% of your package (either storage or bandwidth) you will be notified by email"
 msgstr ""
 
-#: templates/pricing.php:68
+#: templates/pricing.php:71
 msgid "100% of your package (either storage or bandwidth) you will be asked to upgrade to another package."
 msgstr ""
 
-#: templates/pricing.php:69
+#: templates/pricing.php:73
 msgid "Note that, if you stay within the usage limits of the Free Package, use of WimTV is free"
 msgstr ""
 
-#: templates/pricing.php:70
+#: templates/pricing.php:74
 msgid "If you license content and/or provide services in WimTV, revenue sharing will apply"
 msgstr ""
 
-#: templates/pricing.php:72
+#: templates/pricing.php:76
 msgid "Enjoy your WimTVPro plugin!"
 msgstr ""
 
@@ -733,7 +745,7 @@ msgid "viewer"
 msgstr ""
 
 #: templates/report.php:86
-msgid "You commercial packet"
+msgid "The Storage and Bandwidth Package you subscribed:"
 msgstr ""
 
 #: templates/report.php:87
@@ -753,11 +765,11 @@ msgid "Storage space"
 msgstr ""
 
 #: templates/report.php:96
-msgid "View Streams"
+msgid "Streams"
 msgstr ""
 
 #: templates/report.php:97
-msgid "View graphic"
+msgid "Chart"
 msgstr ""
 
 #: templates/report.php:104;112
@@ -776,7 +788,7 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: templates/report.php:117
+#: templates/report.php:117 views/wimlive.php:259
 msgid "Duration"
 msgstr ""
 
@@ -792,16 +804,20 @@ msgstr ""
 msgid "Return event list"
 msgstr ""
 
+#: views/wimlive.php:181
+msgid "Title"
+msgstr ""
+
 #: views/wimlive.php:182
-msgid "Name of the event"
+msgid "Title of the event"
 msgstr ""
 
 #: views/wimlive.php:191
-msgid "Set the event access"
+msgid "Enter the price for viewers to access the event"
 msgstr ""
 
 #: views/wimlive.php:192
-msgid "0 as free of charge or you can decide the price of access for each viewer (in &euro;)."
+msgid "Please set a price for viewing your event (set 0 for free of charge). Prices are expressed in €"
 msgstr ""
 
 #: views/wimlive.php:201
@@ -809,42 +825,42 @@ msgid "Url"
 msgstr ""
 
 #: views/wimlive.php:212
-msgid "Event Public or Private"
+msgid "Event status "
 msgstr ""
 
 #: views/wimlive.php:222
-msgid "Wound you like to Record this event?"
+msgid "Record event"
 msgstr ""
 
-#: views/wimlive.php:231
-msgid "Date of the event dd/mm/yy"
+#: views/wimlive.php:226
+msgid "Select \"Yes\" if you want to record your event. The recorded video will appear in WimBox"
 msgstr ""
 
-#: views/wimlive.php:241
-msgid "Start time"
+#: views/wimlive.php:232
+msgid "Start date dd/mm/yy"
 msgstr ""
 
 #: views/wimlive.php:242
+msgid "Start time"
+msgstr ""
+
+#: views/wimlive.php:243
 msgid "We recommend applying a tolerance on the start time to facilitate payment transactions to the viewers."
 msgstr ""
 
-#: views/wimlive.php:258
-msgid "Event duration"
-msgstr ""
-
-#: views/wimlive.php:268;508
+#: views/wimlive.php:269;509
 msgid "Edit"
 msgstr ""
 
-#: views/wimlive.php:368
-msgid "Event creatrion failure. You need to enable \"Live Transmission\" on your wimtv's personal page"
+#: views/wimlive.php:369
+msgid "Event creation failure. You need to enable \"Live Transmission\" on your wimtv's personal page"
 msgstr ""
 
-#: views/wimlive.php:508
+#: views/wimlive.php:509
 msgid "Delete"
 msgstr ""
 
-#: views/wimlive.php:529
+#: views/wimlive.php:530
 msgid "No event scheduled at this time"
 msgstr ""
 

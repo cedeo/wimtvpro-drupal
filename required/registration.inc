@@ -18,7 +18,7 @@ function wimtvproRegistration($node, $form_state) {
 	);
 	$form['fieldSetPersonal']['nameWimtv'] = array(
 	'#type' => 'textfield',
-	'#title' => t('Name'),
+	'#title' => t('Fist Name'),
 	'#default_value' => !empty($node->nameWimtv) ? $node->nameWimtv : '',
 	'#size' => 100,
 	'#maxlength' => 200,
@@ -26,7 +26,7 @@ function wimtvproRegistration($node, $form_state) {
     );
 	$form['fieldSetPersonal']['surnameWimtv'] = array(
 	'#type' => 'textfield',
-	'#title' => t('Surname'),
+	'#title' => t('Last Name'),
 	'#default_value' => !empty($node->surnameWimtv) ? $node->surnameWimtv : '',
 	'#size' => 100,
 	'#maxlength' => 200,
@@ -52,7 +52,7 @@ function wimtvproRegistration($node, $form_state) {
     );
 	$form['fieldSetLogin'] = array (
 	'#type' => 'fieldset',
-	'#title' => t('Login Credential'),
+	'#title' => t('Login Credentials'),
 	);
 	
     $form['fieldSetLogin']['userWimtv'] = array(
@@ -73,7 +73,7 @@ function wimtvproRegistration($node, $form_state) {
 	);
 	$form['fieldSetLogin']['reppassWimtv'] = array(
 	'#type' => 'password',
-	'#title' => t('Repeat Password Wimtv'),
+	'#title' => t('Repeat Password'),
 	'#default_value' => '',
 	'#size' => 100,
 	'#maxlength' => 200,

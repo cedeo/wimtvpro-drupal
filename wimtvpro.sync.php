@@ -15,7 +15,7 @@
 
   if ($array_json_videos==NULL) {
 	if (!(isset($insert)))
-      form_set_error('', t("Sync: you can not establish a connection with Wimtv. Contact your administrator."));
+      form_set_error('', t("Cannot establish a connection with WimTV. Contact WimTV support."));
   }
   else {
     $i=0;

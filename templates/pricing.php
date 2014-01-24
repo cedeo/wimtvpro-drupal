@@ -1,4 +1,7 @@
 <?php echo $script ?>
+
+<p><?php echo t("Use of WimTV requires subscription to a monthly storage and bandwidth package");?></p>
+
 <table class='wp-list-table widefat fixed pages'>
     <thead>
     <tr>
@@ -43,7 +46,7 @@
     <tr class='alternate'>
         <td></td>
         <?php foreach ($packet_json -> items as $a) { ?>
-            <td><?php echo $a->dayDuration . " - " . $a->id ?><br/>
+            <td><?php // echo $a->dayDuration . " - " . $a->id ?><br/>
                 <?php if ($id_packet_user==$a->id) { ?>
                     <img  src='<?php echo base_path()  . drupal_get_path('module', 'wimtvpro') ?>/img/check.png' title='Checked'><br/>
                     <?php if ($a->id>1) echo $count_date . " " . t("day left") ?>
@@ -63,9 +66,10 @@
 <br/><strong> <?php echo t("(**) VAT to be added"); ?> </strong></p>
 
 <p><?php echo t("If before the end of the month you consume"); ?></p>
-
-<p><?php echo t("80% of your package (either storage or bandwidth) you will be notified by email"); ?></p>
-<p><?php echo t("100% of your package (either storage or bandwidth) you will be asked to upgrade to another package."); ?></p>
+<ul>
+  <ol>1. <?php echo t("80% of your package (either storage or bandwidth) you will be notified by email"); ?></ol>
+  <ol>2. <?php echo t("100% of your package (either storage or bandwidth) you will be asked to upgrade to another package."); ?></ol>
+</ul>
 <p><?php echo t("Note that, if you stay within the usage limits of the Free Package, use of WimTV is free"); ?></p>
 <p><?php echo t("If you license content and/or provide services in WimTV, revenue sharing will apply"); ?></p>
 

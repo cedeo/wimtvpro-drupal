@@ -70,7 +70,7 @@
                         },
                         eventName = 'message.' + message.id;
                     iframe = $(
-                        '<iframe style="display:none;" src="' +
+                        '<iframe style="display:none;" src="../../../../wimtvpro-drupal/jquery/progressbar/cors/' +
                             options.postMessage + '" name="' +
                             message.id + '"></iframe>'
                     ).bind('load', function () {
