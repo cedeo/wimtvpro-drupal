@@ -1,3 +1,4 @@
+<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <script type="text/javascript">
     jQuery(document).ready(function(){
 

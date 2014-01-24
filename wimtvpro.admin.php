@@ -42,7 +42,7 @@ function wimtvpro_admin() {
     //FieldsetConfig
     $form['fieldConfig']['userWimtv'] = array(
         '#type' => 'textfield',
-        '#title' => t('Username Wimtv'),
+        '#title' => t('Username'),
         '#default_value' => variable_get('userWimtv', 'username'),
         '#size' => 100,
         '#maxlength' => 200,
@@ -51,7 +51,7 @@ function wimtvpro_admin() {
 
     $form['fieldConfig']['passWimtv'] = array(
         '#type' => 'password',
-        '#title' => t('Password Wimtv'),
+        '#title' => t('Password'),
         '#default_value' => variable_get('passWimtv', 'password'),
         '#size' => 100,
         '#maxlength' => 200,
@@ -173,7 +173,7 @@ function wimtvpro_admin() {
     if ($view_page==""){
         $openFieldSet = FALSE;
         
-		$form['fieldLive'] = array('#type'=>'fieldset','#title'=>t('Configuration'),'#collapsible' => TRUE, '#collapsed' => TRUE);
+		
 		
 		if ($openFieldSet)
             $form['fieldPricing'] = array('#type'=>'fieldset','#title'=>t('Pricing'),'#collapsible' => TRUE, '#collapsed' => FALSE);
@@ -181,6 +181,8 @@ function wimtvpro_admin() {
             $form['fieldPricing'] = array('#type'=>'fieldset','#title'=>t('Pricing'),'#collapsible' => TRUE, '#collapsed' => TRUE);
         $form['fieldPayment'] = array('#type'=>'fieldset','#title'=>t('Monetisation'),'#collapsible' => TRUE, '#collapsed' => TRUE);
         
+		$form['fieldLive'] = array('#type'=>'fieldset','#title'=>t('Live'),'#collapsible' => TRUE, '#collapsed' => TRUE);
+		
         //$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>t('Personal Info'),'#collapsible' => TRUE, '#collapsed' => TRUE);
         $form['fieldFeatures'] = array('#type'=>'fieldset','#title'=>t('Features'),'#collapsible' => TRUE, '#collapsed' => TRUE);
 
@@ -188,6 +190,9 @@ function wimtvpro_admin() {
         $pricing = wimtvpro_callPricing();
         $form['fieldPricing']['htmlFrame'] = array('#markup' => variable_get('htmltag3',$pricing) );
         //End fieldPricing
+
+
+	
 
         //fieldPayment
         

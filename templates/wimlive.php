@@ -1,3 +1,4 @@
+<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <?php echo l(t("Add") . " " . t("new event"), "admin/config/wimtvpro/wimlive/insert") ?>
 <table id='tableLive'>
     <thead>

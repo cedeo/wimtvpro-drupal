@@ -69,5 +69,5 @@
 <p><?php echo t("Note that, if you stay within the usage limits of the Free Package, use of WimTV is free"); ?></p>
 <p><?php echo t("If you license content and/or provide services in WimTV, revenue sharing will apply"); ?></p>
 
-<p><strong>Enjoy your WimTVPro plugin!</strong></p>
+<p><strong><?php echo t("Enjoy your WimTVPro plugin!"); ?></strong></p>
 

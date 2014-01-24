@@ -1,3 +1,4 @@
+<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <?php
 
 function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {

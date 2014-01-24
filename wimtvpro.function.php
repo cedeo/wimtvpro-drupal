@@ -194,7 +194,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     $form = "<div class='formVideo'>" . $form_st . "</div>";
   }
   else {
-    $my_media .= "<span class='icon_RemoveshowtimeInto' title='Remove to My Streaming' id='" . $showtime_identifier . "'></span>";
+    $my_media .= "<span class='icon_RemoveshowtimeInto' title='" . t("Remove to My Streaming") . "' id='" . $showtime_identifier . "'></span>";
     $my_media .= "<span class='icon_moveThumbs' title='Change Position'></span>";
     $my_media .= "<span class='icon_viewVideo' rel='" . $view_video_state . "' title='View Thumb in page and/or block'></span>";
   }

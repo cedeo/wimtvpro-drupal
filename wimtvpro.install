@@ -176,10 +176,10 @@ function wimtvpro_install() {
   $t_args = array('%name' => $content_type->name);
 
   if ($status == SAVED_UPDATED) { // update case
-    drupal_set_message($t('The content type %name has been updated.', $t_args));
+    drupal_set_message(t('The content type %name has been updated.', $t_args));
   }
   elseif ($status == SAVED_NEW) { // create case
-    drupal_set_message($t('The content type %name has been added.', $t_args));
+    drupal_set_message(t('The content type %name has been added.', $t_args));
     watchdog('node', 'Added content type %name.', $t_args, WATCHDOG_NOTICE, l($t('view'), 'admin/structure/types'));
   }
 }
