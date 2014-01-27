@@ -92,7 +92,7 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
 }
 
 //Request list of thumbs
-function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$playlist,$st_license) {
+function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page, $playlist, $st_license, $is_playlist=false) {
     $remove = "";
 
     if (drupal_strlen($record_new -> title) > 20) {
@@ -161,7 +161,10 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
                     "rmshowtime_style" => $rmshowtime_style,
                     "addshowtime_class" => $class_a,
                     "addshowtime_style" => $addshowtime_style);
-    return render_template('templates/table_row.php', $params);
+    if (!$is_playlist)
+        return render_template('templates/table_row.php', $params);
+    else
+        return render_template('templates/playlist_row.php', $params);
 }
 
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned
@@ -287,10 +290,10 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
     foreach ($array_videos_new_drupal  as $record_new) {
 	  if ($showtime) {
 	    if ((isset($st_license[$record_new->showtimeIdentifier])) && ($st_license[$record_new->showtimeIdentifier] !="PAYPERVIEW"))
-          $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$playlist,$st_license);
+          $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$playlist,$st_license, true);
 	  }
 	  else {
-	    $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$playlist,$st_license);
+	    $my_media .= wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$playlist,$st_license, true);
 	  }
 	}
   }
