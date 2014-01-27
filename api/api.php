@@ -13,7 +13,7 @@ use \Httpful\Request;
 use \Httpful\Mime;
 
 class Api {
-    private $host = null;
+    public $host = null;
     public $username = null;
     public $liveHostsUrl;
     public $password = null;
@@ -23,8 +23,8 @@ class Api {
     function __construct($host, $username, $password) {
         $this->host = $host;
         $this->username = $username;
-        $this->liveHostsUrl = 'liveStream/' . $this->username . '/' . $this->username . '/hosts';
         $this->password = $password;
+        $this->liveHostsUrl = 'liveStream/' . $this->username . '/' . $this->username . '/hosts';
     }
 
     static function getApiAccessor() {
@@ -63,6 +63,12 @@ class Api {
     function deleteRequest($subUrl) {
         $url = $this->compileUrl($subUrl);
         return Request::delete($url);
+    }
+
+    function downloadRequest($subUrl) {
+        $request = Api::getRequest($subUrl);
+        $request->no_body = true;
+        return $request;
     }
 
     function authenticate($request) {

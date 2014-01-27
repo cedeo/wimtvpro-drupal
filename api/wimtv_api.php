@@ -238,7 +238,7 @@ function apiUpload($parameters) {
 
 function apiDownload($hostId) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest('videos/' . $hostId . '/download');
+    $request = $apiAccessor->downloadRequest('videos/' . $hostId . '/download');
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, "");
 }
