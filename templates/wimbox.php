@@ -2,6 +2,17 @@
 <div class='action'>
     <span class='icon_sync0' title='Syncronize'><a href="javascript:void(0)" class='button'><?php echo t("Synchronize");?></a></span>
 </div>
-<ul class='items' id='FALSE'>
-    <?php echo $thumbs ?>
-</ul>
+<table class='items' id='FALSE'>
+    <thead>
+        <tr>
+            <th>Video</th>
+            <th>Showtime</th>
+            <th>Download</th>
+            <th>View</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php echo $thumbs ?>
+    </tbody>
+</table>
