@@ -1,4 +1,24 @@
 <div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
+
+<div class="region region-help">
+    <div id="block-system-help" class="block block-system">
+    
+    
+        <div class="content">
+            <p> <?php echo t("This page lets you create and post live streaming events to your website.");?></p>
+            
+            <p> <?php echo t("You need an audio video encoder (producer) to stream an event captured by a camera. You have two choices:"); ?></p>
+            
+            <ol>
+            	<li><?php echo t("If you have an external video camera connected to your PC, install a video encoding software (e.g. Adobe Flash Media Live Encoder, Wirecast etc.)."); ?></li>
+                <li><?php echo t('If you broadcast directly from your web cam, click "Live now" icon to open the WimTV producer will open in a new browser tab. Remeber to keep it open during the whole transmission.'); ?></li>
+            </ol>
+            
+        </div>
+	</div>
+</div>
+
+
 <?php echo l(t("Add") . " " . t("new event"), "admin/config/wimtvpro/wimlive/insert") ?>
 <table id='tableLive'>
     <thead>

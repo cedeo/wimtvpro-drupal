@@ -293,7 +293,7 @@ div#view_graph div.cols div.col div.countview .barTraffic{
 
 div.wimtv-thumbnail {
 	background:#fff url('../img/empty.jpg') no-repeat center center;
-	position:relative;
+	position:relative; text-align:center;
 }
 div.wimtv-thumbnail img {
     min-height:140px; min-width:200px; background:#fff url('../img/empty.jpg') no-repeat center center;
