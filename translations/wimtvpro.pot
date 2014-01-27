@@ -18,22 +18,25 @@
 #  required/content_fields.inc: n/a
 #  wimtvpro.info: n/a
 #  wimtvpro.js: n/a
+#  embedded/video.php: n/a
+#  required/embedded.inc: n/a
+#  templates/report.php: n/a
+#  views/wimlive.php: n/a
+#  required/upload.inc: n/a
 #  required/blocks.inc: n/a
 #  required/playlist.inc: n/a
-#  required/upload.inc: n/a
 #  required/report.inc: n/a
-#  templates/report.php: n/a
 #  templates/help.php: n/a
 #  templates/playlist.php: n/a
-#  views/wimlive.php: n/a
 #  templates/pricing.php: n/a
+#  templates/producer.php: n/a
 #  templates/wimvod.php: n/a
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-01-27 19:07+0100\n"
+"POT-Creation-Date: 2014-01-27 19:21+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -442,6 +445,14 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: embedded/video.php:5 required/embedded.inc:99 templates/report.php:117 views/wimlive.php:259
+msgid "Duration"
+msgstr ""
+
+#: embedded/video.php:6 required/embedded.inc:101 required/upload.inc:115
+msgid "Category-Subcategory"
+msgstr ""
+
 #: required/blocks.inc:66
 msgid "Block User Profile"
 msgstr ""
@@ -524,6 +535,10 @@ msgstr ""
 
 #: required/content_fields.inc:816
 msgid "Add a new file"
+msgstr ""
+
+#: required/embedded.inc:98
+msgid "Preview"
 msgstr ""
 
 #: required/node_insert.inc:142
@@ -662,10 +677,6 @@ msgstr ""
 msgid "Upload video"
 msgstr ""
 
-#: required/upload.inc:115
-msgid "Category-Subcategory"
-msgstr ""
-
 #: required/upload.inc:122
 msgid "(Multiselect with CTRL)"
 msgstr ""
@@ -782,6 +793,10 @@ msgstr ""
 msgid "Enjoy your WimTVPro plugin!"
 msgstr ""
 
+#: templates/producer.php:3
+msgid "This page lets you view the video you're live streaming. Keep this page open during the whole transmission."
+msgstr ""
+
 #: templates/report.php:36;116
 msgid "Date"
 msgstr ""
@@ -844,10 +859,6 @@ msgstr ""
 
 #: templates/report.php:112
 msgid "Total"
-msgstr ""
-
-#: templates/report.php:117 views/wimlive.php:259
-msgid "Duration"
 msgstr ""
 
 #: templates/wimbox.php:5 templates/wimvod.php:4

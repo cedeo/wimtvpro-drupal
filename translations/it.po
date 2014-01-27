@@ -18,22 +18,25 @@
 #  required/content_fields.inc: n/a
 #  wimtvpro.info: n/a
 #  wimtvpro.js: n/a
+#  embedded/video.php: n/a
+#  required/embedded.inc: n/a
+#  templates/report.php: n/a
+#  views/wimlive.php: n/a
+#  required/upload.inc: n/a
 #  required/blocks.inc: n/a
 #  required/playlist.inc: n/a
-#  required/upload.inc: n/a
 #  required/report.inc: n/a
-#  templates/report.php: n/a
 #  templates/help.php: n/a
 #  templates/playlist.php: n/a
-#  views/wimlive.php: n/a
 #  templates/pricing.php: n/a
+#  templates/producer.php: n/a
 #  templates/wimvod.php: n/a
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-01-27 18:56+0100\n"
-"PO-Revision-Date: 2014-01-27 19:06+0100\n"
+"POT-Creation-Date: 2014-01-27 19:19+0100\n"
+"PO-Revision-Date: 2014-01-27 19:21+0100\n"
 "Last-Translator: Digitalissimo <simona@digitalissimo.it>\n"
 "Language-Team: Italian <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -303,7 +306,7 @@ msgstr ""
 
 #: wimtvpro.module:77
 msgid "Upload Video"
-msgstr "Upload Video"
+msgstr "Upload Vide"
 
 #: wimtvpro.module:78
 msgid "You can upload a new video"
@@ -509,6 +512,15 @@ msgstr "WIMTV"
 msgid "Save"
 msgstr "Salva"
 
+#: embedded/video.php:5 required/embedded.inc:99 templates/report.php:117
+#: views/wimlive.php:259
+msgid "Duration"
+msgstr "Durata"
+
+#: embedded/video.php:6 required/embedded.inc:101 required/upload.inc:115
+msgid "Category-Subcategory"
+msgstr "Categorie-Sottocategorie"
+
 #: required/blocks.inc:66
 msgid "Block User Profile"
 msgstr "Blocco profilo utente"
@@ -594,6 +606,10 @@ msgstr ""
 #: required/content_fields.inc:816
 msgid "Add a new file"
 msgstr "Aggiungi un nuovo file"
+
+#: required/embedded.inc:98
+msgid "Preview"
+msgstr "Anteprima"
 
 #: required/node_insert.inc:142
 msgid "The video isn't into WimVod"
@@ -740,10 +756,6 @@ msgstr "Descrizione video"
 msgid "Upload video"
 msgstr "Upload video"
 
-#: required/upload.inc:115
-msgid "Category-Subcategory"
-msgstr "Categorie-Sottocategorie"
-
 #: required/upload.inc:122
 msgid "(Multiselect with CTRL)"
 msgstr "(Seleziona multipla con CTRL)"
@@ -885,6 +897,14 @@ msgstr ""
 msgid "Enjoy your WimTVPro plugin!"
 msgstr "Goditi WimTVPro!"
 
+#: templates/producer.php:3
+msgid ""
+"This page lets you view the video you're live streaming. Keep this page open "
+"during the whole transmission."
+msgstr ""
+"In questa pagina è possibile visualizzare il video che si sta trasmettendo "
+"in diretta. Tenerlo aperto durante tutta la trasmissione."
+
 #: templates/report.php:36;116
 msgid "Date"
 msgstr "Data"
@@ -948,10 +968,6 @@ msgstr "Visualizzatori contemporanei"
 #: templates/report.php:112
 msgid "Total"
 msgstr "Totale"
-
-#: templates/report.php:117 views/wimlive.php:259
-msgid "Duration"
-msgstr "Durata"
 
 #: templates/wimbox.php:5 templates/wimvod.php:4
 msgid "Synchronize"
