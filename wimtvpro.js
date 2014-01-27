@@ -292,12 +292,12 @@ jQuery(document).ready(function(){
 			context: this,
 			url:  wimtvpro_checkCleanUrl("admin/config/wimtvpro/","wimtvproCallSync",""),
 			dataType: "html",
-			data: {sync:true,showtime:jQuery("ul.items").attr("id")},
+			data: {sync:true,showtime:jQuery("table.items").attr("id")},
 			type: "GET",
 			beforeSend: function(){
 				jQuery(this).removeClass();
 				jQuery(this).addClass("icon_sync1");
-				jQuery("ul.items li").remove();
+				jQuery("table.items tbody tr").remove();
 			},
 			complete: function(){
 				jQuery(this).removeClass();
@@ -305,7 +305,7 @@ jQuery(document).ready(function(){
 			},
 			success: function(response) {
 
-				jQuery("ul.items").html(response);
+				jQuery("table.items tbody").html(response);
 				jQuery("a.viewThumb").click( function(){
                   jQuery(this).colorbox({href:jQuery(this).attr("id")});
                 });
