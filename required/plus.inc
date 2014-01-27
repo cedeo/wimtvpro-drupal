@@ -70,7 +70,7 @@ function wimtvpro_upload_submit($form, &$form_state) {
     $arrayjsonst = json_decode($response);
 
     if (isset($arrayjsonst->contentIdentifier)) {
-        drupal_set_message( t("Upload Successfully") );
+        drupal_set_message( t("Upload successful") );
         $query = db_query("INSERT INTO {wimtvpro_videos} (uid,contentidentifier,mytimestamp,position,state, viewVideoModule,status,acquiredIdentifier,urlThumbs,category,title,duration,showtimeIdentifier) VALUES (
     '" . variable_get("userWimtv") . "','" . $arrayjsonst->contentIdentifier . "','" . time() . "',0,'','3','OWNED','','','','" . $titlefile . "','','')");
         $insert = TRUE;
@@ -617,7 +617,7 @@ function wimtvpro_insert_videoapp ($contentid){
 
         $vid = wimtvproplus_return($contentid,'vid');
 
-        watchdog('drgrandine', 'Video vid is: %vid', array('%vid' => $vid), WATCHDOG_DEBUG);
+        watchdog('WimTvPro', 'Video vid is: %vid', array('%vid' => $vid), WATCHDOG_DEBUG);
 
     } else {
         $vid = "";

@@ -6,19 +6,17 @@ div.action {
 div.action span {
 	height: 40px;
 	margin: 0 10px 0 0;
-	padding: 0 0 0 45px;
 	float: left;
 	display: block;
 }
 div.action .icon_sync0 {
-	background: transparent url('../img/3_sync.gif') no-repeat center left;
 	cursor: pointer;
 }
 div.action .icon_sync1 {
-	background: transparent url('../img/3.gif') no-repeat center left;
+	background: transparent url('../img/7uo1osj.gif') no-repeat center left;
 }
 div.action .icon_sync2 {
-	background: transparent url('../img/3.gif') no-repeat center left;
+	background: transparent url('../img/7uo1osj.gif') no-repeat center left;
 }
 div.action .icon_save {
 	background: transparent url('../img/save.gif') no-repeat center left;
@@ -407,3 +405,15 @@ div.sortable1{  height:500px; min-height:500px; height:auto !important;}
 
 div.embeddedCode{ clear:both; width:100%; margin:10px;}
 div.embeddedCode textarea{ width:80%; color:#999; font-size:12px; height:90px;}
+
+
+div.help {
+	float: right;
+	font-size: 14px;
+	background: transparent url('../img/help.png') no-repeat center left;
+	position: absolute; right:0;
+	padding: 10px 0 10px 36px;
+}
+div.help a{
+	width:100%; height:100%;
+}

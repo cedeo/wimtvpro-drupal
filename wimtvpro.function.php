@@ -155,8 +155,8 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
       $my_media .= "<div class='icon'>";
   if ((!$showtime) || (trim($showtime)=="FALSE")) {
     $id  = "";
-    $title_add = t("Add to My Streaming");
-    $title_remove = t("Remove from My Streaming");
+    $title_add = t("Add to WimVod");
+    $title_remove = t("Remove from WimVod");
     if ($state!="") {
       //The video is into My Streaming
       $id= "id='" . $showtime_identifier . "'";
@@ -194,7 +194,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     $form = "<div class='formVideo'>" . $form_st . "</div>";
   }
   else {
-    $my_media .= "<span class='icon_RemoveshowtimeInto' title='Remove to My Streaming' id='" . $showtime_identifier . "'></span>";
+    $my_media .= "<span class='icon_RemoveshowtimeInto' title='" . t("Remove from WimVod") . "' id='" . $showtime_identifier . "'></span>";
     $my_media .= "<span class='icon_moveThumbs' title='Change Position'></span>";
     $my_media .= "<span class='icon_viewVideo' rel='" . $view_video_state . "' title='View Thumb in page and/or block'></span>";
   }
@@ -369,7 +369,7 @@ function wimtvpro_getThumbs_playlist($list,$showtime=FALSE, $private=TRUE, $inse
 function wimtvpro_alert_reg() {
     //If user isn't registered or had not insert user and password
     if ((variable_get("userWimtv")=="username") && (variable_get("passWimtv")=="password")){
-        return t("If you are not a WIMTV's member yet <a href='@url'>REGISTER</a> or You have not insert the credentials  <a href='@url2'>SIGN IN</a>",array('@url' => url('admin/config/wimtvpro/registration'),'@url2' => url('admin/config/wimtvpro')));
+        return t("If you don't have a WimTV account <a href='@url'>REGISTER</a> | <a href='@url2'>LOGIN</a> with your WimTV credentials",array('@url' => url('admin/config/wimtvpro/registration'),'@url2' => url('admin/config/wimtvpro')));
     } else {
         return "";
     }

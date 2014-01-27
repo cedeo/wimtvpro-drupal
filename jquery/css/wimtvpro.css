@@ -2,12 +2,12 @@
 //.icon_sync0{display:none!important;}
 .field_upload{float:left;color:red;}
 .icon_remove {
-	background: transparent url('../img/remove.png') no-repeat center center;
+	background: transparent url('../../../wimtvpro-drupal/jquery/img/remove.png') no-repeat center center;
 	width:20px; height:20px; display:block;  cursor:pointer;
 }
 
 .titlevideo .icon_modTitleVideo {
-	background: transparent url('../img/mod.png') no-repeat center center; float: left!important; width:20px; height:20px;  cursor:pointer;
+	background: transparent url('../../../wimtvpro-drupal/jquery/img/mod.png') no-repeat center center; float: left!important; width:20px; height:20px;  cursor:pointer;
 }
 .titlevideo .icon_savemodTitleVideo {
   display:none; cursor:pointer;  font-weight:bold; font-size:10px; padding:10px 0 0 5px;
@@ -30,7 +30,7 @@ border: 1px solid #e4e4e4;
 border-bottom: 1px solid #b4b4b4;
 border-left-color: #d2d2d2;
 border-right-color: #d2d2d2;
-background: url(images/buttons.png) 0 0 repeat-x!important;
+background: url(../../../wimtvpro-drupal/jquery/css/images/buttons.png) 0 0 repeat-x!important;
 -moz-border-radius: 20px;
 -webkit-border-radius: 20px;
 border-radius: 20px;
@@ -41,10 +41,10 @@ width:130px; height:89px;
 text-align:center;
 }
 #view_video_add  td.video div.none, div.fieldWimTvNone{
-width:130px; height:89px;  background: transparent url('../img/not.png') no-repeat center center;
+width:130px; height:89px;  background: transparent url('../../../wimtvpro-drupal/jquery/img/not.png') no-repeat center center;
 }
 #view_video_add  td.video img{
-width:130px; height:89px; background: transparent url('../img/not.png') no-repeat center center;
+width:130px; height:89px; background: transparent url('../../../wimtvpro-drupal/jquery/img/not.png') no-repeat center center;
 }
 
 .action #progressbar #percent {padding: 0;text-align:center; z-index:1; position:absolute; width:100%;}
@@ -75,7 +75,7 @@ width:130px; height:89px; background: transparent url('../img/not.png') no-repea
 .action  .bar {
     border: 0;  
     height: 15px;  
-	background:#A1C969 url("../img/7uo1osj.gif") repeat-x left center;
+	background:#A1C969 url("../../../wimtvpro-drupal/jquery/img/7uo1osj.gif") repeat-x left center;
 	   -webkit-border-top-right-radius: 20px;
 	-webkit-border-bottom-right-radius: 20px;
 	       -moz-border-radius-topright: 20px;

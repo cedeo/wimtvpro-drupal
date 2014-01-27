@@ -1,3 +1,4 @@
+<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <?php
 
 function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
@@ -82,8 +83,8 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
         </fieldset>
     </form>
 </div>
-<p><?php echo t("You commercial packet") ?>:
-    <b><?php echo $namePacket ?></b> - <a href='?page=WimTvPro&pack=1&return=WimTVPro_Report'><?php echo t("Change") ?></a>
+<p><?php echo t("The Storage and Bandwidth Package you subscribed:") ?>:
+    <b><?php echo $namePacket ?></b> - <a href='../../wimtvpro-drupal/templates/?page=WimTvPro&pack=1&return=WimTVPro_Report'><?php echo t("Change") ?></a>
 </p>
 <?php if ($traffic == "") { ?>
     <p><?php echo t("You did not generate any traffic in this period") ?></p>
@@ -92,8 +93,8 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
 <p><?php echo t("Storage space") . ": " . $byteToMbS ?></p>
 <div class="summary">
     <div class="tabs">
-        <span id="stream" class="active"><?php echo  t("View Streams") ?></span>
-        <span id="graph"><?php echo t("View graphic") ?></span>
+        <span id="stream" class="active"><?php echo  t("Streams") ?></span>
+        <span id="graph"><?php echo t("Chart") ?></span>
     </div>
     <div id="view_stream" class="view">
         <h3><?php echo $title_streams ?></h3>

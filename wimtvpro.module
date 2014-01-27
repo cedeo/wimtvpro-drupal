@@ -31,38 +31,36 @@ function wimtvpro_menu() {
     $items = array();
     $items['admin/config/wimtvpro'] =
         array(
-            'title' => 'Wimtv configuration',
-            'description' => 'On this module config url for Api Wimtv',
+            'title' => 'WimTvPro',
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_admin'),
             'access arguments' => array('administer users'),
         );
+		
+		
     $items['admin/config/wimtvpro/wimbox'] =
         array(
             'title' => 'WimBox',
-            'description' => 'Allows admins manage media wimtv',
             'page callback' => 'wimtvpro_wimbox',
             'page arguments' => array('wimtvpro_wimbox'),
             'access arguments' => array('administer users'),
-            'weight' => 0
+            'weight' => 1
         );
     $items['admin/config/wimtvpro/wimvod'] =
         array(
             'title' => 'WimVod',
-            'description' => 'Allows admins manage streaming wimtv',
             'page callback' => 'wimtvpro_wimvod',
             'page arguments' => array('wimtvpro_wimvod'),
             'access arguments' => array('administer users'),
-            'weight' => 1
+            'weight' =>2
         );
     $items['admin/config/wimtvpro/playlist'] =
         array(
             'title' => 'Playlist',
-            'description' => 'Manage playlist of media wimtv',
             'page callback' => 'wimtvpro_playlist',
             'page arguments' => array('wimtvpro_playlist'),
             'access arguments' => array('administer users'),
-            'weight' => 1
+            'weight' => 3
         );
     $items['admin/config/wimtvpro/playlist/modify/%'] =
         array(
@@ -73,43 +71,40 @@ function wimtvpro_menu() {
         );
     $items['admin/config/wimtvpro/upload'] =
         array(
-            'title' => 'Upload Video',
-            'description' => 'Video import',
+            'title' => t('Upload Video'),
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_upload_form'),
             'access arguments' => array('administer users'),
-            'weight' => 2
+            'weight' => 0
         );
     $items['admin/config/wimtvpro/wimlive'] =
         array(
             'title' => 'WimLive',
-            'description' => 'Configure your live event',
             'page callback' => 'wimtvpro_wimlive',
             'page arguments' => array('wimtvpro_wimlive'),
             'access arguments' => array('administer users'),
-            'weight' => 3
+            'weight' => 4
         );
     $items['admin/config/wimtvpro/mypersonalBlock'] =
         array(
-            'title' => 'My personal detail',
-            'description' => 'Configuration personal detail Wimtv block',
+            'title' => t('My personal detail'),
+            'description' => 'Configuration personal detail of Wimtv block',
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_blockUser_config'),
             'access arguments' => array('administer users'),
-            'weight' => 4
+            'weight' => 5
         );
     $items['admin/config/wimtvpro/report'] =
         array(
-            'title' => 'Report',
-            'description' => 'My Report Wimtv',
+            'title' => t('Analytics'),
             'page callback' => 'wimtvpro_report',
             'page arguments' => array('wimtvpro_report'),
             'access arguments' => array('administer users'),
-            'weight' => 5
+            'weight' => 6
         );
     $items['admin/config/wimtvpro/wimlive/insert'] =
         array(
-            'title' => 'Add Event',
+            'title' => t('Add new Event'),
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_wimlive_form'),
             'access arguments' => array('administer users'),
@@ -126,7 +121,7 @@ function wimtvpro_menu() {
         );
     $items['admin/config/wimtvpro/wimlive/modify/%'] =
         array(
-            'title' => 'Modify Event',
+            'title' => t('Modify Event'),
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_wimlive_formModify', 5),
             'access arguments' => array('administer users'),
@@ -135,14 +130,14 @@ function wimtvpro_menu() {
     $items['admin/config/wimtvpro/registration'] =
         array(
             'file' => 'required/registration.inc',
-            'title' => 'Registration WimTv',
+            'title' =>  t('WimTV Registration'),
             'page arguments' => array('wimtvproRegistration'),
             'access callback' => TRUE,
             'type' =>  MENU_CALLBACK
         );
     $items['admin/config/wimtvpro/wimlive/delete/%'] =
         array(
-            'title' => 'Delete Event',
+            'title' => t('Delete Event'),
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_wimlive_delete', 5),
             'access arguments' => array('administer users'),
@@ -164,7 +159,7 @@ function wimtvpro_menu() {
         );
     $items['admin/config/wimtvpro/embedded'] =
         array(
-            'title' => 'Video Embedded',
+            'title' => t('Video Embedded'),
             'page callback' => 'wimtvpro_embedded',
             'page arguments' => array('wimtvpro_admin'),
             'access arguments' => array('administer users'),
@@ -172,7 +167,7 @@ function wimtvpro_menu() {
         );
     $items['admin/config/wimtvpro/embeddedAll'] =
         array(
-            'title' => 'Preview Embedded',
+            'title' => t('Preview Video'),
             'page callback' => 'wimtvpro_embeddedAll',
             'page arguments' => array('wimtvpro_admin'),
             'access arguments' => array('administer users'),
@@ -273,7 +268,6 @@ function wimtvpro_admin_paths_alter(&$paths) {
 function wimtvpro_schema_alter(&$schema) {
     $schema['wimtvpro_playlist'] =
         array(
-            'description' => t('Playlist Api WIMTV'),
             'fields' => array('id' => array('description' => t('Id of Playlist'),
                               'type' => 'serial',
                               'not null' => TRUE),
@@ -405,4 +399,3 @@ function wimtvpro_install_jquery($sortable=FALSE, $private=FALSE) {
     drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
     }
 }
-

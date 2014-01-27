@@ -1,3 +1,4 @@
+<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <script type="text/javascript">
     jQuery(document).ready(function(){
 
@@ -84,7 +85,7 @@
         <?php foreach ($playlists as $record) { ?>
             <tr>
                 <td class="playlist">
-                    <a href="<?php echo $base_path  . '?q=' . current_path() . '/modify/' . $record->id ?>">
+                    <a href="<?php echo $base_path  . '../../wimtvpro-drupal/templates/?q=' . current_path() . '/modify/' . $record->id ?>">
                         <span class="icon_viewPlay"></span>
                     </a>
                     <input class="title" type="text" value="<?php echo $record->name ?>"/>

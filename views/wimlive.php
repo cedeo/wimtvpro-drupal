@@ -178,8 +178,8 @@ function wimtvpro_form($type, $identifier) {
 
     $form['name'] = array(
         '#type' => 'textfield',
-        '#title' => t('Name'),
-        '#description' => t('Name of the event'),
+        '#title' => t('Title'),
+        '#description' => t('Title of the event'),
         '#default_value' => variable_get('name', $name),
         '#size' => 100,
         '#maxlength' => 200,
@@ -188,8 +188,8 @@ function wimtvpro_form($type, $identifier) {
 
     $form['payperview'] = array(
         '#type' => 'textfield',
-        '#title' => t('Set the event access'),
-        '#description' => t('0 as free of charge or you can decide the price of access for each viewer (in &euro;).'),
+        '#title' => t('Enter the price for viewers to access the event'),
+        '#description' => t('Please set a price for viewing your event (set 0 for free of charge). Prices are expressed in €'),
         '#default_value' => variable_get('payperview', $payperview),
         '#size' => 10,
         '#maxlength' => 5,
@@ -209,26 +209,27 @@ function wimtvpro_form($type, $identifier) {
 
     $form['Public'] = array(
         '#type' => 'radios',
-        '#title' => t('Event Public or Private'),
+        '#title' => t('Event status '),
         '#maxlength' => 5,
         '#options' => array( 'true' => 'Public', 'false' => 'Private'),
-        '#description' => 'If you want to index your event on the website <a target="_blank" href="http://wimlive.wim.tv">wimlive.wim.tv</a>, select the "Public" option.</div>',
+        '#description' => 'If you want to index your event on wimlive.wim.tv, and in WimView (WimTV mobile app) select "Public"',
         '#required' => TRUE,
         '#default_value' => $public_res,
     );
 
     $form['Record'] = array(
         '#type' => 'radios',
-        '#title' => t('Wound you like to Record this event?'),
+        '#title' => t('Record event'),
         '#maxlength' => 5,
         '#options' => array( 'true' => 'Yes', 'false' => 'No'),
         '#required' => TRUE,
+		 '#description' => t('Select "Yes" if you want to record your event. The recorded video will appear in WimBox'),
         '#default_value' => $recordEvent_res,
     );
 
     $form['Giorno'] = array(
         '#type' => 'textfield',
-        '#title' => t('Date of the event dd/mm/yy'),
+        '#title' => t('Start date dd/mm/yy'),
         '#size' => 10,
         '#maxlength' => 10,
         '#attributes' => array('class' => array('pickadate')),
@@ -255,7 +256,7 @@ function wimtvpro_form($type, $identifier) {
     );*/
     $form['Duration'] = array(
         '#type' => 'textfield',
-        '#title' => t('Event duration'),
+        '#title' => t('Duration'),
         '#default_value' => $durata,
         '#size' => 10,
         '#maxlength' => 10,
@@ -365,7 +366,7 @@ function wimtvpro_wimlive_validate($form, &$form_state) {
             }
         }
         else {
-            form_set_error("", t("Event creatrion failure. You need to enable \"Live Transmission\" on your wimtv's personal page"));
+            form_set_error("", t("Event creation failure. You need to enable \"Live Transmission\" on your wimtv's personal page"));
         }
     }
 }

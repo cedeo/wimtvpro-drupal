@@ -163,10 +163,10 @@ function wimtvpro_upload_validate($form, &$form_state) {
     $error = "";
 
     if (empty($file)) {
-        $error .= t('You must upload a file.');
+        $error .= t('Please upload a file');
     }
     if (empty($titlefile)) {
-        $error .=  t('You must write a title.');
+        $error .=  t('Please add title');
     }
 
     if ($error!="") {
@@ -180,7 +180,7 @@ function wimtvpro_upload_validate($form, &$form_state) {
     $unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
     $moved = @move_uploaded_file( $urlfile , $unique_temp_filename);
     if (!$moved) {
-        form_set_error('Upload', 'Cannot obtain access to file');
+        form_set_error('Upload', t('Cannot obtain access to file'));
         $error++;
     }
 
@@ -210,7 +210,7 @@ function wimtvpro_upload_validate($form, &$form_state) {
         $arrayjsonst = json_decode($response);
 
         if (isset($arrayjsonst->contentIdentifier)) {
-            drupal_set_message( t("Upload Successfully") );
+            drupal_set_message( t("Upload successful") );
             $query = db_query("INSERT INTO {wimtvpro_videos} (uid,contentidentifier,mytimestamp,position,state, viewVideoModule,status,acquiredIdentifier,urlThumbs,category,title,duration,showtimeIdentifier) VALUES (
     '" . variable_get("userWimtv") . "','" . $arrayjsonst->contentIdentifier . "','" . time() . "',0,'','3','OWNED|" .  $file . "','','','','" . $titlefile . "','','')");
 

@@ -18,7 +18,7 @@ function wimtvproRegistration($node, $form_state) {
 	);
 	$form['fieldSetPersonal']['nameWimtv'] = array(
 	'#type' => 'textfield',
-	'#title' => t('Name'),
+	'#title' => t('Fist Name'),
 	'#default_value' => !empty($node->nameWimtv) ? $node->nameWimtv : '',
 	'#size' => 100,
 	'#maxlength' => 200,
@@ -26,7 +26,7 @@ function wimtvproRegistration($node, $form_state) {
     );
 	$form['fieldSetPersonal']['surnameWimtv'] = array(
 	'#type' => 'textfield',
-	'#title' => t('Surname'),
+	'#title' => t('Last Name'),
 	'#default_value' => !empty($node->surnameWimtv) ? $node->surnameWimtv : '',
 	'#size' => 100,
 	'#maxlength' => 200,
@@ -52,12 +52,12 @@ function wimtvproRegistration($node, $form_state) {
     );
 	$form['fieldSetLogin'] = array (
 	'#type' => 'fieldset',
-	'#title' => t('Login Credential'),
+	'#title' => t('Login Credentials'),
 	);
 	
     $form['fieldSetLogin']['userWimtv'] = array(
 	'#type' => 'textfield',
-	'#title' => t('Username Wimtv'),
+	'#title' => t('Username'),
 	'#default_value' => !empty($node->userWimtv) ? $node->userWimtv : '',
 	'#size' => 100,
 	'#maxlength' => 200,
@@ -65,7 +65,7 @@ function wimtvproRegistration($node, $form_state) {
     );
 	$form['fieldSetLogin']['passWimtv'] = array(
 	'#type' => 'password',
-	'#title' => t('Password Wimtv'),
+	'#title' => t('Password'),
 	'#default_value' => !empty($node->passWimtv) ? $node->passWimtv : '',
 	'#size' => 100,
 	'#maxlength' => 200,
@@ -73,7 +73,7 @@ function wimtvproRegistration($node, $form_state) {
 	);
 	$form['fieldSetLogin']['reppassWimtv'] = array(
 	'#type' => 'password',
-	'#title' => t('Repeat Password Wimtv'),
+	'#title' => t('Repeat Password'),
 	'#default_value' => '',
 	'#size' => 100,
 	'#maxlength' => 200,
@@ -82,7 +82,7 @@ function wimtvproRegistration($node, $form_state) {
 	$form['fieldSetLogin']['terms'] = array(
 	'#type' => 'checkbox',
 	'#title' => t('Terms of Use'),
-	'#description' => t('I have read and agree to the wim.tv&reg; <a target="new" href="http://www.wim.tv/wimtv-webapp/term.do">Terms of Service</a> and <a target="new" href="http://www.wim.tv/wimtv-webapp/privacy.do">Privacy Policies</a>'),
+	'#description' => t('I have read and agree to the wim.tv') . '&reg; <a target="new" href="http://www.wim.tv/wimtv-webapp/term.do">' . t('Terms of Service') .  '</a> ' . t("and") . ' <a target="new" href="http://www.wim.tv/wimtv-webapp/privacy.do">' . t('Privacy Policies') . '</a>',
 	'#default_value' => '',
 	'#size' => 100,
 	'#maxlength' => 200,
@@ -148,7 +148,7 @@ function wimtvproRegistration_validate($form, &$form_state) {
 	  variable_set('userWimtv', $username);
 	  variable_set('passWimtv', $password);
 	  drupal_add_js('window.location =  "' .  url("admin/config/wimtvpro") . '"','inline');
-	  drupal_set_message( t("Registration Successfully") );
+	  drupal_set_message( t("Successfully registered") );
 	  
 	} else {
       $testo_errore = "";

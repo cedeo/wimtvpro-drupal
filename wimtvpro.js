@@ -85,7 +85,7 @@ jQuery(document).ready(function(){
 				if (stateView=="3") text += " selected";
 				text += '" id="3">Into block and page</p>';
 
-				text += '<div class="action"><span class="form_save">Save</span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
+				text += '<div class="action"><span class="form_save">' + Drupal.t("Save") + '</span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
 				return text;
 			},
 			onComplete: function(){
