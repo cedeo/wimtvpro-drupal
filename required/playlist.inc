@@ -16,10 +16,11 @@ function wimtvpro_playlist_mod($form_state, $id) {
     drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/colorbox/css/colorbox.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
     drupal_add_js("var url_pathPlugin ='" . $base_url . "';" , "inline");
+    //FIXME: sta roba fa schifo
     drupal_add_js('
 		jQuery(document).ready(function(){ 
 		
-				jQuery("a.wimtv-thumbnail").click( function(){
+				jQuery("div.wimtv-thumbnail").click( function(){
 				    var basePath = Drupal.settings.basePath;
 					
 				

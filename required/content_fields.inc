@@ -247,7 +247,7 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
       drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
       drupal_add_js('
       jQuery(document).ready(function(){ 
-		jQuery("a.wimtv-thumbnail").click( function(){
+		jQuery("div.wimtv-thumbnail").click( function(){
 		  var basePath = Drupal.settings.basePath;
 		  var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
 		  jQuery(this).colorbox({href:"' . url('admin/config/wimtvpro/')  . '" + url});

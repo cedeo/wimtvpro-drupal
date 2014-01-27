@@ -93,143 +93,6 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
 
 //Request list of thumbs
 function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $showtime, $private, $insert_into_page,$playlist,$st_license) {
-  /*$form = "";
-  $my_media= "";
-  $content_item_new = $record_new -> contentidentifier;
-  $state = $record_new -> state;
-  $position = $record_new -> position;
-  $status_array = explode("|",$record_new -> status);
-  $status = $status_array[0];
-  $urlThumbs = $record_new -> urlThumbs;
-  $urlPlay = $record_new -> urlPlay;
-  $acquider_id = $record_new -> acquiredIdentifier;
-  $view_video_state = $record_new -> viewVideoModule;
-  $duration = "";
-  if (drupal_strlen($record_new -> title) > 20) {
-    $title2 = drupal_substr($record_new -> title, 0, 20) .'...';
-    $title = $title2;
-  }
-  else {
-    $title = $record_new -> title;
-  }
-  $title = stripslashes($title);
-  $showtime_identifier = $record_new -> showtimeIdentifier;
-  if ((!isset($replace_video)) || ($replace_video == "")) {
-    $replace_video = apiGetThumbsVideo($content_item_new);
-	$license_type = "";
-	if (($showtime_identifier!="") && (count($st_license)>0)){
-		$license_type = $st_license[$showtime_identifier];
-	}
-    $isfound = false;
-	if (!strstr($replace_video, 'Not Found'))
-	  $isfound = true;
-    $thumbnail = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
-  }
-  $wimtvpro_url = "";
-  if ($isfound) {
-    if ((!$private) && (!$insert_into_page))
-      $wimtvpro_url = url("wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, array('absolute' => TRUE));
-    if ($insert_into_page)
-      $wimtvpro_url = url("wimtvpro/embedded/" . $content_item_new . "/" . $showtime_identifier, array('absolute' => TRUE));
-	$video  = "<a class='wimtv-thumbnail' href='" . $wimtvpro_url . "'>" . $replace_video . "</a>";
-  } else {
-    $replace_video = false;
-  }
-  if ($replace_video) {
-    include('wimtvpro.form.php');
-  if (!$insert_into_page) {
-    $my_media .= "<tr id='" . $content_item_new . "'><td>";
-  }
-  else
-    $my_media .= "<tr><td>";
-  $form = "";
-  if ($private)
-    $my_media .= "<div class='thumb ui-state-default'>";
-  else
-    $my_media .= "<div class='thumbPublic'>";
-  if ($private) {
-    $my_media .= "<div class='headerBox'>";
-  if ($state!="showtime")
-      $my_media .= "<span title='" . t("Remove") . "' class='icon_remove'></span>";
-      $my_media .= "<div class='icon'>";
-  if ((!$showtime) || (trim($showtime)=="FALSE")) {
-    $id  = "";
-    $title_add = t("Add to WimVod");
-    $title_remove = t("Remove from WimVod");
-    if ($state!="") {
-      //The video is into My Streaming
-      $id= "id='" . $showtime_identifier . "'";
-      if ($status=="ACQUIRED") {
-        $class_r = "AcqRemoveshowtime";
-        $class_a = "AcqPutshowtime";
-      }
-      else{
-        $class_r = "Removeshowtime";
-        $class_a = "Putshowtime";
-      }
-      $my_media .= "<span title='" . $title_remove . "' class='icon_" . $class_r . "' " . $id . "></span>";
-      $my_media .= "<span title='" . $title_add . "' class='add icon_" . $class_a . "' " . $id . " style='display:none;'></span>";
-    }
-    else {
-      //The video isn't into showtime
-      $id = "id='" . $acquider_id . "'";
-      if ($status=="ACQUIRED") {
-        $class_r = "AcqRemoveshowtime";
-        $class_a = "Acqputshowtime";
-      }
-      elseif ($status=="OWNED") {
-        $class_r = "Removeshowtime";
-        $class_a = "Putshowtime";
-      }
-      else {
-        $class_a ="";
-        $class_r ="";
-      }
-      if ($class_a!="") {
-        $my_media .= "<span title='" . $title_remove . "' class='icon_" . $class_r . "' " . $id . " style='display:none;'></span>";
-        $my_media .= "<span title='" . $title_add . "' class='add icon_" . $class_a . "' " . $id . " ></span>";
-      }
-    }
-    $form = "<div class='formVideo'>" . $form_st . "</div>";
-  }
-  else {
-    $my_media .= "<span class='icon_RemoveshowtimeInto' title='" . t("Remove from WimVod") . "' id='" . $showtime_identifier . "'></span>";
-    $my_media .= "<span class='icon_viewVideo' rel='" . $view_video_state . "' title='View Thumb in page and/or block'></span>";
-  }
-  $my_media .= "<span class='icon_download' id='" . $content_item_new . "' title='Download'></span>";
-  if ($showtime_identifier!="") {
-    $style_view = "";
-    $href_view = wimtvpro_checkCleanUrl("admin/config/wimtvpro/", "embedded/" . $content_item_new . "/" . $showtime_identifier);
-    $title_view = t("View Video");
-	$play=TRUE;
-  }
-  else {
-    $style_view = "";
-	if ($urlPlay!="") {
-      $href_view = wimtvpro_checkCleanUrl("admin/config/wimtvpro/", "embeddedAll/" . $content_item_new);
-      $play=TRUE;
-    }
-    else $play=FALSE;
-	$title_view = t("Preview Video");
-  }
-  if($play==TRUE)
-    $my_media .= "<a class='viewThumb' " . $style_view . " title='" . $title_view . "' href='#' id='" . $href_view . "'><span class='icon_view'></span></a>";
-    $my_media .= "	</div>" . $form . "<div class='loader'></div></div>";
-  }
-
-    if ($insert_into_page) {
-      if ($showtime_identifier!="")
-        $my_media .= "<div class='headerBox'><div class='icon'><a class='addThumb' href='#' id='" . $showtime_identifier . "'>" . t("Add") . "</a>  <a class='removeThumb' href='#' id='" . $showtime_identifier . "'>" . t("Remove") . "</a></div></div>";
-    }
-    $my_media .= $video . "<div class='title'>" . $title . "</div>";
-    if ($insert_into_page)
-      $my_media .= "W <input style='width:20px;' maxweight='3' class='w' type='text' value='" . variable_get("widthPreview") . "'>px  -  H <input style='width:20px;' maxweight='3' class='h' type='text' value='" . variable_get("heightPreview") . "'>px";
-    $my_media .= "</div> </td></tr>";
-    $position_new = $position;
-  }          */
-  //return $my_media;
-
-
     $remove = "";
 
     if (drupal_strlen($record_new -> title) > 20) {
@@ -246,9 +109,9 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
 
     if ($showtime_identifier) {
         $preview = url("wimtvpro/embedded/" . $contentidentifier . "/" . $showtime_identifier, array('absolute' => TRUE));
-        $remove = $contentidentifier;
     } else {
-        $preview = url("wimtvpro/embedded/" . $contentidentifier, array('absolute' => TRUE));
+        $preview = url("admin/config/wimtvpro/embeddedAll/" . $contentidentifier, array('absolute' => TRUE));
+        $remove = $contentidentifier;
     }
 
     $replace_video = apiGetThumbsVideo($contentidentifier);
@@ -276,11 +139,11 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     }
     if ($state!="") {
         //The video is into My Streaming
-        $publish_id = $showtime_identifier;
+        $publish_id = $status=="ACQUIRED" ? $acquired_id : $showtime_identifier;
         $rmshowtime_style = "";
         $addshowtime_style = "style='display: none;'";
     } else {
-        $publish_id = $acquired_id;
+        $publish_id = $status=="ACQUIRED" ? $acquired_id : $contentidentifier;
         $rmshowtime_style = "style='display: none;'";
         $addshowtime_style = "";
     }

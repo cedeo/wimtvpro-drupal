@@ -336,15 +336,11 @@ function wimtvpro_install_jquery($sortable=FALSE, $private=FALSE) {
       drupal_add_js('jQuery(document).ready(function(){
 
         jQuery("a.viewThumb").click( function(){
-                      var basePath = Drupal.settings.basePath;
-                      jQuery(this).colorbox({href:url_pathPlugin + jQuery(this).attr("id")});
+                      jQuery(this).colorbox({href: jQuery(this).attr("id")});
                     });
-                    jQuery("a.wimtv-thumbnail").click( function(){
-                        var basePath = Drupal.settings.basePath;
-                        if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
-                            var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-                            jQuery(this).colorbox({href:url_pathPlugin + url});
-                        }
+                    jQuery("div.wimtv-thumbnail").click( function(){
+                        var url = jQuery(this).parent().parent().children(".view").children("a.viewThumb").attr("id");
+                        jQuery(this).colorbox({href:url});
                     });
       });', 'inline');
 

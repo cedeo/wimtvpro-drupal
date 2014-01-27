@@ -36,7 +36,7 @@ jQuery(document).ready(function(){
 			type: "GET",
 			dataType: "html",
 			async: false,
-			data: "namefunction=RemoveVideo&id=" + element.parent().parent().attr("id") ,
+			data: "namefunction=RemoveVideo&id=" + element.attr("id") ,
 			beforeSend: function(){
 				element.parent().children(".headerBox").children(".icon").hide();
 				element.parent().children(".headerBox").children(".loader").show();
@@ -117,10 +117,10 @@ jQuery(document).ready(function(){
 						success: function(response) {
 							jQuery.colorbox.close();
 							element.parent().parent().children(".icon").children("span").attr("rel",state);
-						},
+						}
 					});
 				});
-			},
+			}
 		});
 	}
 
@@ -151,13 +151,13 @@ jQuery(document).ready(function(){
 				var result = json.result;
 				if (result=="SUCCESS"){
 					jQuery.colorbox.close();
-					element.parent().parent().children(".icon").children("span").hide();
-					element.parent().parent().children(".icon").children("span." + changeClass).show();
-					element.parent().parent().children(".icon").children("span." + changeClass).attr("id", json.showtimeIdentifier);
+                    element.closest("td").children("span").hide();
+                    element.closest("td").children("span." + changeClass).show();
+					element.closest("td").children("span." + changeClass).attr("id", json.showtimeIdentifier);
 
-					element.parent().parent().children(".icon").children("a.viewThumb").show();
+					element.closest("tr").children(".view").children("a.viewThumb").show();
 					url=  "admin/config/wimtvpro/embedded/" + id + "/" + json.showtimeIdentifier;
-					element.parent().parent().children(".icon").children("a.viewThumb").attr("id",url);
+					element.closest("tr").children(".view").children("a.viewThumb").attr("id",url);
 					element.parent().remove();
 				} else {
 					jQuery(this).parent().hide();
@@ -173,7 +173,7 @@ jQuery(document).ready(function(){
 		});
 	}
 	function callViewForm(element){
-		element.parent().parent().children(".formVideo").fadeToggle("slow");
+		element.parent().children(".formVideo").fadeToggle("slow");
 	}
 	function callPutShowtime(element){
 		jQuery(element).colorbox({
@@ -203,10 +203,9 @@ jQuery(document).ready(function(){
 					jQuery(this).addClass("selected");
 				});
 				jQuery(".form_save").click(function(){
-					var namefunction,licenseType,paymentMode,ccType,pricePerView,pricePerViewCurrency,changeClass,coId,id ="";
-					var id = element.parent().parent().parent().parent("li").attr("id");
-					var icon = element.parent().parent().children(".icon");
-					var nomeclass = element.parent().parent().children(".icon").children("span.add").attr("class");
+					var namefunction,licenseType, paymentMode, ccType, pricePerView, pricePerViewCurrency, changeClass, coId, id ="";
+					var id = element.closest("tr").attr("id");
+					var nomeclass = element.parent().siblings("span.add").attr("class");
 					var thisclass = element.attr("class");
 					if (nomeclass == "add icon_Putshowtime") {
 						namefunction = "putST";
@@ -215,7 +214,7 @@ jQuery(document).ready(function(){
 					else if (nomeclass == "add icon_AcquiPutshowtime") {
 						namefunction = "putAcqST";
 						changeClass = "icon_AcqRemoveshowtime";
-						coId = "&acquiredId=" + element.attr("id");
+						coId = "&acquiredId=" + element.parent().siblings("span.add").attr("id");
 					}
 					if (thisclass.indexOf("free") >= 0){
 						licenseType ="TEMPLATE_LICENSE";
@@ -253,14 +252,14 @@ jQuery(document).ready(function(){
 				url:  wimtvpro_checkCleanUrl("admin/config/wimtvpro/","wimtvproCallAjax",""),
 				type: "GET",
 				dataType: "html",
-				data: "namefunction=" + namefunction + "&id=" + element.parent().parent().parent().parent().attr("id") + coId ,
+				data: "namefunction=" + namefunction + "&id=" + element.closest("tr").attr("id") + coId ,
 				beforeSend: function(){
-				element.parent().hide();
-				element.parent().parent().children(".loader").show();
+				//element.parent().hide();
+				//element.parent().parent().children(".loader").show();
 			},
 			complete: function(){
-				element.parent().show();
-				element.parent().parent().children(".loader").hide();
+				//element.parent().show();
+				//element.parent().parent().children(".loader").hide();
 			},
 			success: function(response) {
 				var json =  jQuery.parseJSON(response);
@@ -269,6 +268,7 @@ jQuery(document).ready(function(){
 					element.hide();
 					element.parent().children("." + changeClass).show();
 					element.parent().children("." + changeClass).attr("id", json.showtimeIdentifier);
+                    element.closest("tr").children("td.image").children("div").children("span").children(".icon_licence").hide();
 					if ((nomeclass == "icon_AcquiRemoveshowtime") || (nomeclass == "icon_Removeshowtime")) {
 						element.parent().children(".icon_moveThumbs").hide();
 						element.parent().children(".viewThumb").hide();
@@ -307,18 +307,11 @@ jQuery(document).ready(function(){
 
 				jQuery("ul.items").html(response);
 				jQuery("a.viewThumb").click( function(){
-				  var basePath = Drupal.settings.basePath;
-                  console.log(basePath);
-                  jQuery(this).colorbox({href:basePath + jQuery(this).attr("id")});
+                  jQuery(this).colorbox({href:jQuery(this).attr("id")});
                 });
-				jQuery("a.wimtv-thumbnail").click( function(){
-				    var basePath = Drupal.settings.basePath;
-                    console.log(basePath);
-                    if( jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").length  ) {
-						var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-						jQuery(this).colorbox({href:basePath + url});
-					}
-					
+				jQuery("div.wimtv-thumbnail").click( function(){
+                    var url = jQuery(this).parent().parent().children(".view").children("a.viewThumb").attr("id");
+                    jQuery(this).colorbox({href:url});
 				});
 				jQuery(".icon_Putshowtime,.icon_AcquiPutshowtime").click(function(){
                     callViewForm(jQuery(this));
