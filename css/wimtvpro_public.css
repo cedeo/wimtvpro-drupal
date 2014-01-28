@@ -50,7 +50,7 @@ ul.itemsInsert li {
 list-style: none;
 display: block;
 float: left;
-margin: 0 5px 10px 10px!Important;
+margin: 0 5px 10px 10px !important;
 border: 1px solid white;
 position: relative;
 text-align: center;
