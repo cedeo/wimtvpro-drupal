@@ -1,3 +1,4 @@
+<?php global $base_path ?>
 <div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <div id="page">	<h1>Producer</h1>
     <p><?php echo t("This page lets you view the video you're live streaming. Keep this page open during the whole transmission.");?></p>
@@ -8,7 +9,7 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function() {
-        var url_pathPlugin ="<?php echo drupal_get_path('module', 'wimtvpro') ?>";
+        var url_pathPlugin ="<?php echo $base_path . drupal_get_path('module', 'wimtvpro') ?>";
         var xiSwfUrlStr = url_pathPlugin  + "/jquery/swfObject/playerProductInstall.swf";
         console.log(xiSwfUrlStr );
         var flashvars = {};
