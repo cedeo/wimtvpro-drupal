@@ -362,7 +362,7 @@ ul.items_playlist {
 }
 ul.items_playlist li {
 	list-style: none;
-	display: block;
+	display: inline-block;
 	width:120px; height:120px!important;
 	margin: 0 5px 10px 0 !important;
 	padding:10px 0 0 0;
