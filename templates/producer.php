@@ -25,7 +25,7 @@
             producer = jQuery("#producer")[0];
             console.log(producer);
 
-            producer.setCredentials("<?php echo variable_get("userWimtv") ?>", "<?php echo variable_get("passWimtv") ?>");
+            producer.setCredentials("<?php echo variable_get("userWimtv") ?>", "<?php echo $live_pwd ?>");
             producer.setUrl(decodeURIComponent("<?php echo $url ?>"));
             producer.setStreamName("<?php echo $stream_name ?>");
             producer.setStreamWidth(640);

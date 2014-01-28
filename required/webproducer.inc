@@ -22,7 +22,9 @@ function wimtvproWebProducer() {
     }
     $url = $stream_url[0] . "/" . $url;
     $url = substr($url, 0, -1);
+    $user = json_decode(apiGetProfile());
+    $live_password = $user->liveStreamPwd;
 
-    $args = array('url' => $url, 'stream_name' => $stream_name);
+    $args = array('url' => $url, 'stream_name' => $stream_name, 'live_pwd' => $live_password);
     return render_template('templates/producer.php', $args);
 }
