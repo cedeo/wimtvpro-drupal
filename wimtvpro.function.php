@@ -161,9 +161,13 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
                     "rmshowtime_style" => $rmshowtime_style,
                     "addshowtime_class" => $class_a,
                     "addshowtime_style" => $addshowtime_style);
-    if (!$is_playlist)
-        return render_template('templates/table_row.php', $params);
-    else
+    if (!$is_playlist){
+		if ($private)
+        	return render_template('templates/table_row.php', $params);
+    	else
+			return render_template('templates/box_row.php', $params);
+	}
+	else
         return render_template('templates/playlist_row.php', $params);
 }
 

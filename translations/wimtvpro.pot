@@ -36,7 +36,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-01-27 19:21+0100\n"
+"POT-Creation-Date: 2014-01-28 11:54+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Video Embedded"
 msgstr ""
 
-#: wimtvpro.module:176 templates/playlist_row.php:24
+#: wimtvpro.module:176 templates/playlist_row.php:4
 msgid "Preview Video"
 msgstr ""
 
@@ -441,8 +441,12 @@ msgstr ""
 msgid "WIMTV"
 msgstr ""
 
-#: wimtvpro.js:0
+#: wimtvpro.js:0;0;0;0
 msgid "Save"
+msgstr ""
+
+#: wimtvpro.js:0
+msgid "Do you want to publish your videos for free?"
 msgstr ""
 
 #: embedded/video.php:5 required/embedded.inc:99 templates/report.php:117 views/wimlive.php:259
@@ -723,14 +727,6 @@ msgstr ""
 
 #: templates/playlist.php:100
 msgid "Action"
-msgstr ""
-
-#: templates/playlist_row.php:14
-msgid "Remove from WimVod"
-msgstr ""
-
-#: templates/playlist_row.php:30
-msgid "Remove"
 msgstr ""
 
 #: templates/pricing.php:3

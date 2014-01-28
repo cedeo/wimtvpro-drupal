@@ -8,13 +8,17 @@ ul.itemsPublic li {
 	list-style: none;
 	display: block; margin: 0 10px 0 0;
 	float: left; width:185px;
-	border: 1px solid #FFF;
 	position: relative;
 	text-align: center;
 	font-size: 10px;
 }
+
+
+ul.itemsPublic li img{
+	width:100%;
+}
 .sidebar ul.itemsPublic li {
-width: 100%;
+	width: 100%;
 	margin: 0;
 }
 .sidebar ul.itemsPublic li a {
