@@ -157,18 +157,19 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
                     "contentid" => $contentidentifier,
                     "form_video" => render_template("wimtvpro.form.php"),
                     "publish_id" => $publish_id,
+                    "is_field" => $insert_into_page,
                     "rmshowtime_class" => $class_r,
                     "rmshowtime_style" => $rmshowtime_style,
                     "addshowtime_class" => $class_a,
                     "addshowtime_style" => $addshowtime_style);
     if (!$is_playlist){
 		if ($private)
-        	return render_template('templates/table_row.php', $params);
-    	else
-			return render_template('templates/box_row.php', $params);
-	}
-	else
+            return render_template('templates/table_row.php', $params);
+        else
+            return render_template('templates/box_row.php', $params);
+	} else {
         return render_template('templates/playlist_row.php', $params);
+    }
 }
 
 //MY STREAMING: This API allows to list videos in my streaming public area. Even details may be returned

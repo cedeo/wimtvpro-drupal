@@ -78,20 +78,20 @@ function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
           jQuery(".wimtv-thumbnail").colorbox({});
 
           jQuery("a.addThumb").click(function(){
-              var text = "[wimtv]" + jQuery(this).attr("id") + "|" + jQuery(this).parent().parent().parent().children(".w").val() + "|" + jQuery(this).parent().parent().parent().children(".h").val() + "[/wimtv]";
-              jQuery(this).parent().parent().children(".w").attr("disabled", "disabled");
-              jQuery(this).parent().parent().children(".h").attr("disabled", "disabled");
+              var text = "[wimtv]" + jQuery(this).attr("id") + "|" + jQuery(this).parent().children("p").children(".w").val() + "|" + jQuery(this).parent().children("p").children(".h").val() + "[/wimtv]";
+              jQuery(this).parent().children("p").children(".w").attr("disabled", "disabled");
+              jQuery(this).parent().children("p").children(".h").attr("disabled", "disabled");
               jQuery("' . $field_to_insert . '").insertAtCaret(text);
-              jQuery(this).parent().parent().parent().addClass("select");
+              jQuery(this).parent().addClass("select");
           });
           jQuery("a.removeThumb").click(function(){
               var testo = jQuery("#edit-body-und-0-value").val() + "";
-              testo = testo.replace("[wimtv]" + jQuery(this).attr("id") + "|" + jQuery(this).parent().parent().parent().children(".w").val() + "|" + jQuery(this).parent().parent().parent().children(".h").val() + "[/wimtv]","");
-              jQuery(this).parent().parent().children(".w").removeAttr("disabled");
-              jQuery(this).parent().parent().children(".h").removeAttr("disabled");
+              testo = testo.replace("[wimtv]" + jQuery(this).attr("id") + "|" + jQuery(this).parent().children("p").children(".w").val() + "|" + jQuery(this).parent().children("p").children(".h").val() + "[/wimtv]","");
+              jQuery(this).parent().children("p").children(".w").removeAttr("disabled");
+              jQuery(this).parent().children("p").children(".h").removeAttr("disabled");
 
               jQuery("' . $field_to_insert . '").val(testo);
-              jQuery(this).parent().parent().parent().removeClass("select");
+              jQuery(this).parent().removeClass("select");
           });
       });', 'inline');
 

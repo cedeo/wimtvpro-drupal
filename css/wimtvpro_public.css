@@ -70,16 +70,21 @@ ul.itemsInsert li div.thumbPublic {
 ul.itemsInsert li div.thumbPublic div.headerBox {border-top: 1px solid #000;
 height: 15px;}
 
-ul.itemsInsert li div.select {
+ul.itemsInsert li {
+    padding: 5px;
+    border: 1px solid lightgrey;
+}
+
+ul.itemsInsert li.select {
 	background-color: aqua;
 }
 ul.itemsInsert li div.thumbPublic .removeThumb {
 	display: none;
 }
-ul.itemsInsert li div.select .removeThumb {
+ul.itemsInsert li.select .removeThumb {
 	display: block;
 }
-ul.itemsInsert li div.select .addThumb {
+ul.itemsInsert li.select .addThumb {
 	display: none;
 }
 ul.itemsInsert li div.thumbPublic a,
