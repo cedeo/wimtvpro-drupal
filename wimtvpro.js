@@ -1,5 +1,5 @@
 jQuery(document).ready(function(){
-	jQuery("a.viewThumbPlaylist").click( function(){
+	jQuery("a.viewThumbPlaylist, a.viewThumbsPublic").click( function(){
 	  jQuery(this).colorbox({href:jQuery(this).attr("id")});
 	});
 	
