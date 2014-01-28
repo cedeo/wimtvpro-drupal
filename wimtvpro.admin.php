@@ -269,7 +269,7 @@ function wimtvpro_admin() {
             '#required' => FALSE,);
         $form['fieldLive']['liveStreamPwd'] = array('#type' => 'password',
             '#title' => t('Password'),
-            '#default_value' => !empty($dati['liveStreamPwd']) ? $dati['liveStreamPwd'] : "",
+            '#attributes' => array('value' => !empty($dati['liveStreamPwd']) ? $dati['liveStreamPwd'] : ""),
             '#description' => t('A password is required for live streaming (in order to authenticate yourself with the streaming server).'),
             '#required' => FALSE,);
         $form['fieldLive']['eventResellerEnabled'] = array('#type' => 'checkbox',
