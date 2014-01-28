@@ -35,8 +35,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-01-27 19:19+0100\n"
-"PO-Revision-Date: 2014-01-27 19:21+0100\n"
+"POT-Creation-Date: 2014-01-28 11:54+0100\n"
+"PO-Revision-Date: 2014-01-28 11:58+0100\n"
 "Last-Translator: Digitalissimo <simona@digitalissimo.it>\n"
 "Language-Team: Italian <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -306,7 +306,7 @@ msgstr ""
 
 #: wimtvpro.module:77
 msgid "Upload Video"
-msgstr "Upload Vide"
+msgstr "Upload Video"
 
 #: wimtvpro.module:78
 msgid "You can upload a new video"
@@ -353,7 +353,7 @@ msgstr "Cancella eventi"
 msgid "Video Embedded"
 msgstr "Video Embedded"
 
-#: wimtvpro.module:176 templates/playlist_row.php:24
+#: wimtvpro.module:176 templates/playlist_row.php:4
 msgid "Preview Video"
 msgstr "Anteprima del video"
 
@@ -508,9 +508,13 @@ msgstr ""
 msgid "WIMTV"
 msgstr "WIMTV"
 
-#: wimtvpro.js:0
+#: wimtvpro.js:0;0;0;0
 msgid "Save"
 msgstr "Salva"
+
+#: wimtvpro.js:0
+msgid "Do you want to publish your videos for free?"
+msgstr "Vuoi pubblicare il tuo video gratuitamente?"
 
 #: embedded/video.php:5 required/embedded.inc:99 templates/report.php:117
 #: views/wimlive.php:259
@@ -602,6 +606,8 @@ msgid ""
 "<div class='action'><div id='progress'><div class='percent'></div><div "
 "class='bar' style='width: 0%;'></div></div></div>"
 msgstr ""
+"<div class='action'><div id='progress'><div class='percent'></div><div "
+"class='bar' style='width: 0%;'></div></div></div>"
 
 #: required/content_fields.inc:816
 msgid "Add a new file"
@@ -813,14 +819,6 @@ msgstr "Titolo"
 #: templates/playlist.php:100
 msgid "Action"
 msgstr "Azione"
-
-#: templates/playlist_row.php:14
-msgid "Remove from WimVod"
-msgstr "Rimuovi da WimVod"
-
-#: templates/playlist_row.php:30
-msgid "Remove"
-msgstr "Elimina"
 
 #: templates/pricing.php:3
 msgid ""

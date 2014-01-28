@@ -1,4 +1,8 @@
 jQuery(document).ready(function(){
+	jQuery("a.viewThumbPlaylist").click( function(){
+	  jQuery(this).colorbox({href:jQuery(this).attr("id")});
+	});
+	
     function hideAffiliateFields(state) {
         if (state) {
             jQuery(".form-item-companyName").show();
@@ -180,7 +184,7 @@ jQuery(document).ready(function(){
 			html:function(){
 				var thisclass = element.attr("class");
 				if (thisclass.indexOf("free") >= 0){
-					text = "<p>Do you want your video to be visible to all for free?</p><div class='action'><span class='form_save'>Save</span><span class='icon_sync2' style='display:none;'>Loading...</span></div>";
+					text = "<p>" + Drupal.t("Do you want to publish your videos for free?") + "</p><div class='action'><span class='form_save'><a class='button'>" + Drupal.t("Save") + "</a></span><span class='icon_sync2' style='display:none;'>Loading...</span></div>";
 				}else if (thisclass.indexOf("cc") >= 0){
 					text  = '<p class="cc_set" id="BY_NC_SA"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution Non-commercial No Derivatives.png" 	title="Attribution Non-Commercial No Derivatives" /> Attribution Non-Commercial No Derivatives</p>';
 					text += '<p class="cc_set" id="BY_NC_ND"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution Non-commercial Share Alike.png" 	title="Attribution Non-Commercial Share Alike" /> Attribution Non-Commercial Share Alike</p>';
@@ -188,12 +192,12 @@ jQuery(document).ready(function(){
 					text += '<p class="cc_set" id="BY_ND"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution No Derivatives.png" 			title="Attribution No Derivatives" /> Attribution No Derivatives</p>';
 					text += '<p class="cc_set" id="BY_SA"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution Share Alike.png" 				title"Attribution Share Alike" /> Attribution Share Alike</p>';
 					text += '<p class="cc_set" id="BY"><img src="http://www.wim.tv/wimtv-webapp/images/cclicense/Attribution.png" 						title="Attribution" /> Attribution</p>';
-					text += '<div class="action"><span class="form_save">Save</span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
+					text += '<div class="action"><span class="form_save"><a class="button">' + Drupal.t("Save") + '</a></span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
 				} else if (thisclass.indexOf("ppv") >= 0){
 					text  = '<form><input type="text" name="amount" class="amount" value="00" />.<input type="text" name="amount_cent" class="amount_cent" value="00" maxlength="2"/>';
 					text  += '<input type="hidden" value="EUR" name="currency" class="currency">Euro';
 					text  += '</select></form>';
-					text += '<div class="action"><span class="form_save">Save</span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
+					text += '<div class="action"><span class="form_save"><a class="button">' + Drupal.t("Save") + '</a></span><span class="icon_sync2" style="display:none;">Loading...</span></div>';
 				}
 				return text;
 			},
