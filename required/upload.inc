@@ -145,8 +145,8 @@ $form['#submit'][] = 'wimtvpro_upload_submit';
 $form['htmltag'] = array(
 '#markup' => variable_get('htmltag',
 "<div class='action'><span class='icon_sync2' style='display:none;'>Loading...</span>
-Do not leave this page until the file upload is not terminated
-</div>"), 
+" . t("Do not leave this page until the file upload is not terminated") . 
+"</div>"), 
  '#weight' => 7,
 );
 

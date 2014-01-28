@@ -1,4 +1,21 @@
 <div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
+<div class='action'></div>
+
+<div class="region region-help">
+    <div id="block-system-help" class="block block-system">
+
+    
+  <div class="content">
+    <p>
+    <?php echo t("Create a playlist of videos (ONLY FREE) to be inserted within your website.");?>
+    </p>
+     <p>
+    <?php echo t("To create a playlist click +. Clicking on the eyes the video thumbnails of WimBox and the Playlist area will appear. Drag and drop the video thumbnails from the All videos to the Playlist area. To change the order, drag and drop thumbnails to the desired position in the Playlist area.");?>
+    </p>
+  </div>
+</div>
+  </div>
+
 <script type="text/javascript">
     jQuery(document).ready(function(){
 
@@ -79,8 +96,8 @@
 <div id="view_stream" class="view">
     <table class="wp-list-table widefat fixed posts" style="text-align:center;">
         <tr>
-            <th class="manage-column column-title">Title Playlist</th>
-            <th class="manage-column column-title">Action</th>
+            <th class="manage-column column-title"><?php echo t("Title");?></th>
+            <th class="manage-column column-title"><?php echo t("Action");?></th>
         </tr>
         <?php foreach ($playlists as $record) { ?>
             <tr>

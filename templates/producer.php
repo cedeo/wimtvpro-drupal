@@ -1,6 +1,6 @@
 <div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <div id="page">	<h1>Producer</h1>
-    <p>On this page you can view the video you\'re broadcasting live. Keep it open during the whole transmission.</p>
+    <p><?php echo t("This page lets you view the video you're live streaming. Keep this page open during the whole transmission.");?></p>
     <div  class="pageproducer">
         <div id="producer" ></div>
     </div>

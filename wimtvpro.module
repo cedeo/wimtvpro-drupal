@@ -41,6 +41,7 @@ function wimtvpro_menu() {
     $items['admin/config/wimtvpro/wimbox'] =
         array(
             'title' => 'WimBox',
+			'description' => t('This page gives you the list of all videos you have uploaded to your personal WimTV repository. If you wish to post one of these videos to your site, move it to WimVod by clicking the corresponding icon'),
             'page callback' => 'wimtvpro_wimbox',
             'page arguments' => array('wimtvpro_wimbox'),
             'access arguments' => array('administer users'),
@@ -50,6 +51,7 @@ function wimtvpro_menu() {
         array(
             'title' => 'WimVod',
             'page callback' => 'wimtvpro_wimvod',
+			'description' => t('This page lets you manage the videos you want to publish'),
             'page arguments' => array('wimtvpro_wimvod'),
             'access arguments' => array('administer users'),
             'weight' =>2
@@ -58,6 +60,7 @@ function wimtvpro_menu() {
         array(
             'title' => 'Playlist',
             'page callback' => 'wimtvpro_playlist',
+			'description' => t('Create a playlist of videos (currently only FREE videos can be included) to be posted to your website'),
             'page arguments' => array('wimtvpro_playlist'),
             'access arguments' => array('administer users'),
             'weight' => 3
@@ -72,6 +75,7 @@ function wimtvpro_menu() {
     $items['admin/config/wimtvpro/upload'] =
         array(
             'title' => t('Upload Video'),
+			'description' => t('You can upload a new video'),
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_upload_form'),
             'access arguments' => array('administer users'),
@@ -81,6 +85,7 @@ function wimtvpro_menu() {
         array(
             'title' => 'WimLive',
             'page callback' => 'wimtvpro_wimlive',
+			'description' => t('This page lets you create and post live streaming events to your website.'),
             'page arguments' => array('wimtvpro_wimlive'),
             'access arguments' => array('administer users'),
             'weight' => 4
@@ -88,7 +93,7 @@ function wimtvpro_menu() {
     $items['admin/config/wimtvpro/mypersonalBlock'] =
         array(
             'title' => t('My personal detail'),
-            'description' => 'Configuration personal detail of Wimtv block',
+            'description' => t('Configuration personal detail of Wimtv block'),
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_blockUser_config'),
             'access arguments' => array('administer users'),
@@ -98,6 +103,7 @@ function wimtvpro_menu() {
         array(
             'title' => t('Analytics'),
             'page callback' => 'wimtvpro_report',
+			'description' => t('You can see the viewers of your videos'),
             'page arguments' => array('wimtvpro_report'),
             'access arguments' => array('administer users'),
             'weight' => 6

@@ -95,10 +95,10 @@ function wimtvpro_embeddedAll() {
 
         $output .= "image: '" . $thumbs[1] . "',});</script>&nbsp;";
 
-        $output .= "<h3>" . $video[0]->title . " (Preview)</h3>";
-        $output .= "<p>Duration: <b>" . $video[0]->duration . "</b>";
+        $output .= "<h3>" . $video[0]->title . " (" . t("Preview") . ")</h3>";
+        $output .= "<p>" . t("Duration") . ": <b>" . $video[0]->duration . "</b>";
         if (count($video[0]->categories)>0) {
-            $output .= "<br/>Categories<br/>";
+            $output .= "<br/>" . t("Category-Subcategory") . "<br/>";
             foreach ($video[0]->categories as $key => $value) {
                 $valuescCatST = "<i>" . $value->categoryName . ":</i> ";
                 $output .= $valuescCatST;

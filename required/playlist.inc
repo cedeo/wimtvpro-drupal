@@ -77,9 +77,10 @@ function wimtvpro_playlist_mod($form_state, $id) {
 	
 	$form['htmltag2'] = array(
 	
-		'#markup' => variable_get('htmltag2','<h2>' . $array_playlist[0]->name  . '  <a href="' . wimtvpro_checkCleanUrl('admin/config/wimtvpro/','playlist/','../../') . '">Back</a></h2><p>Create a playlist of videos (ONLY FREE) to be<br/>inserted within your website</p>')
-	
-	);
+		'#markup' => variable_get('htmltag2','<h2>' . $array_playlist[0]->name  . '  <a href="' . wimtvpro_checkCleanUrl('admin/config/wimtvpro/','playlist/','../../') . '">' . t("Back") . '</a>
+		</h2>
+		<div class="region region-help"> <div id="block-system-help" class="block block-system"><div class="content">
+		<p>' . t("Create a playlist of videos (ONLY FREE) to be inserted within your website") . '</p><p>' . t("Drag and drop the video thumbnails from the All videos to the Playlist area. To change the order, drag and drop thumbnails to the desired position in the Playlist area.") . "</p></div></div></div>"));
 	$form['submit'] = array('#type' => 'submit', '#value' => t('Update'));
 	
 	if (!isset($options["loop"]))  $options["loop"] = "";
@@ -101,9 +102,9 @@ function wimtvpro_playlist_mod($form_state, $id) {
 	
 	
 	
-	$page = "<div class='sortable1'>All video (only Free)<ul class='items_playlist' id='droptrue'>" . wimtvpro_getThumbs_playlist($array_playlist[0]->listVideo,TRUE,TRUE,FALSE,"",FALSE) . "</ul></div>";
-	$page .= "<div class='sortable2'><b>Video Playlist</b><ul class='items_playlist' id='dropfalse'>" . wimtvpro_getThumbs_playlist($array_playlist[0]->listVideo,TRUE,TRUE,FALSE,"",TRUE) . "</ul>
-	<div class='embeddedCode'><label>Click to copy Embedded Code</label><textarea readonly='readonly'  onclick='this.focus(); this.select();  this.execCommand(\"Copy\")'>" . $embedded  . "</textarea></div>
+	$page = "<div class='sortable1'>" . t("All video (only Free)") . "<ul class='items_playlist' id='droptrue'>" . wimtvpro_getThumbs_playlist($array_playlist[0]->listVideo,TRUE,TRUE,FALSE,"",FALSE) . "</ul></div>";
+	$page .= "<div class='sortable2'><b>" . t("Video into Playlist") . "</b><ul class='items_playlist' id='dropfalse'>" . wimtvpro_getThumbs_playlist($array_playlist[0]->listVideo,TRUE,TRUE,FALSE,"",TRUE) . "</ul>
+	<div class='embeddedCode'><label>" . t("Click to copy Embedded Code") . "</label><textarea readonly='readonly'  onclick='this.focus(); this.select();  this.execCommand(\"Copy\")'>" . $embedded  . "</textarea></div>
 	
 	</div>";
 	
