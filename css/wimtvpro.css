@@ -65,9 +65,11 @@ table.items tr span {
 }
 
 table.items span.thumb-container {
+    background:#fff url('../img/empty.jpg') no-repeat center center;
+    background-size: contain;
     position: relative;
-    width: auto !important;
-    height: auto !important;
+    width: 160px !important;
+    height: 100px !important;
 }
 
 table.items tr div.icon_licence  {
@@ -117,7 +119,7 @@ table.items tr a,
 table.items tr img {
 	margin: 0 auto!important;
 	padding: 0;
-	width: 200px; height:140px;
+	width: 160px; height:100px;
 }
 div.formVideo {
     border: 1px solid black;
@@ -204,7 +206,7 @@ div.registration{
 }
 
 table td.image img{
-	width:200px; height:140px;
+	width:160px; height:100px;
 }
 
 div.registration{
@@ -290,16 +292,15 @@ div#view_graph div.cols div.col div.countview .barTraffic{
 }
 
 div.wimtv-thumbnail {
-	background:#fff url('../img/empty.jpg') no-repeat center center;
 	position:relative; text-align:center;
 }
 div.wimtv-thumbnail img {
-    min-height:140px; min-width:200px; background:#fff url('../img/empty.jpg') no-repeat center center;
+    min-height:100px; min-width:160px; background:#fff url('../img/empty.jpg') no-repeat center center;
     position:relative;
 }
 div.img_empty {
   margin:0; padding:0;
-  width:200px; height:140px; background:#fff url('../img/empty.jpg') no-repeat center center;
+  width:160px; height:100px; background:#fff url('../img/empty.jpg') no-repeat center center;
 }
 
 
