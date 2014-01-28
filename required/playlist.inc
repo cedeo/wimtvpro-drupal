@@ -105,6 +105,7 @@ function wimtvpro_playlist_mod($form_state, $id) {
 	$page = "<div class='sortable1'>" . t("All video (only Free)") . "<ul class='items_playlist' id='droptrue'>" . wimtvpro_getThumbs_playlist($array_playlist[0]->listVideo,TRUE,TRUE,FALSE,"",FALSE) . "</ul></div>";
 	$page .= "<div class='sortable2'><b>" . t("Video into Playlist") . "</b><ul class='items_playlist' id='dropfalse'>" . wimtvpro_getThumbs_playlist($array_playlist[0]->listVideo,TRUE,TRUE,FALSE,"",TRUE) . "</ul>
 	<div class='embeddedCode'><label>" . t("Click to copy Embedded Code") . "</label><textarea readonly='readonly'  onclick='this.focus(); this.select();  this.execCommand(\"Copy\")'>" . $embedded  . "</textarea></div>
+	 <a class='viewPreviewPlaylist' href='#' id='" . $GLOBALS['base_url'] . "/wimtvpro/viewEmbeddedPlaylist/" . $identifier  . "'>" . t("Preview") . "</a>
 	
 	</div>";
 	

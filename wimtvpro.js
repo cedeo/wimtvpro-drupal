@@ -3,6 +3,14 @@ jQuery(document).ready(function(){
 	  jQuery(this).colorbox({href:jQuery(this).attr("id")});
 	});
 	
+	
+	jQuery("a.viewPreviewPlaylist").click( function(){
+	  jQuery(this).colorbox({
+		  	href:jQuery(this).attr("id"),
+			width:'550px', height:'350px',
+		});
+	});
+	
     function hideAffiliateFields(state) {
         if (state) {
             jQuery(".form-item-companyName").show();
