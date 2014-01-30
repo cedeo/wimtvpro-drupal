@@ -105,7 +105,8 @@ function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
 }
 
 function wimtvpro_node_view_alter(&$build) {
-  
+  global $base_url;
+
   $set_into_video = variable_get('contenttypeWithInsertVideo');
   if (isset($build)) {
     $valueKey = "";
@@ -132,7 +133,12 @@ function wimtvpro_node_view_alter(&$build) {
             if (isset($arrayjsonst->{"showtimeIdentifier"})) {
               $showtimeidentifier = $arrayjsonst->{"showtimeIdentifier"};
               $contentid = $arrayjsonst->{"contentId"};
-              $skin = "public://skinWim/" . variable_get('nameSkin') . ".zip";
+              if (variable_get('nameSkin')) {
+                  $directory = file_create_url('public://skinWim');
+                  $skin = "public://skinWim/" . variable_get('nameSkin') . ".zip";
+              } else {
+                  $skin = $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
+              }
               $params = "get=1&width=" . $format_video[1] . "&height=" . $format_video[2] . "&skin=" . $skin;
               $response = apiGetPlayerShowtime($contentid, $params); // curl_exec($ch);
               $iframe = $response;
