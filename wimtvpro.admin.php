@@ -370,7 +370,7 @@ function wimtvpro_admin_validate($form, &$form_state) {
                 'file_validate_extensions' => array('zip')
             );
             file_save_upload("uploadSkin", $validators, $directory);
-            form_set_value("Upload", $arrayFile[0], $form_state);
+            //form_set_value("Upload", $arrayFile[0], $form_state);
         }
     }
 
