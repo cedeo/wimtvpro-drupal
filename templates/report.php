@@ -1,4 +1,3 @@
-<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <?php
 
 function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
@@ -68,18 +67,19 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
 
 ?>
 
+<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
 <div class='wrap'>
 <h2>Report user Wimtv <?php echo $user ?></h2>
 <h3 id='changeTitle'><?php echo $title_user ?></h3>
 
-<div class="registration" id="fr_custom_date" style="<?php echo $style_date ?>">
-    <form method="post">
+<div class="registration" id="fr_custom_date" style="<?php echo $style_date ?>; padding: 0">
+    <form method="post" action="#">
         <fieldset>
             <span><?php echo  t("From") ?></span>
             <input  type="text" class="pickadate" id="edit-from" name="from" value="<?php echo $from ?>" size="10" maxlength="10" />
             <span><?php echo  t("To") ?></span>
             <input  type="text" class="pickadate" id="edit-to" name="to" value="<?php echo $to ?>" size="10" maxlength="10" />
-            <input type="submit" value=">" class="button button-primary" />
+            <input type="submit" value="OK" class="button button-primary" />
         </fieldset>
     </form>
 </div>

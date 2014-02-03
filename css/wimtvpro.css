@@ -201,18 +201,9 @@ div.empty {
 	cursor:pointer;
 }
 
-div.registration{
-	border:1px dotted gray; width:80%; padding:10px;
-}
-
 table td.image img{
 	width:160px; height:100px;
 }
-
-div.registration{
-	border:1px dotted gray; width:80%; padding:10px;
-}
-
 
 div.summary{
 	position:relative; margin:20px 0 0 0;
@@ -423,4 +414,8 @@ div.help {
 }
 div.help a{
 	width:100%; height:100%;
+}
+
+input.pickadate {
+    border: 1px solid black;
 }
