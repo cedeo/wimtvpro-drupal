@@ -135,7 +135,7 @@ function wimtvpro_node_view_alter(&$build) {
               $contentid = $arrayjsonst->{"contentId"};
               if (variable_get('nameSkin')) {
                 $directory = file_create_url('public://skinWim');
-                $skin = "public://skinWim/" . variable_get('nameSkin') . ".zip";
+                $skin = $directory . "/" . variable_get('nameSkin') . ".zip";
               } else {
                 $skin = $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
               }
