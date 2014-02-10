@@ -420,10 +420,12 @@ function wimtvpro_admin_validate($form, &$form_state) {
         $dati["billingAddress"]["state"]=  $_POST["billingAddress"]["state"];
         $dati["billingAddress"]["zipCode"]=  $_POST["billingAddress"]["zipCode"];
         $dati["liveStreamEnabled"]= isset($_POST["liveStreamEnabled"]) ? 'true' : 'false';
-        $dati["eventResellerEnabled"]= isset($_POST["eventResellerEnabled"]) ? 'true' : 'false';
-        $dati["eventOrganizerEnabled"]= isset($_POST["eventOrganizerEnabled"]) ? 'true' : 'false';
-        $dati["hidePublicShowtimeVideos"]= $_POST["hidePublicShowtimeVideos"];
-        $dati["liveStreamPwd"]=  $_POST["liveStreamPwd"];
+        if (isset($_POST["liveStreamEnabled"])) {
+            $dati["eventResellerEnabled"]= isset($_POST["eventResellerEnabled"]) ? 'true' : 'false';
+            $dati["eventOrganizerEnabled"]= isset($_POST["eventOrganizerEnabled"]) ? 'true' : 'false';
+            $dati["hidePublicShowtimeVideos"]= $_POST["hidePublicShowtimeVideos"];
+            $dati["liveStreamPwd"]=  $_POST["liveStreamPwd"];
+        }
 
         if (count($dati)>0){
             $response = apiEditProfile($dati);
