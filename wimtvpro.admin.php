@@ -168,7 +168,7 @@ function wimtvpro_admin() {
     }
     //End FieldsetConfig
 
-    if ($view_page==""){
+    if ($view_page=="") {
         $openFieldSet = FALSE;
         
 		

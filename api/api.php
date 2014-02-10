@@ -86,7 +86,7 @@ class Api {
         try {
             $result = $request->send();
         } catch (\Exception $exception) {
-            trigger_error($exception->getMessage(), E_USER_NOTICE);
+            //trigger_error($exception->getMessage(), E_USER_NOTICE);
             $result = "";
         }
         return $result;
