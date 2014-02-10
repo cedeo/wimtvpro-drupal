@@ -57,19 +57,6 @@ function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FA
   //Add JQuery header
   wimtvpro_install_jquery($showtime, $private);
 
-  
-  //Select Showtime
-  /*$param_st = variable_get("basePathWimtv") . "users/" . variable_get("userWimtv") . "/showtime?details=true";
-  $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
-  $ch_st = curl_init();
-  curl_setopt($ch_st, CURLOPT_URL, $param_st);
-  curl_setopt($ch_st, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch_st, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch_st, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  curl_setopt($ch_st, CURLOPT_USERPWD, $credential);
-  curl_setopt($ch_st, CURLOPT_SSL_VERIFYPEER, FALSE);
-  $details_st  =curl_exec($ch_st);*/
-
   $details_st = apiGetShowtimes();
   $arrayjson_st = json_decode( $details_st);
    watchdog("dettaglio wimtv",$details_st);

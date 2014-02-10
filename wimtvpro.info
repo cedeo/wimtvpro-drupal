@@ -1,9 +1,10 @@
-name = Wim TV Pro
+name = WimTV Pro
 description = WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
 package = WIMTV
 core = 7.x
 configure = admin/config/wimtvpro
-
+version = 1.0.0
+php = 5.3
 dependencies[] = file
 stylesheets[all][] = wimtvpro.css
 stylesheets[all][] = wimtvpro_public.css
@@ -13,9 +14,6 @@ file[] = wimtvpro.function.php
 file[] = wimtvpro.sync.php
 file[] = wimtvpro.js
 file[] = wimtvpro.install
-file[] = required/block.inc
-file[] = required/form.inc
-file[] = required/insert.inc
 
 
 

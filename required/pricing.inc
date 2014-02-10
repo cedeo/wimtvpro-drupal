@@ -74,15 +74,15 @@ function wimtvpro_callPricing() {
         $response = apiGetPacket();
         $packet_user_json = json_decode($response);
 
-        $id_packet_user = $packet_user_json->id;
-        $createDate_packet_user = $packet_user_json->createDate;
-        $updateDate_packet_user = $packet_user_json->updateDate;
+        $id_packet_user = isset($packet_user_json->id) ? $packet_user_json->id : "";
+        $createDate_packet_user = isset($packet_user_json->createDate) ? $packet_user_json->createDate : "";
+        $updateDate_packet_user = isset($packet_user_json->updateDate) ? $packet_user_json->updateDate : "";
 
         $createDate = date('d/m/Y', $createDate_packet_user/1000);
         $updateDate = date('d/m/Y', $updateDate_packet_user/1000);
         $dateRange = getDateRange($createDate , $updateDate );
 
-        $count_date = $packet_user_json->daysLeft;
+        $count_date = isset($packet_user_json->daysLeft) ? $packet_user_json->daysLeft : "";
         $response2 = apiCommercialPacket();
 
         $packet_json = json_decode($response2);
@@ -91,4 +91,5 @@ function wimtvpro_callPricing() {
             'script' => $script);
         return render_template('templates/pricing.php', $args);
     }
+    return "";
 }

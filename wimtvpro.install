@@ -186,7 +186,7 @@ function wimtvpro_install() {
 
 function wimtvpro_uninstall() {
   $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-  //$result = db_query($sql, array(':type' => 'node_playlistWimtvpro'));
+  $result = db_query($sql, array(':type' => 'node_playlistWimtvpro'));
   $nids = array();
   foreach ($result as $row) {
     $nids[] = $row->nid;

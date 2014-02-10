@@ -67,6 +67,7 @@ function wimtvpro_menu() {
         );
     $items['admin/config/wimtvpro/playlist/modify/%'] =
         array(
+            'title' => 'Playlist Editing',
             'page callback' => 'drupal_get_form',
             'page arguments' => array('wimtvpro_playlist_mod', 5),
             'access arguments' => array('administer users'),

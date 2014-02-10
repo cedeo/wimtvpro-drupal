@@ -7,7 +7,7 @@ Maintainers:
   Walter Galante
   (http://www.wimlabs.com)
 
-Requires - Drupal 7
+Requires - Drupal 7, PHP 5.3+
 
 
 Overview:

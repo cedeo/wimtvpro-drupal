@@ -7,7 +7,7 @@ jQuery(document).ready(function(){
 	jQuery("a.viewPreviewPlaylist").click( function(){
 	  jQuery(this).colorbox({
 		  	href:jQuery(this).attr("id"),
-			width:'550px', height:'350px',
+			width:'600px', height:'360px'
 		});
 	});
 	
@@ -376,6 +376,7 @@ jQuery(document).ready(function(){
      });
     jQuery(".icon_download").click(function() {
         var id = jQuery(this).attr("id");
+        console.log("Downloading video " + id + "...");
         downloadVideo(id);
     });
      function downloadVideo(contentid){

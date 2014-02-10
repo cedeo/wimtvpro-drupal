@@ -186,6 +186,7 @@ function wimtvpro_upload_validate($form, &$form_state) {
 
     $descriptionfile = check_plain($_POST['descriptionfile']);
     $video_category = isset($_POST['videoCategory']) ? check_plain($_POST['videoCategory']) : "";
+    $video_category = explode(",", $video_category);
     $contentIdentifier = isset($_POST['uploadIdentifier']) ? check_plain($_POST['uploadIdentifier']) : "";
 
     if ((strlen(trim($file))>0) && ($error==0)) {

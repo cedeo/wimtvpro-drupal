@@ -929,24 +929,24 @@ function wimtvpro_upload_validate_content($element, &$form_state, $form) {
 
 //FIELD PLAYLIST //
 //Function for create Playlist
-function wimtvpro_playlist_validate($element, &$form_state, $form) {
-  $delta = $element['#delta']; // TODO: Isn't there a better way to find out which element?
-  $field = $form_state['field'][$element['#field_name']][$element['#language']]['field'];
-  $field_name = $field['field_name'];
+function wimtvpro_playlist_validate($element, &$form_state, $form="") {
+  $delta = isset($element['#delta']) ? $element['#delta'] : "";
+  $field_name = isset($element['#field_name']) ? $element['#field_name'] : "";
+  $language = isset($element['#language']) ? $element['#language'] : "";
   $id_playlist = 0;
   $loopPlaylist = "loop:no,";
   $list_video = "";
-  if (isset($form_state['values'][$field_name][$element['#language']][$delta]['wimplaylist'])) {
-    $values = $form_state['values'][$field_name][$element['#language']][$delta]['wimplaylist'];
+  if (isset($form_state['values'][$field_name][$language][$delta]['wimplaylist'])) {
+    $values = $form_state['values'][$field_name][$language][$delta]['wimplaylist'];
     $id_playlist = $values["idPlaylist"];
-	$list_video = $form_state["input"][$field_name][$element['#language']][$delta]["wimplaylist"]["listPlaylist"];
+	$list_video = $form_state["input"][$field_name][$language][$delta]["wimplaylist"]["listPlaylist"];
 
 	if ($values["loop"]!=0)
 		$loopPlaylist = "loop:" . $values["loop"] . ",";
   }
   //Request Title, video's list, IdPlaylist, Option
 
-  $name = $form_state["input"]["title"];
+  $name = isset($form_state["input"]["title"]) ? $form_state["input"]["title"] : "";
   
   if ($name!=""){
     $control_sql =  "SELECT * FROM {wimtvpro_playlist} WHERE id = '" . $id_playlist . "'";
