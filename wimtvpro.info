@@ -1,4 +1,4 @@
-name = WimTV Pro
+name = WimTVPro
 description = WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
 package = WIMTV
 core = 7.x
