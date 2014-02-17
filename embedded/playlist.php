@@ -1,10 +1,10 @@
-<html>
+<html style="margin: 0">
     <head>
         <script type='text/javascript'
                 src='<?php echo $JwPlayerScript ?>'>
         </script>
     </head>
-    <body>
+    <body style="margin: 0">
         <div style='text-align:center;'>
             <div id='container'></div>
             <div id='container_playlist'></div>

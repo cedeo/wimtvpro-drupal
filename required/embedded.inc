@@ -257,8 +257,8 @@ function wimtvpro_embeddedPlaylist() {
 
         }
 
-        $width = variable_get('widthPreview');
-        $height = variable_get('heightPreview')-10;
+        $width = isset($_GET["width"]) ? $_GET["width"] : variable_get('widthPreview')+50;
+        $height = isset($_GET["height"]) ? $_GET["height"] : variable_get('heightPreview')+70;
 
         $playlistSize = "30%";
 
