@@ -233,23 +233,10 @@ function wimtvpro_embeddedPlaylist() {
 
 
         $array_videos  = $result_new->fetchAll();
-        $array_videos_new_drupal = array();
-        for ($i=0;$i<count($videoList);$i++){
-            foreach ($array_videos  as $record_new) {
-                if ($videoList[$i] == $record_new->contentidentifier){
-                    array_push($array_videos_new_drupal, $record_new);
-                }
-            }
-        }
-
 
         $playlist = "";
-        foreach ($array_videos_new_drupal as $videoT){
-
-            $result_video = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier='" . $videoT->contentidentifier . "' ");
-            $video  = $result_video->fetchAll();
-
-            $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$video,FALSE);
+        foreach ($array_videos as $videoT){
+            $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$videoT,FALSE);
 
             if (!isset($videoT->urlThumbs)) $thumbs[0] = "";
             else $thumbs = explode ('"',$videoT->urlThumbs);

@@ -199,13 +199,13 @@ function wimtvpro_viever_jwplayer($userAgent, $video, $viewFlashPlayer=true){
     $isiPhone = (bool) strpos($userAgent,'iPhone');
     $isApple = (bool) strpos($userAgent, 'Safari') && !(bool) strpos($userAgent, 'Chrome');
     $isAndroid = (bool) strpos($userAgent,'Android');
-    $urlPlay = explode("$$",$video[0]->urlPlay);
+    $urlPlay = explode("$$",$video->urlPlay);
     if (isset($urlPlay[1])) {
         if ($isiPad  || $isiPhone || $isApple) {
             $urlPlayIPadIphone = "";
             $contentId = $video[0]->contentidentifier;
             $response = apiGetDetailsVideo($contentId);
-            $arrayjson   = json_decode($response);
+            $arrayjson = json_decode($response);
 
             $urlPlayIPadIphone = $arrayjson->streamingUrl->streamer;
             $configFile = "'file': '" . $urlPlayIPadIphone . "',";
