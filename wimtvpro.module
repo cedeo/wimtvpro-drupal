@@ -15,6 +15,7 @@ require_once(drupal_get_path('module', 'wimtvpro') . '/required/report.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/help.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/content_fields.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/plus.inc');
+require_once(drupal_get_path('module', 'wimtvpro') . '/required/programmings.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/api/wimtv_api.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/api/analytics_api.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.admin.php');
@@ -24,6 +25,7 @@ require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimbox.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimvod.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimlive.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/playlist.php');
+require_once(drupal_get_path('module', 'wimtvpro') . '/views/programmings.php');
 
 
 //Principal menu Admin and for User
@@ -108,6 +110,30 @@ function wimtvpro_menu() {
             'page arguments' => array('wimtvpro_report'),
             'access arguments' => array('administer users'),
             'weight' => 6
+        );
+    $items['admin/config/wimtvpro/programmings'] =
+        array(
+            'title' => t('Programmings'),
+            'page callback' => 'wimtvpro_programmings',
+            'description' => t('You can organize your programmings'),
+            'page arguments' => array('wimtvpro_programmings'),
+            'access arguments' => array('administer users'),
+            'weight' => 7
+        );
+    $items['admin/config/wimtvpro/programmings/edit'] =
+        array(
+            'title' => t('Programmings'),
+            'page callback' => 'wimtvpro_programming_edit',
+            'page arguments' => array('wimtvpro_programming_edit'),
+            'access arguments' => array('administer users'),
+            'type' =>  MENU_CALLBACK,
+        );
+    $items['admin/config/wimtvpro/programming-api'] =
+        array(
+            'page callback' => 'wimtvpro_programmings_api',
+            'page arguments' => array('wimtvpro_programmings_api'),
+            'access arguments' => array('administer users'),
+            'type' =>  MENU_CALLBACK,
         );
     $items['admin/config/wimtvpro/wimlive/insert'] =
         array(
@@ -245,7 +271,6 @@ function wimtvpro_menu() {
         'access callback' => TRUE,
         'type' =>  MENU_CALLBACK
     );
-    //basePath + "/admin/config/wimtvpro/"  + jQuery(this).attr("id")
     $items['wimtvproplus/viewEmbeddedPlayer/%'] = array(
         'page callback' => 'wimtvpro_embeddedAll_output',
         'page arguments' => array('wimtvpro_admin'),

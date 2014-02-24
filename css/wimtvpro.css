@@ -419,3 +419,7 @@ div.help a{
 input.pickadate {
     border: 1px solid black;
 }
+
+#calendar {
+    margin-bottom: 80px !important;
+}

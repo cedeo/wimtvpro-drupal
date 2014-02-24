@@ -812,7 +812,7 @@ msgstr ""
 "dall’area Tutti i video all’area Playlist. Per cambiare l’ordine, trascina "
 "le thumbnail alla posizione desiderata nell’area Playlist."
 
-#: templates/playlist.php:99 views/wimlive.php:181
+#: templates/playlist.php:99 templates/programmings/index.php:8 views/wimlive.php:181
 msgid "Title"
 msgstr "Titolo"
 
@@ -1093,3 +1093,43 @@ msgstr ""
 #: views/wimlive.php:530
 msgid "No event scheduled at this time"
 msgstr "Non ci sono eventi live"
+
+#: templates/programmings/edit.php:3
+msgid "Return to list"
+msgstr "Torna alla lista"
+
+#: templates/programmings/edit.php:8
+msgid "Give a name to this programming (not mandatory)"
+msgstr "Dai un nome al palinsesto (non obbligatorio)"
+
+#: templates/programmings/edit.php:10
+msgid "Send"
+msgstr "Invia"
+
+#: templates/programmings/edit.php:11
+msgid "Skip"
+msgstr "Salta"
+
+#: templates/programmings/index.php:3
+msgid "New"
+msgstr "Nuovo"
+
+#: templates/programmings/index.php:9;24;24
+msgid "Modify"
+msgstr "Modifica"
+
+#: templates/programmings/index.php:11
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: templates/programmings/index.php:17
+msgid "No title"
+msgstr "No title"
+
+#: views/programmings.php:15
+msgid "New Programming"
+msgstr "Nuovo Palinsesto"
+
+#: views/programmings.php:19
+msgid "Modify Programming"
+msgstr "Modifica Palinsesto"
