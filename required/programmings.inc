@@ -123,7 +123,7 @@ function updateItem() {
     $progId = $qs_array['progId'];
     $itemId = $qs_array['itemId'];
 
-    $response = apiUpdateItem($progId, $itemId, $_POST);
+    $response = apiUpdateItems($progId, $itemId, $_POST);
     echo $response;
     die();
 }
