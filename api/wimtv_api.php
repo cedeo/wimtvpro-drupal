@@ -275,8 +275,6 @@ function apiProgrammingPool() {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('programmingPool');
     $request = $apiAccessor->authenticate($request);
-    $request->sendsAndExpects(Mime::JSON);
-    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json') );
     return $apiAccessor->execute($request);
 }
 function apiGetCurrentProgrammings($qs) {

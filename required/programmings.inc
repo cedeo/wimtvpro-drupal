@@ -11,7 +11,6 @@ function wimtvpro_programmings_api() {
 
 
     header('Access-Control-Allow-Origin: *');
-    header('Content-type: application/json');
     header('Response: HTTP/1.1 200 OK');
 
     $api = $_GET['api'];
@@ -47,6 +46,7 @@ function wimtvpro_programmings_api() {
 }
 
 function calendar() {
+    header('Content-type: application/json');
     $qs=$_SERVER['QUERY_STRING'];
     parse_str($qs, $qs_array);
     $progId = $qs_array['progId'];
@@ -57,6 +57,7 @@ function calendar() {
 }
 
 function addItem() {
+    header('Content-type: application/json');
     $qs=$_SERVER['QUERY_STRING'];
     parse_str($qs, $qs_array);
     $progId = $qs_array['progId'];
@@ -67,23 +68,19 @@ function addItem() {
 }
 
 function pool() {
+    header('Content-type: text/html');
     $qs=$_SERVER['QUERY_STRING'];
     parse_str($qs, $qs_array);
-    //$progId = $qs_array['progId'];
     $response = apiProgrammingPool();
-    echo $response."\n";
-
-    $arrayjsonst = json_decode($response);
-    //echo $arrayjsonst->id."\n";
-
+    echo $response;
     die ();
 }
 
 function currentProgramming() {
-
+    header('Content-type: text/html');
     $qs=$_SERVER['QUERY_STRING'];
     parse_str($qs, $qs_array);
-    $progId = $qs_array['progId'];
+    //$progId = $qs_array['programmingId'];
     $response = apiGetCurrentProgrammings($qs);
     echo $response;
     //echo "identifier:" .   $arrayjsonst->identifier;
@@ -91,12 +88,14 @@ function currentProgramming() {
 }
 
 function programmings() {
+    header('Content-type: application/json');
     $response = apiPostProgrammings($_POST);
     echo $response;
     die();
 }
 
 function removeItem() {
+    header('Content-type: application/json');
     $qs=$_SERVER['QUERY_STRING'];
     parse_str($qs, $qs_array);
     $progId = $qs_array['progId'];
@@ -107,6 +106,7 @@ function removeItem() {
 }
 
 function deleteItems() {
+    header('Content-type: application/json');
     $qs=$_SERVER['QUERY_STRING'];
     parse_str($qs, $qs_array);
     $progId = $qs_array['progId'];
@@ -118,6 +118,7 @@ function deleteItems() {
 }
 
 function updateItem() {
+    header('Content-type: application/json');
     $qs=$_SERVER['QUERY_STRING'];
     parse_str($qs, $qs_array);
     $progId = $qs_array['progId'];

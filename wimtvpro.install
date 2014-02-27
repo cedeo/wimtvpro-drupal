@@ -158,7 +158,8 @@ function wimtvpro_install() {
   variable_set('contenttypeWithInsertVideo', array());
   variable_set('addPageMyStreaming', '0');
   variable_set('nocategoryUpload',0);
-  variable_set('basePathWimtv', 'https://www.wim.tv/wimtv-webapp/rest/');
+  variable_set('sandbox', true);
+  variable_set('basePathWimtv', 'http://peer.wim.tv/wimtv-webapp/rest/');
 
   $t = get_t();
   $node = array(
