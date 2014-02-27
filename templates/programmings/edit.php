@@ -15,9 +15,10 @@
 <!-- calendar -->
 <div id="calendar"></div>
 
-<div style="display:none">
+<div>
     <div class="embedded">
-        <textarea id="progCode" onclick="this.focus(); this.select();"></textarea>
+        <h3>Embedded code</h3>
+        <textarea style="border: 1px solid lightgrey" id="progCode" onclick="this.focus(); this.select();"></textarea>
     </div>
 </div>
 <?php
