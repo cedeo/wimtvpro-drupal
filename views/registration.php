@@ -4,7 +4,9 @@
   * This file is use for Registration.
   *
   */
-
+/**
+ * Gestisce la registrazione di un utente sulla piattaforma wim.tv
+ */
 function wimtvproRegistration($node, $form_state) {
   $view_page = wimtvpro_alert_reg();
 

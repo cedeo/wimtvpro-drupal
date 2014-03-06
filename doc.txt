@@ -1,0 +1,29 @@
+Il funzionamento del plugin dipende in gran parte dal file wimtvpro.module.
+In esso vengono importati tutti i file necessari al funzionamento del plugin, e vengono definiti i percorsi sui quali
+vengono servite le pagine del plugin.
+
+In alcune delle cartelle sotto citate è presente la documentazione necessaria alla comprensione delle funzionalità incluse nella stessa.
+
+In tutti i file .php dovrebbe esserci documentata la funzione che assolvono.
+
+La cartella api/ contiene la parte di codice necessaria per interfacciarsi alle API di wim.tv.
+
+La cartella embedded/ contiene i templates necessari a servire dei video embedded sotto forma di video on demand o playlist.
+
+La cartella required/ contiene gran parte della logica delle funzionalità del plugin.
+
+La cartella skin/ contiene la skin di jwplayer di default, e in quella dovrebbero essere archiviate anche quelle di cui viene fatto l'upload.
+
+La cartella templates/ contiene i templates delle views del plugin.
+I templates vengono renderizzati grazie alla funzione render_template del file wimtvpro.templates.php.
+Ogni volta che viene chiamata la funzione viene passato come parametro il nome del template, quindi dovrebbe essere semplice associare ogni template alla sua view.
+
+La cartella translations/ contiene i file di traduzione dei testi del plugin.
+
+La cartella views/ contiene il codice che gestisce le diverse view del plugin.
+
+Il file programming-api.js è quello che contiene l'interfaccia con le funzioni esposte per la modifica dei programmings.
+
+Il file wimtvpro.install gestisce l'installazione del plugin.
+
+Il file wimtvpro.info contiene le informazioni relative al plugin, che vengono mostrate nel pannello di configurazione di Drupal.

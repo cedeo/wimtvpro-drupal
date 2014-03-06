@@ -1,0 +1,10 @@
+I file presenti qui contengono la logica di gran parte delle funzionalità del plugin.
+- blocks.inc gestisce i blocchi creati dal plugin, che possono essere inseriti nelle pagine di Drupal attraverso la voce di menu apposita.
+- content_fields.inc gestisce i field che vengono utilizzati nella generazione dei contenuti di Drupal.
+- download.inc gestisce il processo di download in chunks dei video di wim.tv
+- embedded.inc gestisce la logica necessaria per embeddare i video nel plugin.
+- help.inc visualizza il pulsante che rimanda alla pagina di supporto di wim.tv
+- node_insert.inc gestisce l'inserimento di contenuti di wim.tv nei contents di Drupal.
+- playlist.inc gestisce alcune funzioni che servono per la modifica e la creazione di playlist.
+- plus.inc contiene alcune funzioni aggiunte con il merge di wimtvproplus e wimtvpro, alcune delle quali rimaste inutilizzate.
+- programmings.inc espone le funzioni necessare per il funzionamento dei palinsesti.

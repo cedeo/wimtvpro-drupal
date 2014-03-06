@@ -8,7 +8,10 @@
  */
 
 function wimtvpro_programmings_api() {
-
+    /**
+     * Le funzioni vengono chiamate dal js che si occupa di gestire le funzioni di creazione e modifica dei palinsesti.
+     * Il routing viene fatto in base al parametro GET 'api'.
+     */
 
     header('Access-Control-Allow-Origin: *');
     header('Response: HTTP/1.1 200 OK');
@@ -41,7 +44,7 @@ function wimtvpro_programmings_api() {
             break;
 
         default:
-            echo "ERRORE";
+            echo "Error";
     }
 }
 

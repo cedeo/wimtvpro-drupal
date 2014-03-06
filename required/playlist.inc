@@ -6,6 +6,9 @@
   */
 
 function wimtvpro_playlist_mod($form_state, $id) {
+    /**
+     * Visualizza la pagina di modifica delle playlist
+     */
     global $base_url;
     drupal_add_library('system', 'ui.sortable');
     drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
@@ -129,8 +132,10 @@ function wimtvpro_playlist_validate($form, &$form_state) {
 }*/
 
 function wimtvpro_playlist_submit($form, &$form_state) {
-	
-	$item = check_plain($_POST['identifier']);
+    /**
+     * Gestisce la modifica delle playlist
+     */
+    $item = check_plain($_POST['identifier']);
 	$playlist = check_plain($_POST['list']);
 	if (isset($_POST['loop']))
 		$loopPlaylist = "loop:" . check_plain($_POST['loop']) . ",";
@@ -145,7 +150,10 @@ function wimtvpro_playlist_submit($form, &$form_state) {
 }
 
 function wimtvpro_embeddedPlaylist_output() {
-      $playlist = "";
+    /**
+     * Non utilizzata
+     */
+    $playlist = "";
 	  $code = explode("viewEmbeddedPlaylist/", $_GET['q']);
 	  $output = "<html><head><script type='text/javascript' src='" . $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/jwplayer.js'></script>";
       $output .= "</head><body><div style='text-align:center;'>";

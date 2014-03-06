@@ -1,5 +1,7 @@
 <?php
-  
+/**
+ * Gestisce la visualizzazione del Producer Object, attraverso il quale vengono streamati gli eventi live.
+ */
 function wimtvproWebProducer() {
     drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/swfObject/swfobject.js');
     drupal_add_css("

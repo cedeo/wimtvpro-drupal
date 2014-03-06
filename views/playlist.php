@@ -5,6 +5,9 @@
  * Date: 17/12/13
  * Time: 15.02
  */
+/**
+ * Gestisce la visualizzazione della sezione playlist del plugin.
+ */
 function wimtvpro_playlist() {
 
     try {

@@ -6,6 +6,10 @@
  * Time: 14.22
  * To change this template use File | Settings | File Templates.
  */
+/**
+ * Questa sezione gestisce le impostazioni amministrative del plugin attraverso le api dei form di Drupal.
+ * ref: https://api.drupal.org/api/drupal/developer!topics!forms_api_reference.html/7
+ */
 function wimtvpro_admin() {
 
     $view_page = wimtvpro_alert_reg();

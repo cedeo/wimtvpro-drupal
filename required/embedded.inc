@@ -8,6 +8,9 @@
  */
 
 function wimtvpro_embedded() {
+    /**
+     * Gestisce il rendering di un video embedded on demand
+     */
     global $base_url;
     $code = explode("embedded/", $_GET['q']);
 
@@ -50,6 +53,9 @@ function wimtvpro_embedded() {
 }
 
 function wimtvpro_embeddedAll() {
+    /**
+     * Gestisce il rendering di un video embedded live
+     */
     $code = explode("embeddedAll/", $_GET['q']);
 
     if (count($code)>1) {
@@ -203,6 +209,9 @@ function wimtvpro_plus_embeddedAll() {
 }
 
 function wimtvpro_embeddedPlaylist() {
+    /**
+     * Gestisce il rendering di una playlist embedded
+     */
     $playlist = "";
     $code = explode("viewEmbeddedPlaylist/", $_GET['q']);
 

@@ -1,9 +1,7 @@
 <?php
 /**
-  * @file
-  * SQL operation. //TODO: a me sembra che faccia tutt'altro....
-  *
-*/
+ *  Questo file viene chiamato via Http,e fornisce funzionalità diverse in base al parametro GET 'namefunction' passato.
+ */
 header('Content-type: application/json');
 
 $function = "";
@@ -32,7 +30,10 @@ $idPlayList = $_GET["idPlayList"];
 
 switch ($function) {
     case "putST":
-        //Insert Video into mystreaming and into wim.tv streaming
+        /**
+         * Richiede che vengano passati anche come parametri GET 'id', e tutti i valori presenti nell'array $param.
+         * Aggiunge un video a WimVod (lo mette in Showtime).
+         */
         $licenseType= "";
         $paymentMode= "";
         $ccType= "";
@@ -68,6 +69,10 @@ switch ($function) {
         break;
 
     case "putAcqST":
+        /**
+         * Richiede che vengano passati anche come parametri GET 'id', 'coId' e tutti i valori presenti nell'array $params.
+         * Aggiunge un video acquired, con acquiredIdentifier corrispondente a 'coId' a WimVod (lo mette in Showtime).
+         */
         $licenseType = "";
         $paymentMode = "";
         $ccType = "";
@@ -103,7 +108,10 @@ switch ($function) {
         break;
 
     case "removeST":
-        //Remove into Mystreaming
+        /**
+         * Richiede che vengano passati anche come parametri GET 'id' e 'showtimeId'.
+         * Rimuove un video da WimVod (lo toglie dallo showtime).
+         */
         $state="";
         $num_updated = db_update('{wimtvpro_videos}') -> fields(array('position ' => '0',
                                                                       'state' => '',
@@ -121,8 +129,10 @@ switch ($function) {
         break;
 
     case "ReSortable":
-        //Change position of videos
-        $list_video = explode(",", $ordina);
+        /**
+         * Richiede che venga passato anche come parametro GET 'ordina'.
+         * Riordina i video nella tabella WimBox o WimVod.
+         */        $list_video = explode(",", $ordina);
         foreach ($list_video as $position => $item) {
             $position = $position + 1;
             $num_updated = db_update('{wimtvpro_videos}')->fields(array('position ' => $position))->condition("contentidentifier", $item)->execute();
@@ -130,21 +140,28 @@ switch ($function) {
         break;
 
     case "urlCreate":
-        //Call API for create a event live url
-        $response = apiCreateUrl(urlencode($_GET['titleLive']));
+        /**
+         * Richiede che venga passato anche come parametro GET 'titleLive'.
+         * Crea e ritorna l'url del video live con titolo passato.
+         */        $response = apiCreateUrl(urlencode($_GET['titleLive']));
         echo $response;
         break;
 
     case "passCreate":
-        //Call API for create a password for create a event live
+        /**
+         * Richiede che venga passato anche come parametro GET 'newPass'.
+         * Cambia la password dei live dell'utente autenticato.
+         */
         $response = apiChangePassword($_GET['newPass']);
         echo $response;
         break;
 
     case "RemoveVideo":
-        //connect at API for upload video to wimtv
+        /**
+         * Richiede che venga passato anche come parametro GET 'id'.
+         * Rimuove il video con host_id corrispondente al parametro 'id' da wim.tv.
+         */
         $response = apiDeleteVideo($id);
-        curl_close($ch);
         $arrayjsonst = json_decode($response);
         if ($arrayjsonst->result=="SUCCESS")
           $query = db_delete('{wimtvpro_videos}')->condition("contentidentifier", $id)->execute();
@@ -152,26 +169,42 @@ switch ($function) {
         break;
 
 	case "ModifyTitleVideo":
-	    $num_updated = db_update('{wimtvpro_videos}')->fields(array('title' => $_GET["titleVideo"])) -> condition("vid", $id)->execute();
+        /**
+         * Modifica il titlo di un video nel database locale
+         */
+        $num_updated = db_update('{wimtvpro_videos}')->fields(array('title' => $_GET["titleVideo"])) -> condition("vid", $id)->execute();
 	    break;
 
 	case "createPlaylist":
-		$sql = "INSERT INTO {wimtvpro_playlist} (uid,listVideo,name,id) VALUES ('" . variable_get("userWimtv") . "' ,'','" . $name . "','" . time() . "')";
+        /**
+         * Richiede che venga passato come parametro GET 'namePlayList'.
+         * Crea una nuova playlist.
+         */
+        $sql = "INSERT INTO {wimtvpro_playlist} (uid,listVideo,name,id) VALUES ('" . variable_get("userWimtv") . "' ,'','" . $name . "','" . time() . "')";
         $query = db_query($sql);
         break;
     
     case "modTitlePlaylist":
+        /**
+         * Richiede che vengano passati anche come parametri GET 'namePlayList' e 'idPlayList'.
+         * Modifica il titolo della playlist.
+         */
 	    $num_updated = db_update('{wimtvpro_playlist}')->fields(array('name' => $name)) -> condition("id", $idPlayList)->execute();
         break;
 
 	case "removePlaylist":
-        //remove File
-		$query = db_delete('{wimtvpro_playlist}')->condition("id", $idPlayList);
+        /**
+         * Richiede che venga passato come parametro GET 'idPlayList'.
+         * Rimuove la playlist.
+         */		$query = db_delete('{wimtvpro_playlist}')->condition("id", $idPlayList);
 		echo $query->execute();
         break;
 
 	case "downloadVideo":
-		ini_set('max_execution_time', 300);
+        /**
+         * Non più utilizzato
+         */
+        ini_set('max_execution_time', 300);
 		ini_set("memory_limit","1000M"); 
 		$credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
 		$result = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier = '" . $id . "'");
@@ -202,7 +235,6 @@ switch ($function) {
 		try {
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,  $url_download);
-
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
@@ -227,9 +259,9 @@ switch ($function) {
 			//echo $checkHeader[1];
 			$checkextension = explode(".",$checkHeader[1]);
 			if ((!isset($checkextension[1]))  || ($checkextension[1]==""))
-					header('Content-Disposition: ' . $headers['Content-Disposition'] . "mp4");
+                header('Content-Disposition: ' . $headers['Content-Disposition'] . "mp4");
 			else
-					header('Content-Disposition: ' . $headers['Content-Disposition']);
+                header('Content-Disposition: ' . $headers['Content-Disposition']);
 			header('Content-Length: ' . $headers['Content-Length']);
 			echo substr($file_array[1], 1);
 			watchdog ("WimTvPro", "Download video: " . $filename);

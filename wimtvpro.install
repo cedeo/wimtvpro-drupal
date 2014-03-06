@@ -1,12 +1,14 @@
 <?php
 /**
-  * @file
-  * This file is used for install the module.
+  * This file is used to install the module.
   *
   */
 
 //Create a table db
 function wimtvpro_schema() {
+    /**
+     * Questa funzione gestisce la creazione delle tabelle
+     */
 $schema= array();
 
 $schema['wimtvpro_videos'] = array(
@@ -153,6 +155,9 @@ function wimtvpro_entity_info() {
 
 
 function wimtvpro_install() {
+    /**
+     * Questa funzione viene chiamata all'INSTALLAZIONE del plugin (non alla RIATTIVAZIONE)
+     */
   drupal_install_schema('wimtvpro_videos');
   drupal_install_schema('wimtvpro_playlist');
   variable_set('contenttypeWithInsertVideo', array());
@@ -186,7 +191,11 @@ function wimtvpro_install() {
 }
 
 function wimtvpro_uninstall() {
-  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+
+    /**
+     * Questa funzione viene chiamata alla DISINSTALLAZIONE del plugin (non alla DISATTIVAZIONE)
+     */
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
   $result = db_query($sql, array(':type' => 'node_playlistWimtvpro'));
   $nids = array();
   foreach ($result as $row) {

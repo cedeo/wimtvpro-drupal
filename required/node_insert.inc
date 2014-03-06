@@ -5,7 +5,9 @@
   *
   */
 function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
-
+    /**
+     * Permette di inserire contenuti di wim.tv all'interno di un content di Drupal.
+     */
   $set_into_video = variable_get('contenttypeWithInsertVideo');
   $field_to_insert = "";
   $exists_insert = FALSE;
@@ -105,6 +107,9 @@ function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
 }
 
 function wimtvpro_node_view_alter(&$build) {
+    /**
+     * Sostituisce lo 'shortcode' inserito in un content con il rispettivo video embedded, solo quando il contenuto viene visualizzato.
+     */
   global $base_url;
 
   $set_into_video = variable_get('contenttypeWithInsertVideo');

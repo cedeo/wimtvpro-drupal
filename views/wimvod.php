@@ -5,6 +5,9 @@
  * Date: 17/12/13
  * Time: 15.02
  */
+/**
+ * Gestisce la sezione wimvod del plugin
+ */
 function wimtvpro_wimvod() {
     $view_page = wimtvpro_alert_reg();
     drupal_add_js('

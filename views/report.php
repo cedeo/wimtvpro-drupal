@@ -6,7 +6,9 @@
  * Time: 15.37
  * To change this template use File | Settings | File Templates.
  */
-
+/**
+ * Gestisce la sezione statistiche del plugin
+ */
 function serializeStatistics($arrayStreams) {
     $streams = array();
     $megabyte = 1024*1024;

@@ -5,7 +5,7 @@
   *
   */
 include_once('api/wimtv_api.php');
-include_once('required/pricing.inc');
+include_once('views/pricing.php');
 
 //Request thumbs videos
 function wimtvpro_getThumbs($showtime=FALSE, $private=TRUE, $insert_into_page=FALSE, $type_public="",$playlist=FALSE) {

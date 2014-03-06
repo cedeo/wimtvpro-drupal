@@ -5,6 +5,9 @@
  * Date: 17/12/13
  * Time: 14.43
  */
+/**
+ * Gestisce la sezione wimbox del plugin
+ */
 function wimtvpro_wimbox() {
     $view_page = wimtvpro_alert_reg();
     form_set_error("error", $view_page);

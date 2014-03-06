@@ -4,9 +4,9 @@
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
 #  wimtvpro.admin.php: n/a
-#  required/registration.inc: n/a
+#  views/registration.php: n/a
 #  wimtvpro.module: n/a
-#  required/pricing.inc: n/a
+#  views/pricing.php: n/a
 #  wimtvpro.function.php: n/a
 #  wimtvpro.sync.php: n/a
 #  templates/wimbox.php: n/a
@@ -22,10 +22,10 @@
 #  required/embedded.inc: n/a
 #  templates/report.php: n/a
 #  views/wimlive.php: n/a
-#  required/upload.inc: n/a
+#  views/upload.php: n/a
 #  required/blocks.inc: n/a
 #  required/playlist.inc: n/a
-#  required/report.inc: n/a
+#  views/report.php: n/a
 #  templates/help.php: n/a
 #  templates/playlist.php: n/a
 #  templates/pricing.php: n/a

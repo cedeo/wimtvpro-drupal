@@ -4,9 +4,9 @@
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
 #  wimtvpro.admin.php: n/a
-#  required/registration.inc: n/a
+#  views/registration.php: n/a
 #  wimtvpro.module: n/a
-#  required/pricing.inc: n/a
+#  views/pricing.php: n/a
 #  wimtvpro.function.php: n/a
 #  wimtvpro.sync.php: n/a
 #  templates/wimbox.php: n/a
@@ -22,10 +22,10 @@
 #  required/embedded.inc: n/a
 #  templates/report.php: n/a
 #  views/wimlive.php: n/a
-#  required/upload.inc: n/a
+#  views/upload.php: n/a
 #  required/blocks.inc: n/a
 #  required/playlist.inc: n/a
-#  required/report.inc: n/a
+#  views/report.php: n/a
 #  templates/box_row.php: n/a
 #  templates/programmings/index.php: n/a
 #  templates/help.php: n/a
@@ -49,11 +49,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: wimtvpro.admin.php:45 required/registration.inc:60
+#: wimtvpro.admin.php:45 views/registration.php:60
 msgid "Username"
 msgstr ""
 
-#: wimtvpro.admin.php:54;271 required/registration.inc:68
+#: wimtvpro.admin.php:54;271 views/registration.php:68
 msgid "Password"
 msgstr ""
 
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Width (default: 500)"
 msgstr ""
 
-#: wimtvpro.admin.php:142 required/registration.inc:105
+#: wimtvpro.admin.php:142 views/registration.php:105
 msgid "no"
 msgstr ""
 
@@ -213,7 +213,7 @@ msgstr ""
 msgid "Index and show public videos on WimTV "
 msgstr ""
 
-#: wimtvpro.admin.php:292 required/pricing.inc:48
+#: wimtvpro.admin.php:292 views/pricing.php:48
 msgid "No"
 msgstr ""
 
@@ -465,7 +465,7 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
-#: embedded/video.php:6 required/embedded.inc:101 required/upload.inc:115
+#: embedded/video.php:6 required/embedded.inc:101 views/upload.php:115
 msgid "Category-Subcategory"
 msgstr ""
 
@@ -525,7 +525,7 @@ msgstr ""
 msgid "Do you want to see videos cyclically?"
 msgstr ""
 
-#: required/content_fields.inc:738;811 required/upload.inc:92
+#: required/content_fields.inc:738;811 views/upload.php:92
 msgid "Pick a video file to upload."
 msgstr ""
 
@@ -589,7 +589,7 @@ msgstr ""
 msgid "Click to copy Embedded Code"
 msgstr ""
 
-#: required/plus.inc:73 required/upload.inc:214
+#: required/plus.inc:73 views/upload.php:214
 msgid "Upload successful"
 msgstr ""
 
@@ -597,127 +597,127 @@ msgstr ""
 msgid "Video vid is: %vid"
 msgstr ""
 
-#: required/registration.inc:17
+#: views/registration.php:17
 msgid "Personal Information"
 msgstr ""
 
-#: required/registration.inc:21
+#: views/registration.php:21
 msgid "Fist Name"
 msgstr ""
 
-#: required/registration.inc:29
+#: views/registration.php:29
 msgid "Last Name"
 msgstr ""
 
-#: required/registration.inc:37
+#: views/registration.php:37
 msgid "Email"
 msgstr ""
 
-#: required/registration.inc:45
+#: views/registration.php:45
 msgid "Gender"
 msgstr ""
 
-#: required/registration.inc:49
+#: views/registration.php:49
 msgid "M"
 msgstr ""
 
-#: required/registration.inc:50
+#: views/registration.php:50
 msgid "F"
 msgstr ""
 
-#: required/registration.inc:55
+#: views/registration.php:55
 msgid "Login Credentials"
 msgstr ""
 
-#: required/registration.inc:76
+#: views/registration.php:76
 msgid "Repeat Password"
 msgstr ""
 
-#: required/registration.inc:84
+#: views/registration.php:84
 msgid "Terms of Use"
 msgstr ""
 
-#: required/registration.inc:85
+#: views/registration.php:85
 msgid "I have read and agree to the wim.tv"
 msgstr ""
 
-#: required/registration.inc:85
+#: views/registration.php:85
 msgid "Terms of Service"
 msgstr ""
 
-#: required/registration.inc:85
+#: views/registration.php:85
 msgid "and"
 msgstr ""
 
-#: required/registration.inc:85
+#: views/registration.php:85
 msgid "Privacy Policies"
 msgstr ""
 
-#: required/registration.inc:109
+#: views/registration.php:109
 msgid "Register"
 msgstr ""
 
-#: required/registration.inc:151
+#: views/registration.php:151
 msgid "Successfully registered"
 msgstr ""
 
-#: required/registration.inc:162
+#: views/registration.php:162
 msgid "Password e Repeat Password isn't the same"
 msgstr ""
 
-#: required/report.inc:82 templates/report.php:78
+#: views/report.php:82 templates/report.php:78
 msgid "From"
 msgstr ""
 
-#: required/report.inc:82 templates/report.php:80
+#: views/report.php:82 templates/report.php:80
 msgid "To"
 msgstr ""
 
-#: required/report.inc:83;109;110
+#: views/report.php:83;109;110
 msgid "Current month"
 msgstr ""
 
-#: required/report.inc:83;110
+#: views/report.php:83;110
 msgid "Change Date"
 msgstr ""
 
-#: required/upload.inc:71
+#: views/upload.php:71
 msgid "Title Video"
 msgstr ""
 
-#: required/upload.inc:80
+#: views/upload.php:80
 msgid "Description Video"
 msgstr ""
 
-#: required/upload.inc:91
+#: views/upload.php:91
 msgid "Upload video"
 msgstr ""
 
-#: required/upload.inc:122
+#: views/upload.php:122
 msgid "(Multiselect with CTRL)"
 msgstr ""
 
-#: required/upload.inc:136
+#: views/upload.php:136
 msgid "Upload"
 msgstr ""
 
-#: required/upload.inc:148
+#: views/upload.php:148
 msgid "Do not leave this page until the file upload is not terminated"
 msgstr ""
 
-#: required/upload.inc:166
+#: views/upload.php:166
 msgid "Please upload a file"
 msgstr ""
 
-#: required/upload.inc:169
+#: views/upload.php:169
 msgid "Please add title"
 msgstr ""
 
-#: required/upload.inc:183
+#: views/upload.php:183
 msgid "Cannot obtain access to file"
 msgstr ""
 
-#: required/upload.inc:220;224
+#: views/upload.php:220;224
 msgid "Upload error"
 msgstr ""
 

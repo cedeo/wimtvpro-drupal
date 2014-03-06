@@ -5,7 +5,9 @@
  * Date: 17/12/13
  * Time: 12.02
  */
-
+/**
+ * Gestisce la sezione pricing del plugin
+ */
 function wimtvpro_callPricing() {
     $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
 

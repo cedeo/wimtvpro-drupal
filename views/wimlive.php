@@ -5,6 +5,9 @@
  * Date: 17/12/13
  * Time: 15.03
  */
+/**
+ * Gestisce la sezione wimlive del plugin
+ */
 function wimtvpro_wimlive() {
 
     $view_page = wimtvpro_alert_reg();

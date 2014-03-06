@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Gestisce la sezione palinsesti del plugin
+ */
 function wimtvpro_programmings() {
 
     $view_page = wimtvpro_alert_reg();

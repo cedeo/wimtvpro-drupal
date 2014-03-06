@@ -5,6 +5,10 @@
   *
   */
 // Install Form for video upload
+/**
+ * Gestisce la sezione upload del plugin
+ */
+
 function wimtvpro_upload_form() {
 drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 drupal_add_js('
@@ -34,7 +38,7 @@ dots = fileName.split(".");
 fileType = "." + dots[dots.length - 1];
 
 if (fileTypes.join(".").indexOf(fileType.toLowerCase()) != -1) {
-return TRUE;
+return true;
 
 } else {
 alert("Please only upload files that end in types: \n\n"
@@ -223,4 +227,80 @@ function wimtvpro_upload_validate($form, &$form_state) {
         $error++;
         form_set_error('' , t('Upload error'));
     }
+}
+
+
+function wimtvpro_upload_submit($form, &$form_state) {
+
+    $urlfile  = $_FILES['files']['tmp_name']["videoFile"];
+    $titlefile = check_plain($_POST['titlefile']);
+
+    $cerca = array("'", '"');
+    $titlefile = str_replace($cerca, "", $titlefile);
+    $titlefile = preg_replace('/[^(\x20-\x7F)]*/','', $titlefile);
+    $titlefile = str_replace($token, "", $titlefile);
+
+    $descriptionfile = check_plain($_POST['descriptionfile']);
+    if (isset($_POST['videoCategory']))
+        $video_category = filter_xss($_POST['videoCategory']);
+
+    //connect at API for upload video to wimtv
+
+    $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
+    $ch = curl_init();
+    $url_upload = variable_get("basePathWimtv") . 'videos';
+
+    curl_setopt($ch, CURLOPT_URL, $url_upload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
+    curl_setopt($ch, CURLOPT_VERBOSE, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, $credential);
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+    //add category/ies (if exist)
+    $category_tmp = array();
+    $subcategory_tmp = array();
+    $directory = "public://skinWim";
+    $unique_temp_filename = $directory . "/" . time() . '.' . preg_replace('/.*?\//', '', "tmp");
+    $unique_temp_filename = str_replace("\\" , "/" , $unique_temp_filename);
+    if (!@move_uploaded_file( $urlfile , $unique_temp_filename)) {
+        //echo "non copiato";
+    }
+
+    $post= array("file" => "@" . drupal_realpath($unique_temp_filename),
+        "title" => $titlefile,
+        "description" => $descriptionfile,
+        "filename" => $_FILES['files']['name']["videoFile"]
+    );
+
+    if (isset($video_category)) {
+        $id=0;
+        foreach ($video_category as $cat) {
+            $subcat = explode("|", $cat);
+            $post['category[' . $id . ']'] = $subcat[0];
+            $post['subcategory[' . $id . ']'] = $subcat[1];
+            $id++;
+        }
+    }
+
+    watchdog('wimvideo', '<pre>' . print_r($post, TRUE) . '</pre>');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $arrayjsonst = json_decode($response);
+
+    if (isset($arrayjsonst->contentIdentifier)) {
+        drupal_set_message( t("Upload successful") );
+        $query = db_query("INSERT INTO {wimtvpro_videos} (uid,contentidentifier,mytimestamp,position,state, viewVideoModule,status,acquiredIdentifier,urlThumbs,category,title,duration,showtimeIdentifier) VALUES (
+    '" . variable_get("userWimtv") . "','" . $arrayjsonst->contentIdentifier . "','" . time() . "',0,'','3','OWNED','','','','" . $titlefile . "','','')");
+        $insert = TRUE;
+        include(drupal_get_path('module', 'wimtvpro') . "/wimtvpro.sync.php");
+        unlink(drupal_realpath($unique_temp_filename));
+
+    }
+    else
+        form_set_error('' , $response);
 }
