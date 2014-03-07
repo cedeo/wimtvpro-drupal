@@ -100,15 +100,13 @@ function wimtvpro_playlist_mod($form_state, $id) {
     $options = array('absolute' => TRUE,
                      'query' => array('width' => $iframe_width,
                                       'height' => $iframe_height,));
-	$embedded = "<iframe frameBorder='0' src='" . url("/wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options) . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
-	
-	
-	
-	
+    $playlist_url = url("wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options);
+	$embedded = "<iframe frameBorder='0' src='" . $playlist_url . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
+
 	$page = "<div class='sortable1'>" . t("All video (only Free)") . "<ul class='items_playlist' id='droptrue'>" . wimtvpro_getThumbs_playlist($array_playlist[0]->listVideo,TRUE,TRUE,FALSE,"",FALSE) . "</ul></div>";
 	$page .= "<div class='sortable2'><b>" . t("Video into Playlist") . "</b><ul class='items_playlist' id='dropfalse'>" . wimtvpro_getThumbs_playlist($array_playlist[0]->listVideo,TRUE,TRUE,FALSE,"",TRUE) . "</ul>
 	<div class='embeddedCode'><label>" . t("Click to copy Embedded Code") . "</label><textarea readonly='readonly'  onclick='this.focus(); this.select();  this.execCommand(\"Copy\")'>" . $embedded  . "</textarea></div>
-	 <a class='viewPreviewPlaylist' href='#' id='" . url("/wimtvpro/viewEmbeddedPlaylist/" . $identifier, array("absolute" => TRUE))  . "'>" . t("Preview") . "</a>
+	 <a class='viewPreviewPlaylist' href='#' id='" . $playlist_url . "'>" . t("Preview") . "</a>
 	
 	</div>";
 	

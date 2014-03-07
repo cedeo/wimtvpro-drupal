@@ -240,9 +240,7 @@ function wimtvpro_embeddedPlaylist() {
 
         $result_new = db_query("SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "' AND contentidentifier IN (" . $identifiers . ")");
 
-
         $array_videos  = $result_new->fetchAll();
-
         $playlist = "";
         foreach ($array_videos as $videoT){
             $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$videoT,FALSE);
@@ -256,7 +254,6 @@ function wimtvpro_embeddedPlaylist() {
             }
             $playlist .= "{" . $configFile . " 'image':'" . $thumb  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
         }
-
 
         $width = isset($_GET["width"]) ? $_GET["width"] : variable_get('widthPreview')+50;
         $height = isset($_GET["height"]) ? $_GET["height"] : variable_get('heightPreview')+70;
