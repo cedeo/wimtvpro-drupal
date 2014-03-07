@@ -143,7 +143,8 @@ switch ($function) {
         /**
          * Richiede che venga passato anche come parametro GET 'titleLive'.
          * Crea e ritorna l'url del video live con titolo passato.
-         */        $response = apiCreateUrl(urlencode($_GET['titleLive']));
+         */
+        $response = apiCreateUrl(urlencode($_GET['titleLive']));
         echo $response;
         break;
 

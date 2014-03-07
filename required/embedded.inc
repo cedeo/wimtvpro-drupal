@@ -247,11 +247,16 @@ function wimtvpro_embeddedPlaylist() {
         foreach ($array_videos as $videoT){
             $configFile  = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$videoT,FALSE);
 
-            if (!isset($videoT->urlThumbs)) $thumbs[0] = "";
-            else $thumbs = explode ('"',$videoT->urlThumbs);
-            $playlist .= "{" . $configFile . " 'image':'" . $thumbs[0]  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
-
+            if (!isset($videoT->urlThumbs)) {
+                $thumb = "";
+            }
+            else {
+                $thumbs = explode ('"',$videoT->urlThumbs);
+                $thumb = $thumbs[1];
+            }
+            $playlist .= "{" . $configFile . " 'image':'" . $thumb  . "','title':'" . str_replace ("+"," ",urlencode($videoT->title)) . "'},";
         }
+
 
         $width = isset($_GET["width"]) ? $_GET["width"] : variable_get('widthPreview')+50;
         $height = isset($_GET["height"]) ? $_GET["height"] : variable_get('heightPreview')+70;
