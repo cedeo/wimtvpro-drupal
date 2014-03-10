@@ -163,7 +163,10 @@ function wimtvpro_install() {
   variable_set('contenttypeWithInsertVideo', array());
   variable_set('addPageMyStreaming', '0');
   variable_set('nocategoryUpload',0);
-  variable_set('sandbox', true);
+    /**
+     * Cambiare sandbox a false e la basePath in www.wim.tv (su https) per puntare in produzione
+     */
+    variable_set('sandbox', true);
   variable_set('basePathWimtv', 'http://peer.wim.tv/wimtv-webapp/rest/');
 
   $t = get_t();
