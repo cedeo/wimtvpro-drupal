@@ -348,6 +348,12 @@ function apiUpdateItems($progId, $itemId, $params) {
     return $apiAccessor->execute($request);
 }
 
+function apiMimicItem($progId) {
+    $apiAccessor = getApi();
+    $request = $apiAccessor->postRequest("programming/" . $progId . "/mimic");
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
 
 
 initApi(variable_get("basePathWimtv"), variable_get("userWimtv"), variable_get("passWimtv"));
