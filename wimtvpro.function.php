@@ -104,7 +104,7 @@ function wimtvpro_listThumbs($record_new, $position_new, $replace_content, $show
     $replace_video = apiGetThumbsVideo($contentidentifier);
     $license_type = "";
     if (($showtime_identifier!="") && (count($st_license)>0)){
-        $license_type = $st_license[$showtime_identifier];
+        $license_type = isset($st_license[$showtime_identifier]) ? $st_license[$showtime_identifier] : null;
     }
 
     $thumbnail = '<img src="' . $replace_video . '" title="' . $title . '" class="" />';
@@ -213,13 +213,15 @@ function wimtvpro_viever_jwplayer($userAgent, $video, $viewFlashPlayer=true){
             $configFile = "file: '" . $urlPlay[1] . "',";
         } else {
             $configFile  = "";
-            if ($viewFlashPlayer==TRUE) $configFile .= "'flashplayer':'" . $dirJwPlayer . "',";
-                $configFile .= "'file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "',";
+            $autoplay = variable_get('autoPlay') == "yes" ? 'true': 'false';
+            if ($viewFlashPlayer)
+                $configFile .= "'flashplayer':'" . $dirJwPlayer . "',";
+            $configFile .= "'file': '" . $urlPlay[1] . "','streamer':'" . $urlPlay[0] . "', 'autostart':" . $autoplay . ",";
         }
         return $configFile;
+    } else {
+        return false;
     }
-    return false;
-
 }
 
 

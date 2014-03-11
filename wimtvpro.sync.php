@@ -87,11 +87,27 @@
             $pos_wimtv="";
           }
           if (!$trovato) {
-            $query = db_query("INSERT INTO {wimtvpro_videos} (uid,contentidentifier,mytimestamp,position,state, viewVideoModule, status,acquiredIdentifier ,urlThumbs,urlPlay,category,title,duration,showtimeidentifier) VALUES (
-	        '" . variable_get("userWimtv") . "','" . $content_item . "','" . time() . "',0,'" . $pos_wimtv . "','3','" . $status . "','" . $acquired_identifier . "','" . $url_thumbs . "','" . $url_video2 . "','" . $categories . "','" . $title . "','" . $duration . "','" . $showtime_identifier . "')");
+           $query = db_insert('wimtvpro_videos')
+                ->fields(array(
+                    'uid' => variable_get("userWimtv"),
+                    'contentidentifier' => $content_item,
+                    'mytimestamp' => time(),
+                    'position' => '0',
+                    'state' => $pos_wimtv,
+                    'viewVideoModule' => '3',
+                    'status' => $status,
+                    'acquiredIdentifier' => $acquired_identifier,
+                    'urlThumbs' => $url_thumbs,
+                    'urlPlay' => $url_video2,
+                    'category' => $categories,
+                    'title' => $title,
+                    'duration' => $duration,
+                    'showtimeidentifier' => $showtime_identifier
+                ))
+                ->execute();
           }
           else {
-            $query = db_update('{wimtvpro_videos}')
+            $query = db_update('wimtvpro_videos')
             ->fields(array(
             'state' => $pos_wimtv,
             'status' => $status,

@@ -89,6 +89,7 @@ function wimtvpro_callPricing() {
 
         $packet_json = json_decode($response2);
         $args = array('packet_json' => $packet_json,
+            'count_date' => $count_date,
             'id_packet_user' => $id_packet_user,
             'script' => $script);
         return render_template('templates/pricing.php', $args);

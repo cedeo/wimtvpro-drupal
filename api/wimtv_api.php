@@ -87,11 +87,13 @@ function apiGetLive($host_id, $timezone="") {
     return $apiAccessor->execute($request, 'application/json');
 }
 
-function apiGetLiveIframe($host_id, $timezone="") {
+function apiGetLiveIframe($host_id, $skin, $timezone="", $autostart="false") {
     $apiAccessor = getApi();
-    $url = $apiAccessor->liveHostsUrl . '/' . $host_id . '/embed';
+    $url = $apiAccessor->liveHostsUrl . '/' . $host_id . '/embed?skin=' . $skin;
     if (strlen($timezone))
-        $url .= '?timezone=' . $timezone;
+        $url .= '&timezone=' . $timezone;
+    if (strlen($autostart))
+        $url .= '&autostart=' . $autostart;
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, 'text/xml, application/xml');
@@ -326,9 +328,16 @@ function apiAddItem($progId, $params) {
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
-function apiGetCalendar($progId, $qs) {
+function apiGetCalendar($progId, $qs, $skin="", $autostart="false") {
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest("programming/" . $progId . "/calendar?" . $qs);
+    $url = "programming/" . $progId . "/calendar?" . $qs;
+    if (!empty($skin)) {
+        $url .= "&skin=" . $skin;
+    }
+    if (!empty($autostart)) {
+        $url .= "&autostart=" . $autostart;
+    }
+    $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }

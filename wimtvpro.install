@@ -158,8 +158,8 @@ function wimtvpro_install() {
     /**
      * Questa funzione viene chiamata all'INSTALLAZIONE del plugin (non alla RIATTIVAZIONE)
      */
-  drupal_install_schema('wimtvpro_videos');
-  drupal_install_schema('wimtvpro_playlist');
+  $videos_table = drupal_install_schema('wimtvpro_videos');
+  $playlist_table = drupal_install_schema('wimtvpro_playlist');
   variable_set('contenttypeWithInsertVideo', array());
   variable_set('addPageMyStreaming', '0');
   variable_set('nocategoryUpload',0);
@@ -211,7 +211,7 @@ function wimtvpro_uninstall() {
   // http://api.drupal.org/api/function/node_type_delete/7
   node_type_delete('node_playlistWimtvpro');
 
-  drupal_uninstall_schema('wimtvpro');
+  drupal_uninstall_schema('wimtvpro_videos');
   drupal_uninstall_schema('wimtvpro_playlist');
   variable_del('userWimtv');
   variable_del('passWimtv');
@@ -240,6 +240,7 @@ function wimtvpro_uninstall() {
   variable_del('contenttypeWithInsertVideo');
   variable_del('nocategoryUpload');
   variable_del('logoplayer');
+  variable_del('autoPlay');
 }
 
 

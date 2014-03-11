@@ -8,6 +8,8 @@
 /**
  * Gestisce la sezione wimlive del plugin
  */
+global $base_url;
+
 function wimtvpro_wimlive() {
 
     $view_page = wimtvpro_alert_reg();
@@ -460,7 +462,14 @@ function wimtvpro_tableLive() {
                 $durata =  $value->duration . " " . $value -> durationUnit;
 
             $identifier = $value -> identifier;
-            $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
+            $autostart = variable_get('autoPlay') == "yes" ? 'true': 'false';
+            if (variable_get('nameSkin')!="") {
+                $directory = file_create_url('public://skinWim');
+                $skin = $directory . "/" . variable_get('nameSkin') . ".zip";
+            }
+            else
+                $skin = $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
+            $embedded_iframe = apiGetLiveIframe($identifier, $skin, $timezone, $autostart);
             $details_live = apiEmbeddedLive($identifier, $timezone);
             $livedate = json_decode($details_live);
 

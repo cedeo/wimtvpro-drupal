@@ -131,7 +131,15 @@ function wimtvpro_admin() {
         '#maxlength' => 200,
         '#required' => FALSE,
     );
-    /*
+    $form['fieldConfig']['autoPlay'] = array(
+        '#title' => t('Choose Yes to autoplay embedded videos and playlists.'),
+        '#type' => 'select',
+        '#maxlength' => 5,
+        '#options' => array( 'no' => 'No', 'yes' => 'Yes'),
+        '#required' => TRUE,
+        '#default_value' => variable_get('autoPlay', 'no'),
+    );
+
     $form['fieldConfig']['sandbox'] = array(
     '#title' => t('Please select "no" to use WimTVPro plugin on WimTV server. Select "yes" if you want to to try the service on test server'),
     '#type' => 'select',
@@ -140,7 +148,7 @@ function wimtvpro_admin() {
     '#required' => TRUE,
     '#default_value' => variable_get('sandbox', 'no'),
     );
-    */
+
     $form['fieldConfig']['sandbox'] = array(
         '#type' => 'hidden',
         '#value' => t('no')
@@ -402,6 +410,7 @@ function wimtvpro_admin_validate($form, &$form_state) {
 
     variable_set('heightPreview', $_POST['heightPreview']);
     variable_set('widthPreview', $_POST['widthPreview']);
+    variable_set('autoPlay', $_POST['autoPlay']);
 
     //echo variable_get('heightPreview');
     //echo variable_get('widthPreview');

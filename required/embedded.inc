@@ -37,8 +37,8 @@ function wimtvpro_embedded() {
         else
             $skin = "&skin=" . $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
 
-        $params = "get=1&width=" . variable_get('widthPreview') . "&height=" . variable_get('heightPreview') . $skin;
-        //$params = "get=1&width=500px&height=280px" . $skin;
+        $autostart = variable_get('autoPlay') == "yes" ? 'true': 'false';
+        $params = "get=1&width=" . variable_get('widthPreview') . "&height=" . variable_get('heightPreview') . "&autostart=" . $autostart . $skin;
         $response = apiGetPlayerShowtime($arrayST["contentId"], $params);
 
         $args = array('response' => $response,
@@ -54,7 +54,7 @@ function wimtvpro_embedded() {
 
 function wimtvpro_embeddedAll() {
     /**
-     * Gestisce il rendering di un video embedded live
+     * Gestisce il rendering di un video embedded
      */
     $code = explode("embeddedAll/", $_GET['q']);
 
@@ -71,21 +71,21 @@ function wimtvpro_embeddedAll() {
 
         $output = "";
         $dimensions = "width:" . variable_get('widthPreview') . ",height:" . variable_get('heightPreview');
-        $dimension = " width='" . (variable_get('widthPreview')+50) . "px' height='" . (variable_get('heightPreview')+50)  . "px'";
-        //$dirJwPlayer = drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/player.swf";
+        $dirJwPlayer = drupal_get_path('module', 'wimtvpro') . "/jquery/jwplayer/jwplayer.js";
 
         $dimensioneFissaW = variable_get('widthPreview');
         $dimensioneFissaH = variable_get('heightPreview') + 100;
         $output .= "<div style='text-align:center;width:" . $dimensioneFissaW . "px; height:" . $dimensioneFissaH .  "px'>";
+        $output .= "<script src='" . $dirJwPlayer . "'></script>";
         $output .= "<div id='container'></div>";
 
         $dimension = " width='" . (variable_get('widthPreview')+50) . "px' height='" . (variable_get('heightPreview')+50)  . "px'";
-        $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$video);
+        $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'],$video[0]);
 
         $output .= "<script type='text/javascript'>jwplayer('container').setup({";
         if (variable_get('nameSkin')!="") $output .= "skin: '" . $directory . "/" . variable_get('nameSkin') . ".zip',";
         else $output .= "skin: '" . base_path() . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip',";
-        $embeddedEncode = str_replace("+", " " , urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvpro/viewEmbeddedPlayer/" . $video[0]->contentidentifier . "'" . $dimension . "></iframe>"));
+        $embeddedEncode = str_replace("+", " " , urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvpro/embeddedAll/" . $video[0]->contentidentifier . "'" . $dimension . "></iframe>"));
         if (!isset($video[0]->urlThumbs)) $thumbs[1] = "";
         else $thumbs = explode ('"',$video[0]->urlThumbs);
 
@@ -99,7 +99,7 @@ function wimtvpro_embeddedAll() {
 				   'code': '" . $embeddedEncode   . "'
 			   }},";
 
-        $output .= "image: '" . $thumbs[1] . "',});</script>&nbsp;";
+        $output .= "image: '" . $thumbs[1] . "',});</script>";
 
         $output .= "<h3>" . $video[0]->title . " (" . t("Preview") . ")</h3>";
         $output .= "<p>" . t("Duration") . ": <b>" . $video[0]->duration . "</b>";
@@ -189,7 +189,7 @@ function wimtvpro_plus_embeddedAll() {
             $output .= "image: '" . $thumbs[1] . "',
 
 
-		});</script>&nbsp;";
+		});</script>";
 
             $output .= "</div></body></html>";
         }

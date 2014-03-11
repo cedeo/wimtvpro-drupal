@@ -56,7 +56,16 @@ function calendar() {
     parse_str($qs, $qs_array);
     $progId = $qs_array['progId'];
 
-    $response = apiGetCalendar($progId, $qs);
+    global $base_url;
+    $autostart = variable_get('autoPlay') == "yes" ? 'true': 'false';
+    if (variable_get('nameSkin')!="") {
+        $directory = file_create_url('public://skinWim');
+        $skin = $directory . "/" . variable_get('nameSkin') . ".zip";
+    }
+    else
+        $skin = $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
+
+    $response = apiGetCalendar($progId, $qs, $skin, $autostart);
     echo $response;
     die();
 }

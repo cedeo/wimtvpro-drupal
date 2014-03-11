@@ -19,6 +19,7 @@
                     'flashplayer': '<?php echo $JwPlayerPath ?>',
                     <?php } ?>
                     'skin': '<?php echo $skin ?>',
+                    'autostart': <?php echo variable_get('autoPlay') == 'yes' ? 'true' : 'false'?>,
                     'height': '<?php echo $height ?>',
                     'width': '<?php echo $width ?>',
                     'playlist': [<?php echo  $playlist ?>],
