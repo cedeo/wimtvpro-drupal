@@ -1,20 +1,16 @@
 <?php
+
 /**
  * Created with JetBrains PhpStorm.
  * User: walter
  * Date: 17/12/13
  * Time: 15.03
  */
-/**
- * Gestisce la sezione wimlive del plugin
- */
-global $base_url;
-
 function wimtvpro_wimlive() {
 
     $view_page = wimtvpro_alert_reg();
-    form_set_error("error",$view_page);
-    if ($view_page==""){
+    form_set_error("error", $view_page);
+    if ($view_page == "") {
         //View list future event created
         return render_template('templates/wimlive.php', array('elenco' => wimtvpro_elencoLive("all", "table")));
     }
@@ -40,75 +36,84 @@ function wimtvpro_wimlive_delete($form_state, $id) {
 
 //This is a form
 function wimtvpro_form($type, $identifier) {
-
     drupal_add_js('
-  //Request new URL for create a wimlive Url
-  jQuery(document).ready(function(){
-	var timezone = -(new Date().getTimezoneOffset())*60*1000;
-	jQuery("#timelivejs").val(timezone);
-	jQuery(".createUrl").click(function(){
-	  jQuery.ajax({
-			context: this,
-			url:  "' . url("admin/config/wimtvpro/wimtvproCallAjax") . '",
-			type: "GET",
-			dataType: "html",
-			data:{
-				namefunction: "urlCreate",
-				titleLive: jQuery("#edit-name").val(),
-			},
-			success: function(response) {
-			  var json =  jQuery.parseJSON(response);
-			  var result = json.result;
-			  if (result=="SUCCESS"){
-			  	jQuery("#edit-url").attr("readonly", "readonly");
-			  	jQuery("#edit-url").attr("value", json.liveUrl);
-			  	jQuery(this).hide();
-				jQuery(".removeUrl").show();
-			  } else {
-			    //alert (response);
-			    alert(Drupal.t("Insert a password for live streaming is required"));
-			    jQuery(".passwordUrlLive").show();
-			    jQuery(".createPass").click(function(){
-			     jQuery.ajax({
-			     context: this,
-			     url:  "' . url("admin/config/wimtvpro/wimtvproCallAjax") . '",
-			     type: "GET",
-			     dataType: "html",
-			     data:{
-				  namefunction: "passCreate",
-				  newPass: jQuery("#passwordLive").val(),
-			     },
-                 success: function(response) {
-                 	alert (response);
-                 	jQuery(".passwordUrlLive").hide();
-                 }
-			    });
-	            });
-			  }
-			},
-			error: function(request,error) {
-				alert(request);
-			}
-		});
-     });
-   jQuery(".removeUrl").click(function(){
-     jQuery(this).hide();
-     jQuery(".createUrl").show();
-     jQuery("#edit-url").removeAttr("disabled");
-     jQuery("#edit-url").val("");
-   });
- });
-
+            //Request new URL for create a wimlive Url
+          jQuery(document).ready(function() {
+              var timezone = -(new Date().getTimezoneOffset()) * 60 * 1000;
+//              var clitimestamp=new Date().getTime();
+//              alert(clitimestamp);
+              jQuery("#timelivejs").val(timezone);
+              jQuery(".createUrl").click(function() {
+                  jQuery.ajax({
+                      context: this,
+                      url: "' . url("admin/config/wimtvpro/wimtvproCallAjax") . '",
+                      type: "GET",
+                      dataType: "html",
+                      data: {
+                          namefunction: "urlCreate",
+                          titleLive: jQuery("#edit-name").val(),
+                      },
+                      success: function(response) {                        
+                          try {
+                              var json = jQuery.parseJSON(response);
+                              var result = json.result;
+                              if (result === "SUCCESS") {
+                                  jQuery("#edit-url").attr("readonly", "readonly");
+                                  jQuery("#edit-url").attr("value", json.liveUrl);
+                                  jQuery(this).hide();
+                                  jQuery(".removeUrl").show();
+                              } else {
+                                  alert(Drupal.t("Insert a password for live streaming is required"));
+                                  jQuery(".passwordUrlLive").show();
+                                  jQuery(".createPass").click(function() {
+                                      jQuery.ajax({
+                                          context: this,
+                                          url: "' . url("admin/config/wimtvpro/wimtvproCallAjax") . '",
+                                          type: "GET",
+                                          dataType: "html",
+                                          data: {
+                                              namefunction: "passCreate",
+                                              newPass: jQuery("#passwordLive").val(),
+                                          },
+                                          success: function(response) {
+                                              alert(response);
+                                              jQuery(".passwordUrlLive").hide();
+                                          }
+                                      });
+                                  });
+                              }
+                          }
+                          catch (e) {
+                              alert(Drupal.t("Connection error."));
+                          }
+                      },
+                      error: function(request, error) {
+                          alert(request);
+                      }
+                  });
+              });
+              jQuery(".removeUrl").click(function() {
+                  jQuery(this).hide();
+                  jQuery(".createUrl").show();
+                  jQuery("#edit-url").removeAttr("disabled");
+                  jQuery("#edit-url").val("");
+              });
+          });
 	 ', "inline");
 
-    if ($type=="modify") {
-        $dati = apiEmbeddedLive($identifier);
+    if ($type == "modify") {
+        // NS: We use the GETted value "timezone_" and we pass it to apiEmbeddedLive(..)
+        // to make it aware about "daylight saving".
+        $timezone_ = isset($_GET['timezone_']) ? $_GET['timezone_'] : null;
+
+        $dati = apiEmbeddedLive($identifier, $timezone_);
         $arraydati = json_decode($dati);
+
         $name = $arraydati->name;
-        if ($arraydati->paymentMode=="FREEOFCHARGE")
+        if ($arraydati->paymentMode == "FREEOFCHARGE")
             $payperview = "0";
         else
-            $payperview =  $arraydati->pricePerView;
+            $payperview = $arraydati->pricePerView;
 
 
         $url = $arraydati->url;
@@ -116,7 +121,8 @@ function wimtvpro_form($type, $identifier) {
         $giorno = $arraydati->eventDate;
 
         //$timezone = $arraydati->eventTimeZone;
-        if (intval($arraydati->eventMinute)<10) $arraydati->eventMinute = "0" .  $arraydati->eventMinute;
+        if (intval($arraydati->eventMinute) < 10)
+            $arraydati->eventMinute = "0" . $arraydati->eventMinute;
         $ora = $arraydati->eventHour . ":" . $arraydati->eventMinute;
         $tempo = $arraydati->duration;
         $public = $arraydati->publicEvent;
@@ -125,26 +131,22 @@ function wimtvpro_form($type, $identifier) {
         $minuti = $tempo % 60;
 
         $durata = $ore . "h";
-        if ($minuti<10)
+        if ($minuti < 10)
             $durata .= "0";
         $durata .= $minuti;
 
         if ($public) {
             $public_res = "true";
-        }
-        else {
+        } else {
             $public_res = "false";
         }
 
         if ($recordEvent) {
             $recordEvent_res = "true";
-        }
-        else {
+        } else {
             $recordEvent_res = "false";
         }
-
-    }
-    else {
+    } else {
         $name = "";
         $payperview = "0";
         $url = "";
@@ -153,11 +155,11 @@ function wimtvpro_form($type, $identifier) {
         $durata = "";
         $public = "";
         $recordEvent = "";
-        $public_res = "";
-        $recordEvent_res = "";
+        $public_res = "false";
+        $recordEvent_res = "false";
     }
-    global $base_url,$base_path,$base_root;
-    drupal_add_js("var url_pathPlugin ='" . $base_url . "';" , "inline");
+    global $base_url, $base_path, $base_root;
+    drupal_add_js("var url_pathPlugin ='" . $base_url . "';", "inline");
     drupal_add_library('system', 'ui.datepicker');
     drupal_add_js('jQuery(document).ready(function(){jQuery( ".pickadate" ).datepicker({
       dateFormat: "dd/mm/yy",
@@ -205,7 +207,7 @@ function wimtvpro_form($type, $identifier) {
         '#type' => 'textfield',
         '#title' => t('Url'),
         '#description' => t('URL through which the streaming can be done. <b class="createUrl"> CREATE YOUR URL </b><b id="' . variable_get("userWimtv") . '" class="removeUrl"> REMOVE YOUR URL </b><br/><div class="passwordUrlLive"> Password Live is missing, insert a password for live streaming: <input type="password" id="passwordLive" /> <b class="createPass">Save</b></div>'),
-        '#default_value' =>  variable_get('payperview', $url),
+        '#default_value' => variable_get('payperview', $url),
         '#size' => 100,
         '#maxlength' => 800,
         '#required' => TRUE,
@@ -216,7 +218,7 @@ function wimtvpro_form($type, $identifier) {
         '#type' => 'radios',
         '#title' => t('Event status '),
         '#maxlength' => 5,
-        '#options' => array( 'true' => 'Public', 'false' => 'Private'),
+        '#options' => array('true' => 'Public', 'false' => 'Private'),
         '#description' => 'If you want to index your event on wimlive.wim.tv, and in WimView (WimTV mobile app) select "Public"',
         '#required' => TRUE,
         '#default_value' => $public_res,
@@ -226,9 +228,9 @@ function wimtvpro_form($type, $identifier) {
         '#type' => 'radios',
         '#title' => t('Record event'),
         '#maxlength' => 5,
-        '#options' => array( 'true' => 'Yes', 'false' => 'No'),
+        '#options' => array('true' => 'Yes', 'false' => 'No'),
         '#required' => TRUE,
-		 '#description' => t('Select "Yes" if you want to record your event. The recorded video will appear in WimBox'),
+        '#description' => t('Select "Yes" if you want to record your event. The recorded video will appear in WimBox'),
         '#default_value' => $recordEvent_res,
     );
 
@@ -251,14 +253,13 @@ function wimtvpro_form($type, $identifier) {
         '#attributes' => array('class' => array('pickatime')),
         '#required' => TRUE,
         '#default_value' => $ora,
-
     );
     /*
-    $form['Timezone'] = array(
-        '#type' => 'select',
-        '#title' => t('TimeZone'),
-        '#description' => t('We recommend applying a tolerance on the start time to facilitate payment transactions to the viewers.'),
-    );*/
+      $form['Timezone'] = array(
+      '#type' => 'select',
+      '#title' => t('TimeZone'),
+      '#description' => t('We recommend applying a tolerance on the start time to facilitate payment transactions to the viewers.'),
+      ); */
     $form['Duration'] = array(
         '#type' => 'textfield',
         '#title' => t('Duration'),
@@ -268,7 +269,7 @@ function wimtvpro_form($type, $identifier) {
         '#attributes' => array('class' => array('pickaduration')),
         '#required' => TRUE,
     );
-    if ($type=="modify") {
+    if ($type == "modify") {
         $form['submit'] = array(
             '#type' => 'submit',
             '#value' => t('Edit'),
@@ -277,9 +278,7 @@ function wimtvpro_form($type, $identifier) {
             '#type' => 'hidden',
             '#default_value' => $identifier,
         );
-
-    }
-    else {
+    } else {
         $form['submit'] = array(
             '#type' => 'submit',
             '#value' => t('Add'),
@@ -298,91 +297,175 @@ function wimtvpro_form($type, $identifier) {
     $form['#validate'][] = 'wimtvpro_wimlive_validate';
     $form['#submit'][] = 'wimtvpro_wimlive_submit';
     return $form;
-
 }
 
 function wimtvpro_set_year_range($form_element) {
-    $form_element['year']['#options'] = drupal_map_assoc(range(date("Y"), date("Y")+10));
+    $form_element['year']['#options'] = drupal_map_assoc(range(date("Y"), date("Y") + 10));
     return $form_element;
 }
 
 function wimtvpro_wimlive_validate($form, &$form_state) {
+//    var_dump($_POST);
+//       die();
+//    $name = check_plain($_POST['name']);
+//    $payperview = check_plain($_POST['payperview']);
+//    $public = check_plain($_POST['Public']);
+//    $record = check_plain($_POST['Record']);
+//    if ($payperview == "0")
+//        $typemode = "FREEOFCHARGE";
+//    else
+//        $typemode = "PAYPERVIEW&pricePerView=" . $payperview . "&ccy=EUR";
+//
+//    $url = check_plain($_POST['Url']);
+//    if ($_POST['Giorno'] != "") {
+//        $giorno = check_plain($_POST['Giorno']);
+//    }
+//    else
+//        $giorno = "";
+//    if ($_POST['Ora'] != "") {
+//        $ora = explode(":", check_plain($_POST['Ora']));
+//    } else {
+//        $ora[0] = "";
+//        $ora[1] = "";
+//    }
+//    if ($_POST['Duration'] != "") {
+//        $separe_duration = explode("h", check_plain($_POST['Duration']));
+//        $duration = ($separe_duration[0] * 60) + $separe_duration[1];
+//    } else {
+//        $duration = 0;
+//    }
+//
+//    $params = array("name" => $name,
+//        "url" => $url,
+//        "eventDate" => $giorno,
+//        "paymentMode" => $typemode,
+//        "eventHour" => $ora[0],
+//        "eventMinute" => $ora[1],
+//        "duration" => $duration,
+//        "durationUnit" => "Minute",
+//        "publicEvent" => $public,
+//        "timezone" => $_POST['timelivejs'],
+//        "recordEvent" => $record);
+//
+//    if ($_POST['typeValue'] == "modify")
+//        $response = apiModifyLive($_POST['identifier'], $params, $_POST['timelivejs']);
+//    else
+//        $response = apiAddLive($params, $_POST['timelivejs']);
+//
+//    if ($response != "") {
+//        $message = json_decode($response);
+//
+//        if (isset($message->result)) {
+//            $result = $message->result;
+//
+//            if (!$result == "SUCCESS") {
+//
+//                $formset_error = "";
+//                foreach ($message->{"messages"} as $key => $value) {
+//                    if ($value->message != "")
+//                        $formset_error .= $value->field . "=" . $value->message;
+//                }
+//                form_set_error("", check_plain($formset_error));
+//            }
+//        }
+//        else {
+//            form_set_error("", t("Event creation failure. You need to enable \"Live Transmission\" on your wimtv's personal page"));
+//        }
+//    }
+}
+
+function wimtvpro_wimlive_submit($form, &$form_state) {
     $name = check_plain($_POST['name']);
     $payperview = check_plain($_POST['payperview']);
     $public = check_plain($_POST['Public']);
     $record = check_plain($_POST['Record']);
-    if ($payperview=="0")
+
+    $ccy = "EUR";
+    $pricePerView = "0";
+
+    if ($payperview == "0") {
         $typemode = "FREEOFCHARGE";
-    else
-        $typemode = "PAYPERVIEW&pricePerView=" . $payperview . "&ccy=EUR";
+        $pricePerView = "0";
+    } else {
+//        $typemode = "PAYPERVIEW&pricePerView=" . $payperview . "&ccy=EUR";
+        $typemode = "PAYPERVIEW";
+        $pricePerView = $payperview;
+    }
 
     $url = check_plain($_POST['Url']);
-    if ($_POST['Giorno']!="") {
+    if ($_POST['Giorno'] != "") {
         $giorno = check_plain($_POST['Giorno']);
     }
     else
         $giorno = "";
-    if ($_POST['Ora']!="") {
+    if ($_POST['Ora'] != "") {
         $ora = explode(":", check_plain($_POST['Ora']));
-    }
-    else {
+    } else {
         $ora[0] = "";
         $ora[1] = "";
     }
-    if ($_POST['Duration']!="") {
+    if ($_POST['Duration'] != "") {
         $separe_duration = explode("h", check_plain($_POST['Duration']));
         $duration = ($separe_duration[0] * 60) + $separe_duration[1];
-    }
-    else {
+    } else {
         $duration = 0;
     }
 
-    $params = array("name" => $name,
-                    "url" => $url,
-                    "eventDate" => $giorno,
-                    "paymentMode" => $typemode,
-                    "eventHour" => $ora[0],
-                    "eventMinute" => $ora[1],
-                    "duration" => $duration,
-                    "durationUnit" => "Minute",
-                    "publicEvent" => $public,
-                    "timezone" => $_POST['timelivejs'],
-                    "recordEvent" => $record);
+    // GET A PAYMENT CODE FROM SERVER
+    $paymentCodeResponse = apiGetUUID();
+    $paymentCode = isset($paymentCodeResponse->body) ? $paymentCodeResponse->body : "";
 
-    if ($_POST['typeValue'] == "modify")
+    $params = array(
+        "name" => $name,
+        "url" => $url,
+        "eventDate" => $giorno,
+        "paymentMode" => $typemode,
+        "eventHour" => $ora[0],
+        "eventMinute" => $ora[1],
+        "duration" => $duration,
+        "durationUnit" => "Minute",
+        "publicEvent" => $public,
+        "timezone" => $_POST['timelivejs'],
+        "recordEvent" => $record,
+        "paymentCode" => $paymentCode,
+        "pricePerView" => $pricePerView,
+        "ccy" => $ccy
+    );
+
+
+    if ($_POST['typeValue'] == "modify") {
         $response = apiModifyLive($_POST['identifier'], $params, $_POST['timelivejs']);
-    else
+    } else {
         $response = apiAddLive($params, $_POST['timelivejs']);
+    }
 
-    if ($response!="") {
+    $formset_error = "";
+    if ($response != "") {
         $message = json_decode($response);
-
         if (isset($message->result)) {
             $result = $message->result;
+            if ($result !== "SUCCESS") {
 
-            if (!$result=="SUCCESS") {
-
-                $formset_error = "";
                 foreach ($message->{"messages"} as $key => $value) {
-                    if ($value->message!="")
+                    if ($value->message != "")
                         $formset_error .= $value->field . "=" . $value->message;
                 }
                 form_set_error("", check_plain($formset_error));
             }
         }
         else {
-            form_set_error("", t("Event creation failure. You need to enable \"Live Transmission\" on your wimtv's personal page"));
+            $formset_error = "Event creation failure. You need to enable \"Live Transmission\" on your wimtv's personal page";
+            form_set_error("", t($formset_error));
         }
     }
-}
 
-function wimtvpro_wimlive_submit($form, &$form_state) {
-    //drupal_set_message(t("Insert event successfully"));
-    $form_state['rebuild'] = TRUE;
-    drupal_add_js("jQuery(document).ready(function() {
+    if ($formset_error == "") {
+        //drupal_set_message(t("Insert event successfully"));
+        $form_state['rebuild'] = TRUE;
+        drupal_add_js("jQuery(document).ready(function() {
 		        window.location ='" . url("admin/config/wimtvpro/wimlive") . "';
-				});","inline");
-
+				});", "inline");
+    }
 }
 
 //View event into public page
@@ -394,14 +477,14 @@ function wimtvpro_live_public() {
 }
 
 //List your future live event
-function wimtvpro_elencoLive($number, $type, $onlyActive=true) {
-    if ($type=="table") {
+function wimtvpro_elencoLive($number, $type, $onlyActive = true) {
+    if ($type == "table") {
         $output = 'jQuery("#tableLive tbody").html(response)';
     } else {
         $output = 'jQuery(".live_' . $type . '").html(response)';
     }
     $script =
-        'jQuery(document).ready(function(){
+            'jQuery(document).ready(function(){
              var timezone = -(new Date().getTimezoneOffset())*60*1000;
              jQuery.ajax({
                  context: this,
@@ -409,19 +492,19 @@ function wimtvpro_elencoLive($number, $type, $onlyActive=true) {
                  type: "POST",
                  dataType: "html",
                  async: false,
-                 data: "type='. $type . '&timezone =" + timezone  + "&id=' . $number . '&onlyActive=' . $onlyActive . '",
+                 data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $number . '&onlyActive=' . $onlyActive . '",
                  success: function(response) {' . $output . '},
              });
          });';
 
-    drupal_add_js($script,'inline');
+    drupal_add_js($script, 'inline');
 }
 
 function wimtvpro_tableLive() {
-    global $base_url,$base_path,$base_root;
+    global $base_url, $base_path, $base_root;
     $timezone = $_POST['timezone_'];
     $type = $_POST['type'];
-    $id =  $_POST['id'];
+    $id = $_POST['id'];
     $onlyActive = $_POST['onlyActive'];
     $userpeer = variable_get("userWimtv");
 
@@ -430,77 +513,72 @@ function wimtvpro_tableLive() {
     $arrayjson_live = json_decode($json);
     $count = -1;
     $output = "";
-    if ($arrayjson_live ) {
+    if ($arrayjson_live) {
         foreach ($arrayjson_live->hosts as $key => $value) {
-            $count ++;
-            $name = $value -> name;
-            if (isset($value -> url))
-                $url =  $value -> url;
+            $count++;
+            $name = $value->name;
+            if (isset($value->url))
+                $url = $value->url;
             else
                 $url = "";
-            if ($value->paymentMode=="FREEOFCHARGE")
+            if ($value->paymentMode == "FREEOFCHARGE")
                 $payperview = "0";
             else
-                $payperview =  $value->pricePerView;
+                $payperview = $value->pricePerView;
 
-            $day =  $value -> eventDate;
-            $payment_mode =  $value -> paymentMode;
-            if ($payment_mode=="FREEOFCHARGE") $payment_mode="Free";
+            $day = $value->eventDate;
+            $payment_mode = $value->paymentMode;
+            if ($payment_mode == "FREEOFCHARGE")
+                $payment_mode = "Free";
             else {
-                $payment_mode=  $value->pricePerView . " &euro;";
+                $payment_mode = $value->pricePerView . " &euro;";
             }
-            if ( $value -> durationUnit=="Minute") {
+            if ($value->durationUnit == "Minute") {
                 $tempo = $value->duration;
                 $ore = floor($tempo / 60);
                 $minuti = $tempo % 60;
                 $durata = $ore . " h ";
-                if ($minuti<10)
+                if ($minuti < 10)
                     $durata .= "0";
                 $durata .= $minuti . " min";
             }
             else
-                $durata =  $value->duration . " " . $value -> durationUnit;
+                $durata = $value->duration . " " . $value->durationUnit;
 
-            $identifier = $value -> identifier;
-            $autostart = variable_get('autoPlay') == "yes" ? 'true': 'false';
-            if (variable_get('nameSkin')!="") {
-                $directory = file_create_url('public://skinWim');
-                $skin = $directory . "/" . variable_get('nameSkin') . ".zip";
-            }
-            else
-                $skin = $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
-            $embedded_iframe = apiGetLiveIframe($identifier, $skin, $timezone, $autostart);
+            $identifier = $value->identifier;
+            $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
             $details_live = apiEmbeddedLive($identifier, $timezone);
             $livedate = json_decode($details_live);
 
             $data = $livedate->eventDate;
             $millis = $livedate->eventDateMillisec;
-            if (intval($livedate->eventMinute)<10) $livedate->eventMinute = "0" .  $livedate->eventMinute;
+            if (intval($livedate->eventMinute) < 10)
+                $livedate->eventMinute = "0" . $livedate->eventMinute;
             $oraMin = $livedate->eventHour . ":" . $livedate->eventMinute;
-            $timeToStart= $livedate->timeToStart;
+            $timeToStart = $livedate->timeToStart;
             $timeLeft = $livedate->timeLeft;
 
 
 
             $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();">' . $embedded_iframe . '</textarea>';
-            if ($type=="table") {
+            if ($type == "table") {
 
 
                 $dataNow = date("d/m/Y");
-                $dataLive = explode(" ",$day);
-                $arrayData = explode ("/",$dataLive[0]);
-                $arrayOra = explode (":",$dataLive[1]);
+                $dataLive = explode(" ", $day);
+                $arrayData = explode("/", $dataLive[0]);
+                $arrayOra = explode(":", $dataLive[1]);
                 /*
-                 $timeStampInizio =  mktime($arrayOra[0],$arrayOra[1],0,$arrayData[1],$arrayData[0],$arrayData[2]);
+                  $timeStampInizio =  mktime($arrayOra[0],$arrayOra[1],0,$arrayData[1],$arrayData[0],$arrayData[2]);
 
-                 $secondiDurata = 60 * $durata;
-                 $ora= date("H:i:s", $secondiDurata);
-                 $arrayDurata = explode (":",$ora);
+                  $secondiDurata = 60 * $durata;
+                  $ora= date("H:i:s", $secondiDurata);
+                  $arrayDurata = explode (":",$ora);
 
-                 $timeStampFine =  mktime($arrayOra[0]+$arrayDurata[0],$arrayOra[1]+$arrayDurata[1],$arrayOra[2]+$arrayDurata[2],$arrayData[1],$arrayData[0],$arrayData[2]);
+                  $timeStampFine =  mktime($arrayOra[0]+$arrayDurata[0],$arrayOra[1]+$arrayDurata[1],$arrayOra[2]+$arrayDurata[2],$arrayData[1],$arrayData[0],$arrayData[2]);
 
-                 $timeStampNow =  mktime(date("H"),date("i"),date("s"),date("m"),date("d"),date("Y"));
-           */
+                  $timeStampNow =  mktime(date("H"),date("i"),date("s"),date("m"),date("d"),date("Y"));
+                 */
 
                 $liveIsNow = false;
                 if ($timeToStart <= 0 && $timeLeft > 0) {
@@ -508,38 +586,44 @@ function wimtvpro_tableLive() {
                 }
                 $producer = "";
                 if ($liveIsNow)
-
-                    $producer ="<a target='newPage' href='" . url("admin/config/wimtvpro/wimlive/webproducer/" . $identifier) . "'  id='" . $identifier . "'><img src='" .  $base_url  . "/" . drupal_get_path('module', 'wimtvpro') . "/img/webcam.png'></a>";
+                    $producer = "<a target='newPage' href='" . url("admin/config/wimtvpro/wimlive/webproducer/" . $identifier) . "'  id='" . $identifier . "'><img src='" . $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/img/webcam.png'></a>";
 
                 $output .="<tr>
         <td>" . $name . "</td>
 		<td>" . $producer . "</td>
         <td>" . $payment_mode . "</td>
         <td>" . $url . "</td>
-        <td>"  . $day . " " . $oraMin . "<br/>" . $durata . "</td>
-        <td>" . $embedded_code . "</td>
-        <td>" . l(t("Edit"), "admin/config/wimtvpro/wimlive/modify/" . $identifier ) . " | " . l(t("Delete"), "admin/config/wimtvpro/wimlive/delete/" . $identifier ) . "</td>
-        </tr>";
+        <td>" . $day . " " . $oraMin . "<br/>" . $durata . "</td>
+        <td>" . $embedded_code . "</td>" .
+                        // NS: We append "timezone_" value as querystring to make "modify" function
+                        //  aware about "daylight saving"
+//        "<td>" . l(t("Edit"), "admin/config/wimtvpro/wimlive/modify/" . $identifier) . " | " . l(t("Delete"), "admin/config/wimtvpro/wimlive/delete/" . $identifier) . "</td>".
+                        "<td>" . l(t("Edit"), "admin/config/wimtvpro/wimlive/modify/" . $identifier, array('query' => array('timezone_' => $timezone))) . " | " . l(t("Delete"), "admin/config/wimtvpro/wimlive/delete/" . $identifier) . "</td>" .
+                        "</tr>";
             }
-            elseif ($type=="list") {
-                if (($number=="prev") && ($count==0)) $output .= "";
-                elseif (($number=="prev") && ($count>0)) $output .="<li><b>" . $name . "</b> " . $payment_mode . " - " . $data . " " . $oraMin . " - " . $durata . "</li>";
-                else $output .="<li><b>" . $name . "</b> " . $payment_mode . " - " . $data . " " . $oraMin   . " - " . $durata . "</li>";
-
-
+            elseif ($type == "list") {
+                if (($number == "prev") && ($count == 0))
+                    $output .= "";
+                elseif (($number == "prev") && ($count > 0))
+                    $output .="<li><b>" . $name . "</b> " . $payment_mode . " - " . $data . " " . $oraMin . " - " . $durata . "</li>";
+                else
+                    $output .="<li><b>" . $name . "</b> " . $payment_mode . " - " . $data . " " . $oraMin . " - " . $durata . "</li>";
             }
             else {
                 $name = "<b>" . $name . "</b>";
-                $day =  "Begins to " . $day;
+                $day = "Begins to " . $day;
                 $output = $name . "<br/>";
-                $output .= $data . " " . $oraMin  . "<br/>" . $durata . "<br/>";
+                $output .= $data . " " . $oraMin . "<br/>" . $durata . "<br/>";
                 $output .= $embedded_iframe;
             }
-            if (($number=="0") && ($count==0)) break;
+            if (($number == "0") && ($count == 0))
+                break;
         }
     }
-    if ($count<0) {
+    if ($count < 0) {
         $output = t("No event scheduled at this time");
     }
     echo $output;
 }
+
+?>

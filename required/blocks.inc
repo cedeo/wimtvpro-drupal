@@ -10,9 +10,6 @@ function wimtvpro_block_configure($delta = '') {
 }
 
 function wimtvpro_blockUser_config() {
-    /**
-     * Questa funzione gestisce il blocco dei dati dell'utente, di solito posizionato nel footer.
-     */
     $view_page = wimtvpro_alert_reg();
     if ($view_page)
         form_set_error("error",$view_page);
@@ -65,9 +62,6 @@ function wimtvpro_blockUser_config() {
 
 //Info block
 function wimtvpro_block_info() {
-    /**
-     * Questa funzione gestisce la lista dei blocchi creati con il plugin.
-     */
     // This example comes from node.module.
     $blocks['user_profile'] = array( 'info' => t('Block User Profile'));
     $blocks['video_thumbs'] = array('info' => t('Block list video WimVod'));
@@ -75,9 +69,7 @@ function wimtvpro_block_info() {
 }
 
 function wimtvpro_block_view($delta = '') {
-    /**
-     * Questa funzione visualizza il blocco dei dati dell'utente, di solito posizionato nel footer.
-     */
+    // This example is adapted from node.module.
     global  $base_url;
     $block = array();
     switch ($delta) {

@@ -3,16 +3,24 @@ description = WimTVPro is the video plugin that adds several features to manage 
 package = WIMTV
 core = 7.x
 configure = admin/config/wimtvpro
-version = 1.0.0
+version = 1.1.0
 php = 5.3
+
 dependencies[] = file
+dependencies[] = taxonomy
+dependencies[] = entity
+dependencies[] = field_ui
+
 stylesheets[all][] = wimtvpro.css
 stylesheets[all][] = wimtvpro_public.css
+stylesheets[all][] = programming.css
 file[] = wimtvpro.sql.php
 file[] = wimtvpro.form.php
 file[] = wimtvpro.function.php
 file[] = wimtvpro.sync.php
+file[] = wimtvpro.smartsync.php
 file[] = wimtvpro.js
+file[] = programming-api.js
 file[] = wimtvpro.install
 
 

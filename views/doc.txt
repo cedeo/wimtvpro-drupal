@@ -1,2 +1,0 @@
-Qui ci sono le views del plugin.
-In ogni file è presente la documentazione riguardo la view gestita.

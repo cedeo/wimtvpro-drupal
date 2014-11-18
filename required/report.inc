@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by JetBrains PhpStorm.
  * User: walter
@@ -6,46 +7,49 @@
  * Time: 15.37
  * To change this template use File | Settings | File Templates.
  */
-/**
- * Gestisce la sezione statistiche del plugin
- */
 function serializeStatistics($arrayStreams) {
     $streams = array();
-    $megabyte = 1024*1024;
-    foreach ($arrayStreams as $index=>$stream) {
-        $details = json_decode(apiGetDetailsVideo($stream->contentId));
-        $thumbs = "<img class='wimtv-thumbnail' src='' />";
+    $megabyte = 1024 * 1024;
+    foreach ($arrayStreams as $index => $stream) {
+        $cid = (isset($stream->contentId) ? $stream->contentId : null);
+        $details = json_decode(apiGetDetailsVideo($cid));
+
+        $img = base_path() . drupal_get_path("module", "wimtvpro") . "/img/empty.jpg";
+        $thumbs = "<img class='wimtv-thumbnail' src='" . $img . "' />";
         if (count($details)) {
-            $thumbs = "<img src='" . $details->thumbnailUrl . "' />";
-            $thumbs = str_replace('\"','',$thumbs);
+            $img = $details->thumbnailUrl;
+
+            $thumbs = "<img src='" . $img . "' />";
+            $thumbs = str_replace('\"', '', $thumbs);
         }
+
+
         if ((isset($stream->title)))
-            $stream->thumb = $thumbs . "<br/><b>" . $stream->title . "</b><br/>" . $stream->type ;
+            $stream->thumb = $thumbs . "<br/><b>" . $stream->title . "</b><br/>" . $stream->type;
         else
             $stream->thumb = $thumbs . "<br/>" . $stream->id;
 
         $stream->views_list = array();
 
-        foreach ($stream->views_expanded as $value){
-            $value->traffic =  round($value->traffic / $megabyte, 2) . " MB";
-            $value->date_human =  date('d/m/Y', ($value->end_time/1000));
+        foreach ($stream->views_expanded as $value) {
+            $value->traffic = round($value->traffic / $megabyte, 2) . " MB";
+            $value->date_human = date('d/m/Y', ($value->end_time / 1000));
             array_push($stream->views_list, $value);
-
         }
         $streams[$index] = $stream;
     }
     return $streams;
 }
 
-function wimtvpro_report(){
+function wimtvpro_report() {
     $view_page = wimtvpro_alert_reg();
-    form_set_error("error",$view_page);
-    if ($view_page==""){
+    form_set_error("error", $view_page);
+    if ($view_page == "") {
 
         drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
         drupal_add_library('system', 'ui.datepicker');
         $script =
-            'jQuery(document).ready(function(){
+                'jQuery(document).ready(function(){
                   jQuery( ".pickadate" ).datepicker({ dateFormat: "dd/mm/yy",     maxDate: 0,      });
                   jQuery("#customReport").click(function(){
                       jQuery("#fr_custom_date").fadeToggle();
@@ -62,7 +66,7 @@ function wimtvpro_report(){
         drupal_add_js($script, 'inline');
 
         $user = variable_get('userWimtv');
-        $megabyte = 1024*1024;
+        $megabyte = 1024 * 1024;
 
         $from = isset($_POST['from']) ? $_POST['from'] : "";
         $to = isset($_POST['to']) ? $_POST['to'] : "";
@@ -70,18 +74,18 @@ function wimtvpro_report(){
         $dateNumber = array();
         $dateTraffic = array();
 
-        if (($from!="") && ($to!="")) {
-            list($day_from, $month_from, $year_from) = explode('/',$from);
-            list($day_to, $month_to, $year_to) = explode('/',$to);
+        if (($from != "") && ($to != "")) {
+            list($day_from, $month_from, $year_from) = explode('/', $from);
+            list($day_to, $month_to, $year_to) = explode('/', $to);
 
-            $from_tm = mktime (0, 0, 0, $month_from , $day_from, $year_from)*1000;
-            $to_tm = mktime (0, 0, 0,  $month_to , $day_to, $year_to)*1000;
+            $from_tm = mktime(0, 0, 0, $month_from, $day_from, $year_from) * 1000;
+            $to_tm = mktime(0, 0, 0, $month_to, $day_to, $year_to) * 1000;
 
 
-            $from_dmy =$month_from . "/" . $day_from . "/" . $year_from;
-            $to_dmy= $month_to . "/" . $day_to . "/" . $year_to;
+            $from_dmy = $month_from . "/" . $day_from . "/" . $year_from;
+            $to_dmy = $month_to . "/" . $day_to . "/" . $year_to;
 
-            $title_streams = "Streams (" . t("From") . " " . $from . " " . t("To") . " "  . $to . ")";
+            $title_streams = "Streams (" . t("From") . " " . $from . " " . t("To") . " " . $to . ")";
             $title_user = "<a href='?page=WimTVPro_Report'>" . t("Current month") . "</a> " . t("Change Date");
             $style_date = "";
             $user_response = analyticsGetUser($from_tm, $to_tm);
@@ -92,24 +96,22 @@ function wimtvpro_report(){
             $packet = analyticsGetPacket();
             $commercialPacket_json = json_decode($packet);
             $currentPacket = $commercialPacket_json->current_packet;
-            if (($currentPacket->id)>0)
-                $namePacket =  $currentPacket->name;
+            if (($currentPacket->id) > 0)
+                $namePacket = $currentPacket->name;
             else
-                $namePacket =  $currentPacket->error;
-            $byteToMb = "<b>" . round($traffic/ $megabyte, 2) . ' MB</b>';
-            $byteToMbS = "<b>" . round($storage/ $megabyte, 2) . ' MB</b>';
-
-
+                $namePacket = $currentPacket->error;
+            $byteToMb = "<b>" . round($traffic / $megabyte, 2) . ' MB</b>';
+            $byteToMbS = "<b>" . round($storage / $megabyte, 2) . ' MB</b>';
         } else {
             $from_dmy = date("m") . "/01/" . date("y");
 
-            $dayMe=cal_days_in_month(CAL_GREGORIAN, date("m"), date("y"));
+            $dayMe = cal_days_in_month(CAL_GREGORIAN, date("m"), date("y"));
             $to_dmy = date("m") . "/" . $dayMe . "/" . date("y");
             $from_tm = "";
             $to_tm = "";
 
             $title_streams = "Streams (" . t("Current month") . ")";
-            $title_user = t("Current month")  . " <a href='#' id='customReport'>" . t("Change Date") . "</a> ";
+            $title_user = t("Current month") . " <a href='#' id='customReport'>" . t("Change Date") . "</a> ";
             $style_date = "display:none;";
 
             $user_response = analyticsGetUser();
@@ -119,10 +121,10 @@ function wimtvpro_report(){
             $packet = analyticsGetPacket();
             $commercialPacket_json = json_decode($packet);
             $currentPacket = $commercialPacket_json->current_packet;
-            if (($currentPacket->id)>0)
-                $namePacket =  $currentPacket->name;
+            if (($currentPacket->id) > 0)
+                $namePacket = $currentPacket->name;
             else
-                $namePacket =  $currentPacket->error;
+                $namePacket = $currentPacket->error;
 
             $traffic_of = " of " . $currentPacket->band_human;
             $storage_of = " of " . $currentPacket->storage_human;
@@ -132,7 +134,6 @@ function wimtvpro_report(){
 
             $byteToMb = "<b>" . $commercialPacket_json->traffic->current_human . '</b>' . $traffic_of . $traffic_bar;
             $byteToMbS = "<b>" . $commercialPacket_json->storage->current_human . '</b>' . $storage_of . $storage_bar;
-
         }
 
         $response = analyticsGetStreams($from_tm, $to_tm);
@@ -140,7 +141,7 @@ function wimtvpro_report(){
 
         $streams = serializeStatistics($arrayStreams);
 
-        foreach($streams as $stream) {
+        foreach ($streams as $stream) {
             foreach ($stream->views_expanded as $value) {
                 if (isset($dateNumber[$value->date_human]))
                     $dateNumber[$value->date_human] = $dateNumber[$value->date_human] + 1;
@@ -155,20 +156,20 @@ function wimtvpro_report(){
         };
 
         $args = array('user' => $user,
-                      'streams' => $streams,
-                      'traffic' => $traffic,
-                      'from' => $from,
-                      'to' => $to,
-                      'dateNumber' => $dateNumber,
-                      'dateTraffic' => $dateTraffic,
-                      'from_dmy' => $from_dmy,
-                      'to_dmy' => $to_dmy,
-                      'title_streams' => $title_streams,
-                      'title_user' => $title_user,
-                      'style_date' => $style_date,
-                      'namePacket' => $namePacket,
-                      'byteToMb' => $byteToMb,
-                      'byteToMbS' => $byteToMbS);
+            'streams' => $streams,
+            'traffic' => $traffic,
+            'from' => $from,
+            'to' => $to,
+            'dateNumber' => $dateNumber,
+            'dateTraffic' => $dateTraffic,
+            'from_dmy' => $from_dmy,
+            'to_dmy' => $to_dmy,
+            'title_streams' => $title_streams,
+            'title_user' => $title_user,
+            'style_date' => $style_date,
+            'namePacket' => $namePacket,
+            'byteToMb' => $byteToMb,
+            'byteToMbS' => $byteToMbS);
         return render_template('templates/report.php', $args);
     }
     return $view_page;

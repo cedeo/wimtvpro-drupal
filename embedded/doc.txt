@@ -1,3 +1,0 @@
-In questi file sono presenti i template necessari a visualizzare video embedded on demand o playlist.
-Il template dei video on demand è in video.php
-Il template delle playlist è in playlist.php

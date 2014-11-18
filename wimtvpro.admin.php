@@ -1,14 +1,11 @@
 <?php
+
 /**
  * Created by JetBrains PhpStorm.
  * User: walter
  * Date: 17/12/13
  * Time: 14.22
  * To change this template use File | Settings | File Templates.
- */
-/**
- * Questa sezione gestisce le impostazioni amministrative del plugin attraverso le api dei form di Drupal.
- * ref: https://api.drupal.org/api/drupal/developer!topics!forms_api_reference.html/7
  */
 function wimtvpro_admin() {
 
@@ -20,20 +17,17 @@ function wimtvpro_admin() {
 
     $form = array();
     $form ['#attributes'] = array("enctype" => "multipart/form-data");
-    if (variable_get("sandbox")=="yes") {
+    if (variable_get("sandbox") == "yes") {
         $form['htmltag'] = array(
-            '#markup' => variable_get('htmltag',
-                t(""))
+            '#markup' => variable_get('htmltag', t(""))
         );
         $form['basePathWimtv'] = array(
             '#type' => 'hidden',
             '#value' => 'http://peer.wim.tv/wimtv-webapp/rest/',
         );
-    }
-    else {
+    } else {
         $form['htmltag'] = array(
-            '#markup' => variable_get('htmltag',
-                t(""))
+            '#markup' => variable_get('htmltag', t(""))
         );
         $form['basePathWimtv'] = array(
             '#type' => 'hidden',
@@ -41,7 +35,11 @@ function wimtvpro_admin() {
         );
     }
 
-    $form['fieldConfig'] = array('#type'=>'fieldset','#title'=>'Configuration','#collapsible' => TRUE, '#collapsed' => FALSE);
+    $form['fieldConfig'] = array(
+        '#type' => 'fieldset',
+        '#title' => 'Configuration',
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE);
 
     //FieldsetConfig
     $form['fieldConfig']['userWimtv'] = array(
@@ -63,9 +61,16 @@ function wimtvpro_admin() {
         '#attributes' => array('value' => variable_get('passWimtv', 'password')),
     );
 
+    // NS: ADDED WIMTV LOGOUT BUTTON
+//    $form['fieldConfig']['wimtv_logout']['submit'] = array(
+//        "#type" => "submit",
+//        "#value" => t("WimTv Logout"),
+//        "#name" => t("wimtvlogout_submit"),
+//    );
+
+
     $form['fieldConfig']['htmltag2'] = array(
-        '#markup' => variable_get('htmltag2',
-           "<p>" . t("Upload and/or choose a skin for your player") . "</p>")
+        '#markup' => variable_get('htmltag2', "<p>" . t("Upload and/or choose a skin for your player") . "</p>")
     );
 
     //Read directory for skin JWPLAYER
@@ -80,9 +85,9 @@ function wimtvpro_admin() {
     if (is_dir($directory)) {
         if ($directory_handle = opendir($directory)) {
             while (($file = readdir($directory_handle)) !== FALSE) {
-                if ((!is_dir($file)) && ($file!=".") && ($file!="..")) {
-                    $explodeFile = explode("." , $file);
-                    if ($explodeFile[1]=="zip")
+                if ((!is_dir($file)) && ($file != ".") && ($file != "..")) {
+                    $explodeFile = explode(".", $file);
+                    if ($explodeFile[1] == "zip")
                         $elencoSkin[$explodeFile[0]] = $explodeFile[0];
                 }
             }
@@ -109,9 +114,8 @@ function wimtvpro_admin() {
 
 
     $form['fieldConfig']['htmltag3'] = array(
-        '#markup' => variable_get('htmltag3', "<p>" . 
-            t("Size of player for your videos") .  "</p>")
-
+        '#markup' => variable_get('htmltag3', "<p>" .
+                t("Size of player for your videos") . "</p>")
     );
 
 
@@ -131,24 +135,16 @@ function wimtvpro_admin() {
         '#maxlength' => 200,
         '#required' => FALSE,
     );
-    $form['fieldConfig']['autoPlay'] = array(
-        '#title' => t('Choose Yes to autoplay embedded videos and playlists.'),
-        '#type' => 'select',
-        '#maxlength' => 5,
-        '#options' => array( 'no' => 'No', 'yes' => 'Yes'),
-        '#required' => TRUE,
-        '#default_value' => variable_get('autoPlay', 'no'),
-    );
-
-    $form['fieldConfig']['sandbox'] = array(
-    '#title' => t('Please select "no" to use WimTVPro plugin on WimTV server. Select "yes" if you want to to try the service on test server'),
-    '#type' => 'select',
-    '#maxlength' => 5,
-    '#options' => array( 'no' => 'No', 'yes' => 'Yes, for developer and tester'),
-    '#required' => TRUE,
-    '#default_value' => variable_get('sandbox', 'no'),
-    );
-
+    /*
+      $form['fieldConfig']['sandbox'] = array(
+      '#title' => t('Please select "no" to use WimTVPro plugin on WimTV server. Select "yes" if you want to to try the service on test server'),
+      '#type' => 'select',
+      '#maxlength' => 5,
+      '#options' => array( 'no' => 'No', 'yes' => 'Yes, for developer and tester'),
+      '#required' => TRUE,
+      '#default_value' => variable_get('sandbox', 'no'),
+      );
+     */
     $form['fieldConfig']['sandbox'] = array(
         '#type' => 'hidden',
         '#value' => t('no')
@@ -157,17 +153,17 @@ function wimtvpro_admin() {
         '#title' => t('Would you like to add a public (visible to End Users) Video page to your web site?'),
         '#type' => 'select',
         '#maxlength' => 5,
-        '#options' => array( 'no' => 'No', 'yes' => 'Yes, add a page'),
+        '#options' => array('no' => 'No', 'yes' => 'Yes, add a page'),
         '#required' => TRUE,
         '#default_value' => variable_get('addPageMyStreaming', 'no'),
     );
     $my_fields = field_info_fields();
 
-    if (count($my_fields)>0) {
+    if (count($my_fields) > 0) {
 
         foreach ($my_fields as $key => $value) {
             if (($my_fields[$key]["type"] == "text_with_summary") || ($my_fields[$key]["type"] == "text_long"))
-                $content[$key]=$key;
+                $content[$key] = $key;
         }
 
         $form['fieldConfig']['contentItemIntoInsert'] = array(
@@ -180,35 +176,31 @@ function wimtvpro_admin() {
     }
     //End FieldsetConfig
 
-    if ($view_page=="") {
+    if ($view_page == "") {
         $openFieldSet = FALSE;
-        
-		
-		
-		if ($openFieldSet)
-            $form['fieldPricing'] = array('#type'=>'fieldset','#title'=>t('Pricing'),'#collapsible' => TRUE, '#collapsed' => FALSE);
+
+
+
+        if ($openFieldSet)
+            $form['fieldPricing'] = array('#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => FALSE);
         else
-            $form['fieldPricing'] = array('#type'=>'fieldset','#title'=>t('Pricing'),'#collapsible' => TRUE, '#collapsed' => TRUE);
-        $form['fieldPayment'] = array('#type'=>'fieldset','#title'=>t('Monetisation'),'#collapsible' => TRUE, '#collapsed' => TRUE);
-        
-		$form['fieldLive'] = array('#type'=>'fieldset','#title'=>t('Live'),'#collapsible' => TRUE, '#collapsed' => TRUE);
-		
+            $form['fieldPricing'] = array('#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => TRUE);
+        $form['fieldPayment'] = array('#type' => 'fieldset', '#title' => t('Monetisation'), '#collapsible' => TRUE, '#collapsed' => TRUE);
+
+        $form['fieldLive'] = array('#type' => 'fieldset', '#title' => t('Live'), '#collapsible' => TRUE, '#collapsed' => TRUE);
+
         //$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>t('Personal Info'),'#collapsible' => TRUE, '#collapsed' => TRUE);
-        $form['fieldFeatures'] = array('#type'=>'fieldset','#title'=>t('Features'),'#collapsible' => TRUE, '#collapsed' => TRUE);
+        $form['fieldFeatures'] = array('#type' => 'fieldset', '#title' => t('Features'), '#collapsible' => TRUE, '#collapsed' => TRUE);
 
         //fieldPricing
         $pricing = wimtvpro_callPricing();
-        $form['fieldPricing']['htmlFrame'] = array('#markup' => variable_get('htmltag3',$pricing) );
+        $form['fieldPricing']['htmlFrame'] = array('#markup' => variable_get('htmltag3', $pricing));
         //End fieldPricing
-
-
-	
-
         //fieldPayment
-        
-		 $form['fieldPayment']['html']=  array('#markup' => variable_get('htmltag3', "<p>" . t('Please complete the following fields if you wish to make or receive payments on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You can fill your data now or do it later by returning to this section of your Settings.') . "</p>") );
-		
-		$form['fieldPayment']['affiliate'] = array('#type' => 'checkbox',
+
+        $form['fieldPayment']['html'] = array('#markup' => variable_get('htmltag3', "<p>" . t('Please complete the following fields if you wish to make or receive payments on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You can fill your data now or do it later by returning to this section of your Settings.') . "</p>"));
+
+        $form['fieldPayment']['affiliate'] = array('#type' => 'checkbox',
             '#title' => t("I'm affiliated to a company"),
             '#default_value' => !empty($dati['affiliate']) ? $dati['affiliate'] : '',
             '#return_value' => 'true',
@@ -244,7 +236,7 @@ function wimtvpro_admin() {
             '#size' => 100,
             '#maxlength' => 200,
             '#required' => FALSE,);
-        $form['fieldPayment']['htmlBilling']=array('#markup' => variable_get('htmltag3',t("Billing Adsress")) );
+        $form['fieldPayment']['htmlBilling'] = array('#markup' => variable_get('htmltag3', t("Billing Adsress")));
         $form['fieldPayment']['billingAddress[street]'] = array('#type' => 'textfield',
             '#title' => t('Street'),
             '#default_value' => !empty($dati['billingAddress']['street']) ? $dati['billingAddress']['street'] : '',
@@ -270,9 +262,12 @@ function wimtvpro_admin() {
             '#maxlength' => 200,
             '#required' => FALSE,);
         //End fieldPayment
-
         //fieldLive
-        $form['fieldLive']['html']=  array('#markup' => variable_get('htmltag3', "<p>" . t('In this section you can enable live streaming and set the parameters that better match your needs. Choose between "Live streaming" to stream your events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser of live events or distributor (on behalf of Event Organiser).') . "</p>") );
+        // NS: HIDE "EVENT RESALE" AND "EVENT ORGANIZER" - CHANGE FORM DESCRIPTION
+        // $form['fieldLive']['html'] = array('#markup' => variable_get('htmltag3', "<p>" . t('In this section you can enable live streaming and set the parameters that better match your needs. Choose between "Live streaming" to stream your events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser of live events or distributor (on behalf of Event Organiser).') . "</p>"));
+
+        $form['fieldLive']['html'] = array('#markup' => variable_get('htmltag3', "<p>" . t('In this section you can enable live streaming and set the parameters that better match your needs.') . "</p>"));
+
         $form['fieldLive']['liveStreamEnabled'] = array('#type' => 'checkbox',
             '#title' => t('Live streaming'),
             '#default_value' => !empty($dati['liveStreamEnabled']) ? $dati['liveStreamEnabled'] : '',
@@ -284,24 +279,27 @@ function wimtvpro_admin() {
             '#attributes' => array('value' => !empty($dati['liveStreamPwd']) ? $dati['liveStreamPwd'] : ""),
             '#description' => t('A password is required for live streaming (in order to authenticate yourself with the streaming server).'),
             '#required' => FALSE,);
-        $form['fieldLive']['eventResellerEnabled'] = array('#type' => 'checkbox',
-            '#title' => t('Live stream events resale'),
-            '#default_value' => !empty($dati['eventResellerEnabled']) ? $dati['eventResellerEnabled'] : '',
-            '#return_value' => 'true',
-            '#description' => t('Select if you want to distribute live events organised by other parties (Event Organisers).'),
-            '#required' => FALSE,);
-        $form['fieldLive']['eventOrganizerEnabled'] = array('#type' => 'checkbox',
-            '#title' => t('Live stream event organisation'),
-            '#default_value' => !empty($dati['eventOrganizerEnabled']) ? $dati['eventOrganizerEnabled'] : '',
-            '#return_value' => 'true',
-            '#description' => t('Select if you want to organise live evants and collaborate with Event Resellers for their distribution.'),
-            '#required' => FALSE,);
-        //End fieldLive
 
+        // NS: HIDE "EVENT RESALE" AND "EVENT ORGANIZER"
+        /*
+          $form['fieldLive']['eventResellerEnabled'] = array('#type' => 'checkbox',
+          '#title' => t('Live stream events resale'),
+          '#default_value' => !empty($dati['eventResellerEnabled']) ? $dati['eventResellerEnabled'] : '',
+          '#return_value' => 'true',
+          '#description' => t('Select if you want to distribute live events organised by other parties (Event Organisers).'),
+          '#required' => FALSE,);
+          $form['fieldLive']['eventOrganizerEnabled'] = array('#type' => 'checkbox',
+          '#title' => t('Live stream event organisation'),
+          '#default_value' => !empty($dati['eventOrganizerEnabled']) ? $dati['eventOrganizerEnabled'] : '',
+          '#return_value' => 'true',
+          '#description' => t('Select if you want to organise live evants and collaborate with Event Resellers for their distribution.'),
+          '#required' => FALSE,);
+         */
+        //End fieldLive
         //fieldFeatures
         $form['fieldFeatures']['hidePublicShowtimeVideos'] = array('#type' => 'select',
             '#title' => t('Index and show public videos on WimTV '),
-            '#options' => array( "true" => t("No") , "false" => t("Yes")),
+            '#options' => array("true" => t("No"), "false" => t("Yes")),
             '#default_value' => $dati['hidePublicShowtimeVideos'],
             '#required' => FALSE,);
         //End fieldFeatures
@@ -386,19 +384,18 @@ function wimtvpro_admin_validate($form, &$form_state) {
         }
     }
 
-    if (isset($_POST["addPageMyStreaming"]) && ($_POST["addPageMyStreaming"]=="yes")) {
+    if (isset($_POST["addPageMyStreaming"]) && ($_POST["addPageMyStreaming"] == "yes")) {
         $query = db_update('{menu_links}')
-            ->fields(array(
-                'hidden' => "0",
-            )) -> condition("link_path", "wimtvpro")
-            ->execute();
-    }
-    else {
+                ->fields(array(
+                    'hidden' => "0",
+                ))->condition("link_path", "wimtvpro")
+                ->execute();
+    } else {
         $query = db_update('{menu_links}')
-            ->fields(array(
-                'hidden' => "-1",
-            )) -> condition("link_path", "wimtvpro")
-            ->execute();
+                ->fields(array(
+                    'hidden' => "-1",
+                ))->condition("link_path", "wimtvpro")
+                ->execute();
     }
     menu_rebuild();
 
@@ -410,7 +407,6 @@ function wimtvpro_admin_validate($form, &$form_state) {
 
     variable_set('heightPreview', $_POST['heightPreview']);
     variable_set('widthPreview', $_POST['widthPreview']);
-    variable_set('autoPlay', $_POST['autoPlay']);
 
     //echo variable_get('heightPreview');
     //echo variable_get('widthPreview');
@@ -420,36 +416,41 @@ function wimtvpro_admin_validate($form, &$form_state) {
     //fieldLive
     //fieldFeatures
 
-    if ($view_page=="") {
-        $dati= array();
+    if ($view_page == "") {
+        $dati = array();
         $dati["affiliate"] = isset($_POST["affiliate"]) ? 'true' : 'false';
         $dati["companyName"] = $_POST["companyName"];
         $dati["affiliateConfirm"] = isset($_POST["affiliateConfirm"]) ? 'true' : 'false';
-        $dati["paypalEmail"]= $_POST["paypalEmail"];
-        $dati["taxCode"]=  $_POST["taxCode"];
-        $dati["vatCode"]=  $_POST["vatCode"];
-        $dati["billingAddress"]["street"]=  $_POST["billingAddress"]["street"];
-        $dati["billingAddress"]["city"]=  $_POST["billingAddress"]["city"];
-        $dati["billingAddress"]["state"]=  $_POST["billingAddress"]["state"];
-        $dati["billingAddress"]["zipCode"]=  $_POST["billingAddress"]["zipCode"];
-        $dati["liveStreamEnabled"]= isset($_POST["liveStreamEnabled"]) ? 'true' : 'false';
+        $dati["paypalEmail"] = $_POST["paypalEmail"];
+        $dati["taxCode"] = $_POST["taxCode"];
+        $dati["vatCode"] = $_POST["vatCode"];
+        $dati["billingAddress"]["street"] = $_POST["billingAddress"]["street"];
+        $dati["billingAddress"]["city"] = $_POST["billingAddress"]["city"];
+        $dati["billingAddress"]["state"] = $_POST["billingAddress"]["state"];
+        $dati["billingAddress"]["zipCode"] = $_POST["billingAddress"]["zipCode"];
+        $dati["liveStreamEnabled"] = isset($_POST["liveStreamEnabled"]) ? 'true' : 'false';
         if (isset($_POST["liveStreamEnabled"])) {
-            $dati["eventResellerEnabled"]= isset($_POST["eventResellerEnabled"]) ? 'true' : 'false';
-            $dati["eventOrganizerEnabled"]= isset($_POST["eventOrganizerEnabled"]) ? 'true' : 'false';
-            $dati["hidePublicShowtimeVideos"]= $_POST["hidePublicShowtimeVideos"];
-            $dati["liveStreamPwd"]=  $_POST["liveStreamPwd"];
+            // NS: HIDE "EVENT RESELLER" AND "EVENT ORGANIZER"
+            /*
+              $dati["eventResellerEnabled"] = isset($_POST["eventResellerEnabled"]) ? 'true' : 'false';
+              $dati["eventOrganizerEnabled"] = isset($_POST["eventOrganizerEnabled"]) ? 'true' : 'false';
+             */
+            $dati["hidePublicShowtimeVideos"] = $_POST["hidePublicShowtimeVideos"];
+            $dati["liveStreamPwd"] = $_POST["liveStreamPwd"];
         }
 
-        if (count($dati)>0){
+        if (count($dati) > 0) {
             $response = apiEditProfile($dati);
             $arrayjsonst = json_decode($response);
-            if (isset($arrayjsonst->result) && ($arrayjsonst->result!="SUCCESS")) {
+            if (isset($arrayjsonst->result) && ($arrayjsonst->result != "SUCCESS")) {
                 $testoErrore = "";
-                foreach ($arrayjsonst->messages as $message){
-                    $testoErrore .=  $message->field . " : " .  $message->message . "<br/>";
+                foreach ($arrayjsonst->messages as $message) {
+                    $testoErrore .= $message->field . " : " . $message->message . "<br/>";
                 }
                 form_set_error("Error Curl: ", $testoErrore);
             }
         }
     }
 }
+
+?>

@@ -4,27 +4,27 @@
 <div class="region region-help">
     <div id="block-system-help" class="block block-system">
 
-    
-  <div class="content">
-    <p>
-    <?php echo t("Create a playlist of videos (ONLY FREE) to be inserted within your website.");?>
-    </p>
-     <p>
-    <?php echo t("To create a playlist click +. Clicking on the eyes the video thumbnails of WimBox and the Playlist area will appear. Drag and drop the video thumbnails from the All videos to the Playlist area. To change the order, drag and drop thumbnails to the desired position in the Playlist area.");?>
-    </p>
-  </div>
+
+        <div class="content">
+            <p>
+                <?php echo t("Create a playlist of videos (ONLY FREE) to be inserted within your website."); ?>
+            </p>
+            <p>
+                <?php echo t("To create a playlist click +. Clicking on the eyes the video thumbnails of WimBox and the Playlist area will appear. Drag and drop the video thumbnails from the All videos to the Playlist area. To change the order, drag and drop thumbnails to the desired position in the Playlist area."); ?>
+            </p>
+        </div>
+    </div>
 </div>
-  </div>
 
 <script type="text/javascript">
-    jQuery(document).ready(function(){
+    jQuery(document).ready(function() {
 
         jQuery(".playlist input.title").click(function() {
             jQuery(this).parent().parent().children("td.action").children(".icon_modTitlePlay").show();
         });
 
-        jQuery(".icon_viewPlay").click(function () {
-            var id= jQuery(this).parent().attr("rel");
+        jQuery(".icon_viewPlay").click(function() {
+            var id = jQuery(this).parent().attr("rel");
             //jQuery(this).colorbox({href:  url_pathPlugin + "pages/embeddedPlayList.php?id=" + id});
         });
 
@@ -32,20 +32,22 @@
             var nameNewPlaylist = jQuery(this).parent().parent().children("td").children("input").val();
             //ID = playlist_##
             var count = jQuery(".playlist").size();
-            count  = count + 1;
+            count = count + 1;
             //add to DB
             jQuery.ajax({
                 context: this,
                 url: "<?php echo $urlCallAjax ?>",
                 type: "GET",
-                data:{
-                    namePlayList : nameNewPlaylist,
+                data: {
+                    namePlayList: nameNewPlaylist,
                     namefunction: "createPlaylist"
                 },
                 success: function(response) {
                     location.reload();
                 },
-                error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);}
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
             });
         });
 
@@ -59,15 +61,17 @@
                 context: this,
                 url: "<?php echo $urlCallAjax ?>",
                 type: "GET",
-                data:{
-                    idPlayList : idPlayList,
-                    namePlayList : nameNewPlaylist,
+                data: {
+                    idPlayList: idPlayList,
+                    namePlayList: nameNewPlaylist,
                     namefunction: "modTitlePlaylist"
                 },
-                success: function(response){
+                success: function(response) {
                     location.reload();
                 },
-                error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);}
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
             });
         });
 
@@ -79,16 +83,17 @@
             jQuery.ajax({
                 context: this,
                 url: "<?php echo $urlCallAjax ?>",
-
                 type: "GET",
-                data:{
-                    idPlayList : idPlayList,
+                data: {
+                    idPlayList: idPlayList,
                     namefunction: "removePlaylist"
                 },
-                success: function(response){
+                success: function(response) {
                     location.reload();
                 },
-                error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);}
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
             });
         });
     });
@@ -96,8 +101,8 @@
 <div id="view_stream" class="view">
     <table class="wp-list-table widefat fixed posts" style="text-align:center;">
         <tr>
-            <th class="manage-column column-title"><?php echo t("Title");?></th>
-            <th class="manage-column column-title"><?php echo t("Action");?></th>
+            <th class="manage-column column-title"><?php echo t("Title"); ?></th>
+            <th class="manage-column column-title"><?php echo t("Action"); ?></th>
         </tr>
         <?php foreach ($playlists as $record) { ?>
             <tr>

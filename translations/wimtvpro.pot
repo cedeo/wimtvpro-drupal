@@ -4,9 +4,9 @@
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
 #  wimtvpro.admin.php: n/a
-#  views/registration.php: n/a
+#  required/registration.inc: n/a
 #  wimtvpro.module: n/a
-#  views/pricing.php: n/a
+#  required/pricing.inc: n/a
 #  wimtvpro.function.php: n/a
 #  wimtvpro.sync.php: n/a
 #  templates/wimbox.php: n/a
@@ -22,25 +22,21 @@
 #  required/embedded.inc: n/a
 #  templates/report.php: n/a
 #  views/wimlive.php: n/a
-#  views/upload.php: n/a
+#  required/upload.inc: n/a
 #  required/blocks.inc: n/a
 #  required/playlist.inc: n/a
-#  views/report.php: n/a
-#  templates/box_row.php: n/a
-#  templates/programmings/index.php: n/a
+#  required/report.inc: n/a
 #  templates/help.php: n/a
 #  templates/playlist.php: n/a
 #  templates/pricing.php: n/a
 #  templates/producer.php: n/a
 #  templates/wimvod.php: n/a
-#  templates/programmings/edit.php: n/a
-#  views/programmings.php: n/a
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-02-24 11:33+0000\n"
+"POT-Creation-Date: 2014-01-28 11:54+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -49,11 +45,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: wimtvpro.admin.php:45 views/registration.php:60
+#: wimtvpro.admin.php:45 required/registration.inc:60
 msgid "Username"
 msgstr ""
 
-#: wimtvpro.admin.php:54;271 views/registration.php:68
+#: wimtvpro.admin.php:54;273 required/registration.inc:68
 msgid "Password"
 msgstr ""
 
@@ -97,7 +93,7 @@ msgstr ""
 msgid "Width (default: 500)"
 msgstr ""
 
-#: wimtvpro.admin.php:142 views/registration.php:105
+#: wimtvpro.admin.php:142 required/registration.inc:105
 msgid "no"
 msgstr ""
 
@@ -109,123 +105,123 @@ msgstr ""
 msgid "Select fields where you want to add the video"
 msgstr ""
 
-#: wimtvpro.admin.php:177;179
+#: wimtvpro.admin.php:179;181
 msgid "Pricing"
 msgstr ""
 
-#: wimtvpro.admin.php:180
+#: wimtvpro.admin.php:182
 msgid "Monetisation"
 msgstr ""
 
-#: wimtvpro.admin.php:182 wimtvpro.module:231
+#: wimtvpro.admin.php:184 wimtvpro.module:220
 msgid "Live"
 msgstr ""
 
-#: wimtvpro.admin.php:185
+#: wimtvpro.admin.php:187
 msgid "Features"
 msgstr ""
 
-#: wimtvpro.admin.php:197
+#: wimtvpro.admin.php:199
 msgid "Please complete the following fields if you wish to make or receive payments on Wim.tv (e.g. buy or sell videos, post pay per view videos or bundles). You can fill your data now or do it later by returning to this section of your Settings."
 msgstr ""
 
-#: wimtvpro.admin.php:200
+#: wimtvpro.admin.php:202
 msgid "I'm affiliated to a company"
 msgstr ""
 
-#: wimtvpro.admin.php:203
+#: wimtvpro.admin.php:205
 msgid "Check if you are affiliated to a company"
 msgstr ""
 
-#: wimtvpro.admin.php:206
+#: wimtvpro.admin.php:208
 msgid "Company name"
 msgstr ""
 
-#: wimtvpro.admin.php:212
+#: wimtvpro.admin.php:214
 msgid "I have legal rights to act as an affiliate of the company"
 msgstr ""
 
-#: wimtvpro.admin.php:215
+#: wimtvpro.admin.php:217
 msgid "Checking this you agree that you have legal rights to act as an affiliate of the specified company"
 msgstr ""
 
-#: wimtvpro.admin.php:218
+#: wimtvpro.admin.php:220
 msgid "Paypal Email"
 msgstr ""
 
-#: wimtvpro.admin.php:224
+#: wimtvpro.admin.php:226
 msgid "Tax Code"
 msgstr ""
 
-#: wimtvpro.admin.php:230
+#: wimtvpro.admin.php:232
 msgid "Vat Code"
 msgstr ""
 
-#: wimtvpro.admin.php:235
+#: wimtvpro.admin.php:237
 msgid "Billing Adsress"
 msgstr ""
 
-#: wimtvpro.admin.php:237;243
+#: wimtvpro.admin.php:239;245
 msgid "Street"
 msgstr ""
 
-#: wimtvpro.admin.php:249
+#: wimtvpro.admin.php:251
 msgid "State"
 msgstr ""
 
-#: wimtvpro.admin.php:255
+#: wimtvpro.admin.php:257
 msgid "Zip Code"
 msgstr ""
 
-#: wimtvpro.admin.php:263
+#: wimtvpro.admin.php:265
 msgid "In this section you can enable live streaming and set the parameters that better match your needs. Choose between \"Live streaming\" to stream your events, or use the features reserved for Event Organisers and Event Resellers to play the role of organiser of live events or distributor (on behalf of Event Organiser)."
 msgstr ""
 
-#: wimtvpro.admin.php:265
+#: wimtvpro.admin.php:267
 msgid "Live streaming"
 msgstr ""
 
-#: wimtvpro.admin.php:268
+#: wimtvpro.admin.php:270
 msgid "Select if you want to stream live events with WimTV"
 msgstr ""
 
-#: wimtvpro.admin.php:273
+#: wimtvpro.admin.php:275
 msgid "A password is required for live streaming (in order to authenticate yourself with the streaming server)."
 msgstr ""
 
-#: wimtvpro.admin.php:276
+#: wimtvpro.admin.php:278
 msgid "Live stream events resale"
 msgstr ""
 
-#: wimtvpro.admin.php:279
+#: wimtvpro.admin.php:281
 msgid "Select if you want to distribute live events organised by other parties (Event Organisers)."
 msgstr ""
 
-#: wimtvpro.admin.php:282
+#: wimtvpro.admin.php:284
 msgid "Live stream event organisation"
 msgstr ""
 
-#: wimtvpro.admin.php:285
+#: wimtvpro.admin.php:287
 msgid "Select if you want to organise live evants and collaborate with Event Resellers for their distribution."
 msgstr ""
 
-#: wimtvpro.admin.php:291
+#: wimtvpro.admin.php:293
 msgid "Index and show public videos on WimTV "
 msgstr ""
 
-#: wimtvpro.admin.php:292 views/pricing.php:48
+#: wimtvpro.admin.php:294 required/pricing.inc:48
 msgid "No"
 msgstr ""
 
-#: wimtvpro.admin.php:292
+#: wimtvpro.admin.php:294
 msgid "Yes"
 msgstr ""
 
-#: wimtvpro.admin.php:367
+#: wimtvpro.admin.php:369
 msgid "This file is not correct. Please upload a Zip file."
 msgstr ""
 
-#: wimtvpro.function.php:299
+#: wimtvpro.function.php:307
 msgid "If you don't have a WimTV account <a href='@url'>REGISTER</a> | <a href='@url2'>LOGIN</a> with your WimTV credentials"
 msgstr ""
 
@@ -237,123 +233,111 @@ msgstr ""
 msgid "It isn't element"
 msgstr ""
 
-#: wimtvpro.module:45 templates/wimbox.php:15
+#: wimtvpro.module:44 templates/wimbox.php:15
 msgid "This page gives you the list of all videos you have uploaded to your personal WimTV repository. If you wish to post one of these videos to your site, move it to WimVod by clicking the corresponding icon"
 msgstr ""
 
-#: wimtvpro.module:55
+#: wimtvpro.module:54
 msgid "This page lets you manage the videos you want to publish"
 msgstr ""
 
-#: wimtvpro.module:64
+#: wimtvpro.module:63
 msgid "Create a playlist of videos (currently only FREE videos can be included) to be posted to your website"
 msgstr ""
 
-#: wimtvpro.module:79
+#: wimtvpro.module:77
 msgid "Upload Video"
 msgstr ""
 
-#: wimtvpro.module:80
+#: wimtvpro.module:78
 msgid "You can upload a new video"
 msgstr ""
 
-#: wimtvpro.module:90 templates/wimlive.php:8
+#: wimtvpro.module:88 templates/wimlive.php:8
 msgid "This page lets you create and post live streaming events to your website."
 msgstr ""
 
-#: wimtvpro.module:97
+#: wimtvpro.module:95
 msgid "My personal detail"
 msgstr ""
 
-#: wimtvpro.module:98
+#: wimtvpro.module:96
 msgid "Configuration personal detail of Wimtv block"
 msgstr ""
 
-#: wimtvpro.module:106
+#: wimtvpro.module:104
 msgid "Analytics"
 msgstr ""
 
-#: wimtvpro.module:108
+#: wimtvpro.module:106
 msgid "You can see the viewers of your videos"
 msgstr ""
 
-#: wimtvpro.module:115
-msgid "Programmings"
-msgstr ""
-
-#: wimtvpro.module:117
-msgid "You can organize your programmings"
-msgstr ""
-
-#: wimtvpro.module:124
+#: wimtvpro.module:113
 msgid "Add new Event"
 msgstr ""
 
-#: wimtvpro.module:141
+#: wimtvpro.module:130
 msgid "Modify Event"
 msgstr ""
 
-#: wimtvpro.module:150
+#: wimtvpro.module:139
 msgid "WimTV Registration"
 msgstr ""
 
-#: wimtvpro.module:157
+#: wimtvpro.module:146
 msgid "Delete Event"
 msgstr ""
 
-#: wimtvpro.module:179;215
+#: wimtvpro.module:168;204
 msgid "Video Embedded"
 msgstr ""
 
-#: wimtvpro.module:187 templates/playlist_row.php:2
+#: wimtvpro.module:176 templates/playlist_row.php:4
 msgid "Preview Video"
 msgstr ""
 
-#: wimtvpro.module:287 wimtvpro.install:109
+#: wimtvpro.module:277 wimtvpro.install:109
 msgid "Id of Playlist"
 msgstr ""
 
-#: wimtvpro.module:290 wimtvpro.install:114
+#: wimtvpro.module:280 wimtvpro.install:114
 msgid "Name of Playlist"
 msgstr ""
 
-#: wimtvpro.module:293 wimtvpro.install:118
+#: wimtvpro.module:283 wimtvpro.install:118
 msgid "List video contentidentifier"
 msgstr ""
 
-#: wimtvpro.module:296 wimtvpro.install:121
+#: wimtvpro.module:286 wimtvpro.install:121
 msgid "option playlist"
 msgstr ""
 
-#: wimtvpro.module:299 wimtvpro.install:16;125
+#: wimtvpro.module:289 wimtvpro.install:16;125
 msgid "User identifier"
 msgstr ""
 
-#: wimtvpro.module:35 required/plus.inc:620
+#: wimtvpro.module:34 required/plus.inc:620
 msgid "WimTvPro"
 msgstr ""
 
-#: wimtvpro.module:44
+#: wimtvpro.module:43
 msgid "WimBox"
 msgstr ""
 
-#: wimtvpro.module:53 required/node_insert.inc:28
+#: wimtvpro.module:52 required/node_insert.inc:28
 msgid "WimVod"
 msgstr ""
 
-#: (duplicate) wimtvpro.module:62 wimtvpro.install:166  required/content_fields.inc:170;213
+#: (duplicate) wimtvpro.module:61 wimtvpro.install:166  required/content_fields.inc:170;213
 msgid "Playlist"
 msgstr ""
 
-#: wimtvpro.module:71
-msgid "Playlist Editing"
-msgstr ""
-
-#: wimtvpro.module:88
+#: wimtvpro.module:86
 msgid "WimLive"
 msgstr ""
 
-#: wimtvpro.module:223
+#: wimtvpro.module:212
 msgid "WimVod Video"
 msgstr ""
 
@@ -417,7 +401,7 @@ msgstr ""
 msgid "Playlist Api WIMTV"
 msgstr ""
 
-#: wimtvpro.install:145 wimtvpro.info:0
+#: wimtvpro.install:145
 msgid "WimTVPro"
 msgstr ""
 
@@ -446,6 +430,10 @@ msgid "Added content type %name."
 msgstr ""
 
 #: wimtvpro.info:0
+msgid "Wim TV Pro"
+msgstr ""
+
+#: wimtvpro.info:0
 msgid "WimTVPro is the video plugin that adds several features to manage and publish video on demand, video playlists and stream live events on your website."
 msgstr ""
 
@@ -465,7 +453,7 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
-#: embedded/video.php:6 required/embedded.inc:101 views/upload.php:115
+#: embedded/video.php:6 required/embedded.inc:101 required/upload.inc:115
 msgid "Category-Subcategory"
 msgstr ""
 
@@ -525,7 +513,7 @@ msgstr ""
 msgid "Do you want to see videos cyclically?"
 msgstr ""
 
-#: required/content_fields.inc:738;811 views/upload.php:92
+#: required/content_fields.inc:738;811 required/upload.inc:92
 msgid "Pick a video file to upload."
 msgstr ""
 
@@ -553,11 +541,11 @@ msgstr ""
 msgid "Add a new file"
 msgstr ""
 
-#: required/embedded.inc:98 required/playlist.inc:108
+#: required/embedded.inc:98
 msgid "Preview"
 msgstr ""
 
-#: required/node_insert.inc:148
+#: required/node_insert.inc:142
 msgid "The video isn't into WimVod"
 msgstr ""
 
@@ -589,7 +577,7 @@ msgstr ""
 msgid "Click to copy Embedded Code"
 msgstr ""
 
-#: required/plus.inc:73 views/upload.php:214
+#: required/plus.inc:73 required/upload.inc:213
 msgid "Upload successful"
 msgstr ""
 
@@ -597,136 +585,128 @@ msgstr ""
 msgid "Video vid is: %vid"
 msgstr ""
 
-#: views/registration.php:17
+#: required/registration.inc:17
 msgid "Personal Information"
 msgstr ""
 
-#: views/registration.php:21
+#: required/registration.inc:21
 msgid "Fist Name"
 msgstr ""
 
-#: views/registration.php:29
+#: required/registration.inc:29
 msgid "Last Name"
 msgstr ""
 
-#: views/registration.php:37
+#: required/registration.inc:37
 msgid "Email"
 msgstr ""
 
-#: views/registration.php:45
+#: required/registration.inc:45
 msgid "Gender"
 msgstr ""
 
-#: views/registration.php:49
+#: required/registration.inc:49
 msgid "M"
 msgstr ""
 
-#: views/registration.php:50
+#: required/registration.inc:50
 msgid "F"
 msgstr ""
 
-#: views/registration.php:55
+#: required/registration.inc:55
 msgid "Login Credentials"
 msgstr ""
 
-#: views/registration.php:76
+#: required/registration.inc:76
 msgid "Repeat Password"
 msgstr ""
 
-#: views/registration.php:84
+#: required/registration.inc:84
 msgid "Terms of Use"
 msgstr ""
 
-#: views/registration.php:85
+#: required/registration.inc:85
 msgid "I have read and agree to the wim.tv"
 msgstr ""
 
-#: views/registration.php:85
+#: required/registration.inc:85
 msgid "Terms of Service"
 msgstr ""
 
-#: views/registration.php:85
+#: required/registration.inc:85
 msgid "and"
 msgstr ""
 
-#: views/registration.php:85
+#: required/registration.inc:85
 msgid "Privacy Policies"
 msgstr ""
 
-#: views/registration.php:109
+#: required/registration.inc:109
 msgid "Register"
 msgstr ""
 
-#: views/registration.php:151
+#: required/registration.inc:151
 msgid "Successfully registered"
 msgstr ""
 
-#: views/registration.php:162
+#: required/registration.inc:162
 msgid "Password e Repeat Password isn't the same"
 msgstr ""
 
-#: views/report.php:82 templates/report.php:78
+#: required/report.inc:82 templates/report.php:78
 msgid "From"
 msgstr ""
 
-#: views/report.php:82 templates/report.php:80
+#: required/report.inc:82 templates/report.php:80
 msgid "To"
 msgstr ""
 
-#: views/report.php:83;109;110
+#: required/report.inc:83;109;110
 msgid "Current month"
 msgstr ""
 
-#: views/report.php:83;110
+#: required/report.inc:83;110
 msgid "Change Date"
 msgstr ""
 
-#: views/upload.php:71
+#: required/upload.inc:71
 msgid "Title Video"
 msgstr ""
 
-#: views/upload.php:80
+#: required/upload.inc:80
 msgid "Description Video"
 msgstr ""
 
-#: views/upload.php:91
+#: required/upload.inc:91
 msgid "Upload video"
 msgstr ""
 
-#: views/upload.php:122
+#: required/upload.inc:122
 msgid "(Multiselect with CTRL)"
 msgstr ""
 
-#: views/upload.php:136
+#: required/upload.inc:136
 msgid "Upload"
 msgstr ""
 
-#: views/upload.php:148
+#: required/upload.inc:148
 msgid "Do not leave this page until the file upload is not terminated"
 msgstr ""
 
-#: views/upload.php:166
+#: required/upload.inc:166
 msgid "Please upload a file"
 msgstr ""
 
-#: views/upload.php:169
+#: required/upload.inc:169
 msgid "Please add title"
 msgstr ""
 
-#: views/upload.php:183
+#: required/upload.inc:183
 msgid "Cannot obtain access to file"
 msgstr ""
 
-#: views/upload.php:220;224
+#: required/upload.inc:219;223
 msgid "Upload error"
-msgstr ""
-
-#: templates/box_row.php:3 templates/wimlive.php:22 views/wimlive.php:280
-msgid "Add"
-msgstr ""
-
-#: templates/box_row.php:4 templates/programmings/index.php:10
-msgid "Remove"
 msgstr ""
 
 #: templates/help.php:1
@@ -741,7 +721,7 @@ msgstr ""
 msgid "To create a playlist click +. Clicking on the eyes the video thumbnails of WimBox and the Playlist area will appear. Drag and drop the video thumbnails from the All videos to the Playlist area. To change the order, drag and drop thumbnails to the desired position in the Playlist area."
 msgstr ""
 
-#: templates/playlist.php:99 templates/programmings/index.php:8 views/wimlive.php:181
+#: templates/playlist.php:99 views/wimlive.php:181
 msgid "Title"
 msgstr ""
 
@@ -809,27 +789,27 @@ msgstr ""
 msgid "Enjoy your WimTVPro plugin!"
 msgstr ""
 
-#: templates/producer.php:4
+#: templates/producer.php:3
 msgid "This page lets you view the video you're live streaming. Keep this page open during the whole transmission."
 msgstr ""
 
-#: templates/report.php:35;116
+#: templates/report.php:36;116
 msgid "Date"
 msgstr ""
 
-#: templates/report.php:35
+#: templates/report.php:36
 msgid "Total viewers"
 msgstr ""
 
-#: templates/report.php:35
+#: templates/report.php:36
 msgid "Average Traffic"
 msgstr ""
 
-#: templates/report.php:47
+#: templates/report.php:48
 msgid "viewers"
 msgstr ""
 
-#: templates/report.php:49
+#: templates/report.php:50
 msgid "viewer"
 msgstr ""
 
@@ -905,52 +885,16 @@ msgstr ""
 msgid "If you broadcast directly from your web cam, click \"Live now\" icon to open the WimTV producer will open in a new browser tab. Remeber to keep it open during the whole transmission."
 msgstr ""
 
+#: templates/wimlive.php:22 views/wimlive.php:280
+msgid "Add"
+msgstr ""
+
 #: templates/wimlive.php:22
 msgid "new event"
 msgstr ""
 
 #: templates/wimvod.php:15
 msgid "This page lets you manage the videos you want to publish."
-msgstr ""
-
-#: templates/programmings/edit.php:3
-msgid "Return to list"
-msgstr ""
-
-#: templates/programmings/edit.php:8
-msgid "Give a name to this programming (not mandatory)"
-msgstr ""
-
-#: templates/programmings/edit.php:10
-msgid "Send"
-msgstr ""
-
-#: templates/programmings/edit.php:11
-msgid "Skip"
-msgstr ""
-
-#: templates/programmings/index.php:3
-msgid "New"
-msgstr ""
-
-#: templates/programmings/index.php:9;24;24
-msgid "Modify"
-msgstr ""
-
-#: templates/programmings/index.php:11
-msgid "Shortcode"
-msgstr ""
-
-#: templates/programmings/index.php:17
-msgid "No title"
-msgstr ""
-
-#: views/programmings.php:15
-msgid "New Programming"
-msgstr ""
-
-#: views/programmings.php:19
-msgid "Modify Programming"
 msgstr ""
 
 #: views/wimlive.php:171

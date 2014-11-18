@@ -6,10 +6,7 @@
  * Time: 17.07
  * To change this template use File | Settings | File Templates.
  */
-/**
- * Questo file viene chiamato direttamente passando come parametro GET host_id, ovvero l'host id del video da scaricare.
- * Si comporta come proxy, scaricando il file a pezzi di CHUNK_SIZE bytes e ritornando di volta in volta i chunk fino alla fine del download.
- */
+
 define('CHUNK_SIZE', 1024*1024); // Size (in bytes) of tiles chunk
 
 // Read a file and display its content chunk by chunk

@@ -19,11 +19,21 @@
 	</div>
 </div>
 
+<?php
+    
+//if ($thumbs) {
+    // NS: RENDER "VIDEOS SEARCH FORM" AND "VIDEOS FOUND FORM"
+    echo drupal_render(drupal_get_form('wimtvpro_videosearch_form'));
+    echo drupal_render(drupal_get_form('wimtvpro_videos_found_form', array('total_video_count' => $total_video_count)));
+//}
+?>
+
 <table class='items' id='TRUE'>
     <thead>
     <tr>
             <th>Video</th>
             <th><?php echo t("Status");?></th>
+            <th><?php echo t("Shortcode");?></th>
             <th>Download</th>
             <th><?php echo t("View");?></th>
             <th><?php echo t("Delete");?></th>

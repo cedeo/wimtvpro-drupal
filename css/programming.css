@@ -1,0 +1,7 @@
+/* PROGRAMMINGS */ 
+#progform input{
+    font-size: 14px; 
+}
+#progform #progname {
+    border: 1px solid lightcoral;
+}

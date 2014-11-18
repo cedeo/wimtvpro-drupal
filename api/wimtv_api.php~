@@ -1,8 +1,8 @@
 <?php
+
 /**
  * Written by walter at 30/10/13
  */
-
 include_once("api.php");
 
 use Api\Api;
@@ -21,14 +21,15 @@ function apiCreateUrl($name) {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('liveStream/uri?name=' . $name);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request);
+    $result = $apiAccessor->execute($request);
+    return $result;
 }
 
-function apiEmbeddedLive($hostId, $timezone=null) {
+function apiEmbeddedLive($hostId, $timezone = null) {
     $apiAccessor = getApi();
     $url = 'liveStream/' . $apiAccessor->username . '/' . $apiAccessor->username . '/hosts/' . $hostId;
     if ($timezone)
-        $url .= "?timezone=" .$timezone;
+        $url .= "?timezone=" . $timezone;
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, Mime::JSON, 'it-it');
@@ -59,12 +60,60 @@ function apiChangePassword($password) {
     return $apiAccessor->execute($request);
 }
 
+//function apiProgrammingPool() {
+//    $apiAccessor = getApi();
+//    $request = $apiAccessor->getRequest('programmingPool');
+//    $request = $apiAccessor->authenticate($request);
+//    return $apiAccessor->execute($request);
+//}
+
+//function apiGetCurrentProgrammings($qs) {
+//    $apiAccessor = getApi();
+//    $request = $apiAccessor->getRequest('currentProgramming?' . $qs);
+//    $request = $apiAccessor->authenticate($request);
+//    return $apiAccessor->execute($request);
+//}
+
+//NS: WRONG SIGNATURE
+//function apiGetProgrammings($params) {
+//    $apiAccessor = getApi();
+//    $request = $apiAccessor->postRequest('programmings');
+//    $request->body($params);
+//    $request = $apiAccessor->authenticate($request);
+//    return $apiAccessor->execute($request);
+//}
+//function apiGetProgrammings() {
+//    $apiAccessor = getApi();
+//    $request = $apiAccessor->getRequest('programmings');
+//    $request = $apiAccessor->authenticate($request);
+//    $request->sendsAndExpects(Mime::JSON);
+//    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+//    return $apiAccessor->execute($request);
+//}
+//
+//function apiAddItem($progId, $params) {
+//    $apiAccessor = getApi();
+//    $request = $apiAccessor->postRequest('programming/' . $progId . '/items');
+//    $request->body($params);
+//    $request = $apiAccessor->authenticate($request);
+//    return $apiAccessor->execute($request);
+//}
+
 function apiGetShowtimes() {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('users/' . $apiAccessor->username . '/showtime?details=true');
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request);
+//    return $apiAccessor->execute($request);
+    $response = $apiAccessor->execute($request);
+    return $response;
 }
+
+//function apiGetCalendar($progId, $qs) {
+//    $apiAccessor = getApi();
+//    $request = $apiAccessor->getRequest("programming/" . $progId . "/calendar?" . $qs);
+//    $request = $apiAccessor->authenticate($request);
+//    return $apiAccessor->execute($request);
+//}
 
 function apiGetLiveEvents($timezone, $activeOnly) {
     $apiAccessor = getApi();
@@ -77,7 +126,7 @@ function apiGetLiveEvents($timezone, $activeOnly) {
     return $apiAccessor->execute($request, 'application/json');
 }
 
-function apiGetLive($host_id, $timezone="") {
+function apiGetLive($host_id, $timezone = "") {
     $apiAccessor = getApi();
     $url = $apiAccessor->liveHostsUrl . '/' . $host_id;
     if (strlen($timezone))
@@ -87,19 +136,17 @@ function apiGetLive($host_id, $timezone="") {
     return $apiAccessor->execute($request, 'application/json');
 }
 
-function apiGetLiveIframe($host_id, $skin, $timezone="", $autostart="false") {
+function apiGetLiveIframe($host_id, $timezone = "") {
     $apiAccessor = getApi();
-    $url = $apiAccessor->liveHostsUrl . '/' . $host_id . '/embed?skin=' . $skin;
+    $url = $apiAccessor->liveHostsUrl . '/' . $host_id . '/embed';
     if (strlen($timezone))
-        $url .= '&timezone=' . $timezone;
-    if (strlen($autostart))
-        $url .= '&autostart=' . $autostart;
+        $url .= '?timezone=' . $timezone;
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, 'text/xml, application/xml');
 }
 
-function apiAddLive($parameters, $timezone=null) {
+function apiAddLive($parameters, $timezone = null) {
     $apiAccessor = getApi();
     $url = $apiAccessor->liveHostsUrl;
     if ($timezone)
@@ -110,7 +157,7 @@ function apiAddLive($parameters, $timezone=null) {
     return $apiAccessor->execute($request, 'application/json', 'it-it');
 }
 
-function apiModifyLive($host_id, $parameters, $timezone=null) {
+function apiModifyLive($host_id, $parameters, $timezone = null) {
     $apiAccessor = getApi();
     $url = $apiAccessor->liveHostsUrl . '/' . $host_id;
     if ($timezone)
@@ -118,7 +165,7 @@ function apiModifyLive($host_id, $parameters, $timezone=null) {
     $request = $apiAccessor->postRequest($url);
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request,  'application/json', 'it-it');
+    return $apiAccessor->execute($request, 'application/json', 'it-it');
 }
 
 function apiPublishOnShowtime($id, $parameters) {
@@ -127,42 +174,48 @@ function apiPublishOnShowtime($id, $parameters) {
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
-	
 }
-function apiPublishAcquiredOnShowtime($id,  $acquiredId,$parameters) {
+
+function apiPublishAcquiredOnShowtime($id, $acquiredId, $parameters) {
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest('videos/' . $id . '/acquired/' . $acquiredId . '/showtime');
     $request->body($parameters);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
-	
 }
+
 function apiGetThumbsVideo($contentId) {
-   	$apiAccessor = getApi();
+    $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('videos/' . $contentId . '/thumbnail');
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, 'text/xml, application/xml');
 }
 
 function apiGetDetailsVideo($contentId) {
-   	$apiAccessor = getApi();
+    $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('videos/' . $contentId . '?details=true');
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, "application/json");
+    $response = $apiAccessor->execute($request, "application/json");
+    if ($response == "" && isset($error_response)) {
+        $error_response = $apiAccessor->execute($request);
+    }
+    return $response;
+//    return $apiAccessor->execute($request);
 }
 
 function apiGetDetailsShowtime($id) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest('users/' . $apiAccessor->username. '/showtime/' . $id . '/details');
+    $request = $apiAccessor->getRequest('users/' . $apiAccessor->username . '/showtime/' . $id . '/details');
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, "application/json");
 }
 
-function apiGetPlayerShowtime($id,$parameters) {
+function apiGetPlayerShowtime($id, $parameters) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest('videos/'. $id . "/embeddedPlayers?" . $parameters);
+    $request = $apiAccessor->getRequest('videos/' . $id . "/embeddedPlayers?" . $parameters);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request);
+    $response = $apiAccessor->execute($request);
+    return $response;
 }
 
 function apiDeleteLive($host_id) {
@@ -171,6 +224,13 @@ function apiDeleteLive($host_id) {
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
+
+//function apiDeleteItems($progId, $itemId, $qs) {
+//    $apiAccessor = getApi();
+//    $request = $apiAccessor->deleteRequest("programming/" . $progId . "/items" . $itemId . "?" . $qs);
+//    $request = $apiAccessor->authenticate($request);
+//    return $apiAccessor->execute($request);
+//}
 
 function apiGetVideoCategories() {
     $apiAccessor = getApi();
@@ -201,14 +261,14 @@ function apiDownload($hostId) {
     return $apiAccessor->execute($request, "");
 }
 
-function apiGetVideos($details=true) {
+function apiGetVideos($details = true) {
     if ($details) {
         $details = 'true';
     } else {
         $details = 'false';
     }
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest('videos?details=' . $details );
+    $request = $apiAccessor->getRequest('videos?details=' . $details);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request, "application/json");
 }
@@ -220,7 +280,7 @@ function apiDeleteVideo($hostId) {
     return $apiAccessor->execute($request);
 }
 
-function apiDeleteFromShowtime($id, $stid ) {
+function apiDeleteFromShowtime($id, $stid) {
     $apiAccessor = getApi();
     $request = $apiAccessor->deleteRequest('videos/' . $id . '/showtime/' . $stid);
     $request = $apiAccessor->authenticate($request);
@@ -272,6 +332,8 @@ function apiCommercialPacket() {
     return $apiAccessor->execute($request, Mime::JSON);
 }
 
+
+
 //PROGRAMMING
 function apiProgrammingPool() {
     $apiAccessor = getApi();
@@ -279,12 +341,14 @@ function apiProgrammingPool() {
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
+
 function apiGetCurrentProgrammings($qs) {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('currentProgramming?' . $qs);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
+
 function apiPostProgrammings($qs) {
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest("programmings");
@@ -298,49 +362,48 @@ function apiGetProgrammings() {
     $request = $apiAccessor->getRequest('programmings');
     $request = $apiAccessor->authenticate($request);
     $request->sendsAndExpects(Mime::JSON);
-    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json') );
+    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
     return $apiAccessor->execute($request);
 }
-function apiRemoveItemProgramming($progId,$qs) {
+
+function apiRemoveItemProgramming($progId, $qs) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->deleteRequest("programming/".$progId."?".$qs);
+    $request = $apiAccessor->deleteRequest("programming/" . $progId . "?" . $qs);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
+
 function apiDeleteProgramming($progId) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->deleteRequest("programming/".$progId);
+    $request = $apiAccessor->deleteRequest("programming/" . $progId);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
+
 function apiDetailsProgramming($programming_id) {
     $apiAccessor = getApi();
     $request = $apiAccessor->getRequest('programming/' . $programming_id);
     $request = $apiAccessor->authenticate($request);
     $request->sendsAndExpects(Mime::JSON);
-    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json') );
+    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
     return $apiAccessor->execute($request, 'application/json');
 }
+
 function apiAddItem($progId, $params) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->postRequest('programming/' . $progId .'/items');
+    $request = $apiAccessor->postRequest('programming/' . $progId . '/items');
     $request->body($params);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
-function apiGetCalendar($progId, $qs, $skin="", $autostart="false") {
+
+function apiGetCalendar($progId, $qs) {
     $apiAccessor = getApi();
-    $url = "programming/" . $progId . "/calendar?" . $qs;
-    if (!empty($skin)) {
-        $url .= "&skin=" . $skin;
-    }
-    if (!empty($autostart)) {
-        $url .= "&autostart=" . $autostart;
-    }
-    $request = $apiAccessor->getRequest($url);
+    $request = $apiAccessor->getRequest("programming/" . $progId . "/calendar?" . $qs);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
+
 function apiDeleteItems($progId, $itemId) {
     $apiAccessor = getApi();
     $request = $apiAccessor->deleteRequest("programming/" . $progId . "/item/" . $itemId);
@@ -364,7 +427,5 @@ function apiMimicItem($progId) {
     return $apiAccessor->execute($request);
 }
 
-
-initApi(variable_get("basePathWimtv"), variable_get("userWimtv"), variable_get("passWimtv"));
-
+    initApi(variable_get("basePathWimtv"), variable_get("userWimtv"), variable_get("passWimtv"));
 ?>
