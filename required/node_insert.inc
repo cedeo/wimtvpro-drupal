@@ -112,6 +112,11 @@ function wimtvpro_shortcode_wimtv($valueKey, $risultato, $key_testo, $testoforma
                 $params = "get=1&width=" . $format_video[1] . "&height=" . $format_video[2] . "&skin=" . $skin;
 
                 $response = apiGetPlayerShowtime($contentid, $params); // curl_exec($ch);
+		// NS: the restored parameters dont give the expected resize behaviour
+		// hence we mangle the response iframe on the fly
+		$pattern = "/width=\"(\d+)\" height=\"(\d+)\"/";
+		$replacement = "width=\"" . $format_video[1] . "\" height=\"" . $format_video[2] .  "\"";
+		$response = preg_replace($pattern, $replacement, $response);
                 $iframe = $response;
                 $testoformat = str_replace("[wimtv]" . $value . "[/wimtv]", $iframe, $testoformat);
             } else {

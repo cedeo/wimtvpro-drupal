@@ -19,12 +19,14 @@
 </div>
 
 <?php
-print l( "+".t('Upload video'), 'admin/config/wimtvpro/upload');
+print l("+" . t('Upload video'), 'admin/config/wimtvpro/upload');
 
 // NS: RENDER "VIDEOS SEARCH FORM" AND "VIDEOS FOUND FORM"
 //if ($thumbs) {
-echo drupal_render(drupal_get_form('wimtvpro_videosearch_form'));
-echo drupal_render(drupal_get_form('wimtvpro_videos_found_form', array('total_video_count' => $total_video_count)));
+$form_wimtvpro_videosearch = drupal_get_form('wimtvpro_videosearch_form');
+echo drupal_render($form_wimtvpro_videosearch);
+$form_wimtvpro_videos_found = drupal_get_form('wimtvpro_videos_found_form', array('total_video_count' => $total_video_count));
+echo drupal_render($form_wimtvpro_videos_found);
 //}
 ?>
 

@@ -1,3 +1,4 @@
+jQuery.noConflict();
 jQuery(document).ready(function() {
 //  SHOW JQUERY VERSION  - alert(jQuery.fn.jquery);
     jQuery.noConflict();
