@@ -55,7 +55,9 @@ ul.itemsInsert li {
     position: relative;
     text-align: center;
     font-size: 10px;
-    width: 135px;
+    /*width: 135px;*/
+    padding: 5px;
+    border: 1px solid lightgrey;
 
 }
 ul.itemsInsert li div.thumbPublic {
@@ -70,10 +72,13 @@ ul.itemsInsert li div.thumbPublic {
 ul.itemsInsert li div.thumbPublic div.headerBox {border-top: 1px solid #000;
                                                  height: 15px;}
 
-ul.itemsInsert li {
-    padding: 5px;
-    border: 1px solid lightgrey;
-}
+/*ul.itemsInsert li {
+        padding: 5px;
+        border: 1px solid lightgrey;
+     NS: FIX ON minimum height 
+    height: 100px;
+}*/
+
 
 ul.itemsInsert li.select {
     background-color: aqua;
@@ -93,8 +98,9 @@ ul.itemsInsert li div.thumbPublic img {
     padding: 0;
 }
 ul.itemsInsert li img {
-    width: 100%;
-    height: 60%;
+    /*    width: 100%;
+        height: 60%;*/
+    height: 80px;
 }
 div.empty {
     clear: both;
@@ -112,4 +118,13 @@ div.empty {
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+.viewThumbsPublicContainer{
+    width: 130px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    background: black;
+    height: 80px;
 }
