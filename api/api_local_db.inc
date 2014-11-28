@@ -38,7 +38,7 @@ function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration,
     return $result;
 }
 
-function dbInsertVideo($contentIdentifier, $title, $status="OWNED") {
+function dbInsertVideo($contentIdentifier, $title, $status = "OWNED") {
     $table = VIDEO_TABLE_NAME;
     $result = db_insert('{' . $table . '}')
                     ->fields(array(
@@ -67,7 +67,6 @@ function dbDeleteVideo($contentIdentifier) {
 }
 
 function dbGetUserVideosId($user, $filter = "") {
-//    $table = "wimtvpro_videos";
     $table = VIDEO_TABLE_NAME;
     switch ($filter) {
         case "":
@@ -81,20 +80,14 @@ function dbGetUserVideosId($user, $filter = "") {
             break;
     }
 
-
     $result = db_query($query);
     $array_videos_drupal = $result->fetchAll();
-//    $elenco_video_drupal = array();
-//    foreach ($array_videos_drupal as $record) {
-//        array_push($elenco_video_drupal, $record->contentidentifier);
-//    }
-//    return $elenco_video_drupal;
     return $array_videos_drupal;
 }
 
 function dbGetVideosByVid($vid) {
 //    $table = "wimtvpro_videos";
-    
+
     $table = VIDEO_TABLE_NAME;
     $query = "SELECT * FROM {$table} WHERE vid='{$vid}'";
     $result = db_query($query);
@@ -106,4 +99,5 @@ function dbGetVideosByVid($vid) {
 //    return $elenco_video_drupal;
     return $array_videos_drupal;
 }
+
 ?>

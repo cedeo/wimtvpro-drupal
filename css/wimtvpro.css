@@ -582,3 +582,9 @@ input.pickadate {
     width:100%; text-align:center;
     margin:5px;
 }
+
+
+.widthVideo_text, .heightVideo_text
+{
+    width: 50px;
+}

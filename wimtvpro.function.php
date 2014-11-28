@@ -46,11 +46,14 @@ function wimtvpro_getThumbs($showtime = FALSE, $private = TRUE, $insert_into_pag
     }
     if ($orderTitleVideo != "") {
         $sql_where .= " ORDER BY title " . $orderTitleVideo;
+    } else {
+        $sql_where .= " ORDER BY mytimestamp DESC";
     }
 //    if ($orderdateVideo != "") {
 //        $orderTitleVideo = "";
 //        $sql_order .= " mytimestamp " . $orderdateVideo;
 //    }
+
     $query = "SELECT * FROM {wimtvpro_videos} WHERE uid='" . variable_get("userWimtv") . "'" . $sql_where;
     $result = db_query($query);
     $array_fetch = $result->fetchAll();
@@ -110,6 +113,7 @@ function wimtvpro_getThumbs($showtime = FALSE, $private = TRUE, $insert_into_pag
             }
         }
     }
+
     return $my_media . $output;
 }
 

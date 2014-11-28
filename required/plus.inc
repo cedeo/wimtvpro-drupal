@@ -127,8 +127,10 @@ function wimtvpro_getPlayerFromVid($vid, $typeInline) {
     //Recove url video for view it
     global $base_path;
     drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
-    $width = "350";
-    $height = "250";
+//    $width = "350";
+//    $height = "250";
+    $width = variable_get('widthPreview');
+    $height = variable_get('heightPreview');
     $output = "";
 
     if (variable_get('nameSkin') != "") {
