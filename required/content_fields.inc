@@ -5,10 +5,86 @@
  * This file is use for module wimtvproplus, create all field .
  *
  */
+// This tells Drupal what fields it applies to and what settings are available.
+function wimtvpro_field_formatter_info() {
+    return array(
+        // We name our field as the associative name of the array.
+        'wimtvpro_wimvideo_inline' => array(
+            'label' => t('Inline'),
+            'field types' => array('wimtvpro_wimvideo'),
+            'settings' => array(//Array of the settings we'll create
+                'video_size' => 'small', //give a default value for when the form is first loaded
+//                'tooltip' => 'Link to user Facebook page' //ditto
+            ),
+        ),
+        'wimtvpro_wimvideo_block' => array(
+            'label' => t('Block'),
+            'field types' => array('wimtvpro_wimvideo'),
+            'settings' => array(//Array of the settings we'll create
+                'video_size' => 'small', //give a default value for when the form is first loaded
+//                'tooltip' => 'Link to user Facebook page' //ditto
+            ),
+        ),
+        'wimtvpro_wimplaylist_view' => array(
+            'label' => t('Playlist'),
+            'field types' => array('wimtvpro_playlist'),
+            'settings' => array(//Array of the settings we'll create
+                'video_size' => 'small', //give a default value for when the form is first loaded
+//                'tooltip' => 'Link to user Facebook page' //ditto
+            ),
+        ),
+    );
+}
 
-//var_dump($GLOBALS['base_url']);
-//Inizializate Field
+// Here we'll tell Drupal how to generate the form that collects the options.
+function wimtvpro_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+    //This gets the view_mode where our settings are stored
+    $display = $instance['display'][$view_mode];
+    //This gets the actual settings
+    $settings = $display['settings'];
+    //Initialize the element variable
+    $element = array();
+    //Add your select box
+    $element['video_size'] = array(
+        '#type' => 'select', // Use a select box widget
+        '#title' => t('Video Size'), // Widget label
+        '#description' => t('Pleae choose the desired video size'), // Helper text
+        '#default_value' => $settings['video_size'], // Get the value if it's already been set
+        '#options' => array(
+            '320|180' => 'Small (320x180)',
+            '500|280' => 'Medium (500x280)',
+            '640|360' => 'Large (640x360)',
+        ),
+    );
+//    $element['tooltip'] = array(
+//        '#type' => 'textfield', // Use a textbox
+//        '#title' => t('Tool Tip'), // Widget label
+//        '#description' => t('This text will appear when a user mouses over.'), // helper text
+//        '#default_value' => $settings['tooltip'], // Get the value if it's already been set
+//    );
+    return $element;
+}
+
+// This displays the chosen settings on the 'Manage Display' page
+function wimtvpro_field_formatter_settings_summary($field, $instance, $view_mode) {
+    $display = $instance['display'][$view_mode];
+    $settings = $display['settings'];
+    $summary = t('Configure video size', array(
+        '@size' => $settings['video_size'],
+//        '@tooltip' => $settings['tooltip'],
+    )); // we use t() for translation and placeholders to guard against attacks
+    return $summary;
+}
+
+// This is the hook where we actually do the formatting
 function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+    // RETRIEVE SIZE FROM SETTINGS
+    $video_size = $display['settings']['video_size'];
+    $video_size_array = explode("|", $video_size);
+    $width = isset($video_size_array[0])?$video_size_array[0]:null;
+    $height = isset($video_size_array[1])?$video_size_array[1]:null;
+    
+
     $element = array();
     $videos = "";
     $insert = true;
@@ -20,7 +96,7 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
                 $arrayVid = explode(",", $item['wimvideo']);
                 foreach ($arrayVid as $vid) {
                     if (($vid >= 0) && ($vid != "")) {
-                        $videos .= wimtvpro_getPlayerFromVid($vid, 'block');
+                        $videos .= wimtvpro_getPlayerFromVid($vid, 'block', $width, $height);
                     }
                 }
                 $element[$delta] = array(
@@ -38,7 +114,7 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
 
                 foreach ($arrayVid as $vid) {
                     if (($vid >= 0) && ($vid != "")) {
-                        $videos .= wimtvpro_getPlayerFromVid($vid, 'inline');
+                        $videos .= wimtvpro_getPlayerFromVid($vid, 'inline', $width, $height);
                     }
                 }
                 $element[$delta] = array(
@@ -182,24 +258,6 @@ function wimtvpro_field_info() {
             'description' => t('Playlist Wimtv'),
             'default_widget' => 'wimtvpro_playlist',
             'default_formatter' => 'wimtvpro_wimplaylist_view',
-        ),
-    );
-}
-
-function wimtvpro_field_formatter_info() {
-    return array(
-        // We name our field as the associative name of the array.
-        'wimtvpro_wimvideo_inline' => array(
-            'label' => t('Inline'),
-            'field types' => array('wimtvpro_wimvideo')
-        ),
-        'wimtvpro_wimvideo_block' => array(
-            'label' => t('Block'),
-            'field types' => array('wimtvpro_wimvideo')
-        ),
-        'wimtvpro_wimplaylist_view' => array(
-            'label' => t('Playlist'),
-            'field types' => array('wimtvpro_playlist')
         ),
     );
 }
@@ -357,10 +415,8 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/vendor/jquery.ui.widget.js', array('scope' => 'footer'));
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/jquery.iframe-transport.js', array('scope' => 'footer'));
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/jquery.fileupload.js', array('scope' => 'footer'));
-            drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/scripts/wimtvpro_content_field.js',array('scope' => 'footer'));
+            drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/scripts/wimtvpro_content_field.js', array('scope' => 'footer'));
 //            drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/scripts/wimtvpro_content_field_footer.js',array('scope' => 'footer'));
-
-
             // Make this a fieldset with the three text fields.
             $rows = "";
             if (strlen($vids) > 0) {

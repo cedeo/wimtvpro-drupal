@@ -123,14 +123,16 @@ function wimtvpro_getIframeFromVid($vid) {
     return $response;
 }
 
-function wimtvpro_getPlayerFromVid($vid, $typeInline) {
+function wimtvpro_getPlayerFromVid($vid, $typeInline, $videoWidth = null, $videoHeight = null) {
     //Recove url video for view it
     global $base_path;
     drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
 //    $width = "350";
 //    $height = "250";
-    $width = variable_get('widthPreview');
-    $height = variable_get('heightPreview');
+//    $width = variable_get('widthPreview');
+//    $height = variable_get('heightPreview');
+    $width = ($videoWidth != null) ? $videoWidth : variable_get('widthPreview');
+    $height = ($videoHeight != null) ? $videoHeight : variable_get('heightPreview');
     $output = "";
 
     if (variable_get('nameSkin') != "") {
