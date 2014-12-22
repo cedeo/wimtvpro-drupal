@@ -101,7 +101,13 @@ function wimtvpro_getIframeFromVid($vid) {
     //Recove url video for view it
     $width = "200";
     $height = "150";
-    $contentid = wimtvproplus_return($vid, "contentItem");
+//    $contentid = wimtvproplus_return($vid, "contentItem");
+    $localVideoItem = dbGetVideosByVid($vid);
+    if (!isset($localVideoItem[0]->showtimeIdentifier)) {
+        return "<div>" . t("The video isn't into WimVod") . "</div>";
+    }
+    $contentid = $localVideoItem[0]->contentidentifier;
+
     $ch = curl_init();
 
     if (variable_get('nameSkin') != "")
@@ -127,8 +133,6 @@ function wimtvpro_getPlayerFromVid($vid, $typeInline, $videoWidth = null, $video
     //Recove url video for view it
     global $base_path;
     drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/jwplayer/jwplayer.js');
-//    $width = "350";
-//    $height = "250";
 //    $width = variable_get('widthPreview');
 //    $height = variable_get('heightPreview');
     $width = ($videoWidth != null) ? $videoWidth : variable_get('widthPreview');
@@ -197,15 +201,14 @@ function wimtvpro_getPlayerFromVid($vid, $typeInline, $videoWidth = null, $video
                 } else {
                     $output .= "skin: '" . $directory . "/skin/default.zip',";
                 }
-
-
+                
                 $dimension = " width='" . (variable_get('widthPreview') + 50) . "px' height='" . (variable_get('heightPreview') + 50) . "px'";
-                $embedded = str_replace("+", " ", urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvproplus/viewEmbeddedPlayer/" . $vid . "'" . $dimension . "></iframe>"));
                 // NS: refactoring signature: contentID is not required!
 //                $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'], $vid, $video);
                 $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'], $video);
-
-                /* $output .= " logo: {
+                /*
+                  $embedded = str_replace("+", " ", urlencode("<iframe src='" . $GLOBALS['base_url'] . "/wimtvproplus/viewEmbeddedPlayer/" . $vid . "'" . $dimension . "></iframe>"));
+                  $output .= " logo: {
                   hide: 'false', position:'bottom-right',
                   file: '" . $GLOBALS['base_url']  . "/" . drupal_get_path('module', 'wimtvproplus') . "/img/logo_player.png',
                   link: '" . $GLOBALS['base_url']  . "'
@@ -223,7 +226,11 @@ function wimtvpro_getPlayerFromVid($vid, $typeInline, $videoWidth = null, $video
                 if (!$configFile) {
                     $output = "The video is being processed.";
                 } else {
-                    $output .= $dimensions . "," . $configFile . " image: '" . $thumbs[1] . "',});</script>";
+//                    $thumbnail = $thumbs[1];
+                    $html_thumbnail = html_entity_decode($video[0]->urlThumbs);
+                    preg_match('/src="([^"]+)"/', $html_thumbnail, $images);
+                    $thumbnail = isset($images[1]) ? $images[1] : "";
+                    $output .= $dimensions . "," . $configFile . " image: '" . $thumbnail . "',});</script>";
                 }
             }
         } else {

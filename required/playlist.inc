@@ -7,6 +7,10 @@
  */
 function wimtvpro_playlist_mod($form_state, $id) {
     global $base_url;
+    //    NS: CALL  smartSync FUNCTION ON "pending" VIDEOS TO CHECK WHETHER
+    //    THEY HAVE BEEN ALREADY TRANSCODED
+    wimtvpro_smartSync::sync("pending");
+    
     drupal_add_library('system', 'ui.sortable');
     drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/css/redmond/jquery-ui-1.8.21.custom.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
@@ -18,37 +22,27 @@ function wimtvpro_playlist_mod($form_state, $id) {
     drupal_add_js("var url_pathPlugin ='" . $base_url . "';", "inline");
     //FIXME: sta roba fa schifo
     drupal_add_js('
-		jQuery(document).ready(function(){ 
-		
-				jQuery("div.wimtv-thumbnail").click( function(){
-				    var basePath = Drupal.settings.basePath;
-					
-				
-						var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
-						jQuery(this).colorbox({href:"' . $base_url . '/admin/config/wimtvpro/" + url});
-						
-					
-					
-				});
-		/*SORTABLE*/      						
-		jQuery( ".items_playlist" ).sortable({
-			placeholder: "ui-state-highlight"			
-		});
-		jQuery( ".sortable1 ul#droptrue" ).sortable({
-			connectWith: "ul"		
-		});
-		jQuery( ".sortable2 ul#dropfalse" ).sortable({
-			connectWith: "ul",
-			deactivate: function( event, ui ) {
-				var sort = jQuery(".sortable2 ul#dropfalse").sortable("toArray");
-				jQuery(".list").val(sort);
-			}
-	
-		});
-
-		
-		
-		});	', 'inline');
+		jQuery(document).ready(function(){
+                    jQuery("div.wimtv-thumbnail").click( function(){
+                        var basePath = Drupal.settings.basePath;
+                        var url = jQuery(this).parent().children(".headerBox").children(".icon").children("a.viewThumb").attr("id");
+                        jQuery(this).colorbox({href:"' . $base_url . '/admin/config/wimtvpro/" + url});
+                    });
+                    /*SORTABLE*/      						
+                    jQuery( ".items_playlist" ).sortable({
+			placeholder: "ui-state-highlight"
+                    });
+                    jQuery( ".sortable1 ul#droptrue" ).sortable({
+                        connectWith: "ul"
+                    });
+                    jQuery( ".sortable2 ul#dropfalse" ).sortable({
+                        connectWith: "ul",
+                        deactivate: function( event, ui ) {
+                            var sort = jQuery(".sortable2 ul#dropfalse").sortable("toArray");
+                            jQuery(".list").val(sort);
+                        }
+                    });
+               });', 'inline');
 
     $identifier = $id['build_info']['args'][0];
 
@@ -61,13 +55,10 @@ function wimtvpro_playlist_mod($form_state, $id) {
     $array_option = explode(",", $option);
     $options = array();
     foreach ($array_option as $value) {
-
         $array = explode(":", $value);
-
         if ($array[0] != "")
             $options[$array[0]] = $array[1];
     }
-
     $form['list'] = array('#type' => 'hidden',
         '#attributes' => array(
             'class' => 'list'

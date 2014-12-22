@@ -7,7 +7,6 @@
  * Time: 15.02
  */
 function wimtvpro_playlist() {
-
     try {
         db_query("SELECT `option` FROM  {wimtvpro_playlist} ");
     } catch (Exception $e) {

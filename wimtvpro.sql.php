@@ -51,20 +51,21 @@ switch ($function) {
         if (isset($_GET['pricePerViewCurrency']))
             $pricePerViewCurrency = $_GET['pricePerViewCurrency'];
 
-        $param = array('licenseType' => $licenseType,
+        $params = array('licenseType' => $licenseType,
             'paymentMode' => $paymentMode,
             'ccType' => $ccType,
             'pricePerView' => $pricePerView,
             'pricePerViewCurrency' => $pricePerViewCurrency
         );
 
-        $response = apiPublishOnShowtime($id, $param);
-        echo $response;
-
-        $state = "showtime";
-        $array_response = json_decode($response);
-        $sql = "UPDATE {wimtvpro_videos} SET state='" . $state . "' ,showtimeIdentifier='" . $array_response->showtimeIdentifier . "' WHERE contentidentifier='" . $id . "'";
-        $query = db_query($sql);
+        echo putInShowTime($id, $params);
+//        $response = apiPublishOnShowtime($id, $params);
+//        echo $response;
+//
+//        $state = "showtime";
+//        $array_response = json_decode($response);
+//        $sql = "UPDATE {wimtvpro_videos} SET state='" . $state . "' ,showtimeIdentifier='" . $array_response->showtimeIdentifier . "' WHERE contentidentifier='" . $id . "'";
+//        $query = db_query($sql);
 
         break;
 

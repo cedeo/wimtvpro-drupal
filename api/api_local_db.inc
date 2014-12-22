@@ -5,35 +5,40 @@
  */
 
 function dbUpdateVideo($state, $status, $title, $urlThumbs, $urlPlay, $duration, $showtimeId, $categories, $contentId, $acquired_identifier) {
-//    $title = mysql_real_escape_string($title);
-//    $urlThumbs = mysql_real_escape_string($urlThumbs);
-//    $urlPlay = mysql_real_escape_string($urlPlay);
-//    $contentId = mysql_real_escape_string($contentId);
-
     $table = VIDEO_TABLE_NAME;
-//    $result = db_query("UPDATE {$table} SET state='{$state}',
-//                                             status='{$status}',
-//                                             title='{$title}',
-//                                             urlThumbs='{$urlThumbs}',
-//                                             urlPlay='{$urlPlay}',
-//                                             acquiredIdentifier = '{$acquired_identifier}',
-//                                             duration='{$duration}',
-//                                             showtimeIdentifier='{$showtimeId}',
-//                                             category='{$categories}'
-//                                             WHERE contentidentifier='{$contentId}'");
+    $fields = array(
+        'status' => $status,
+        'title' => $title,
+        'urlThumbs' => $urlThumbs,
+        'urlPlay' => $urlPlay,
+        'acquiredIdentifier' => $acquired_identifier,
+        'duration' => $duration,
+        'category' => $categories,
+    );
+
+    if ($state != null) {
+        $fields['state'] = $state;
+    }
+    if ($showtimeId != null) {
+        $fields['showtimeIdentifier'] = $showtimeId;
+    }
+
     $result = db_update('{' . $table . '}')
-            ->fields(array(
-                'state ' => $state,
-                'status' => $status,
-                'title' => $title,
-                'urlThumbs' => $urlThumbs,
-                'urlPlay' => $urlPlay,
-                'acquiredIdentifier' => $acquired_identifier,
-                'duration' => $duration,
-                'showtimeIdentifier' => $showtimeId,
-                'category' => $categories,
-            ))->condition("contentIdentifier", $contentId)
+            ->fields($fields)->condition("contentIdentifier", $contentId)
             ->execute();
+//    $result = db_update('{' . $table . '}')
+//            ->fields(array(
+//                'state ' => $state,
+//                'status' => $status,
+//                'title' => $title,
+//                'urlThumbs' => $urlThumbs,
+//                'urlPlay' => $urlPlay,
+//                'acquiredIdentifier' => $acquired_identifier,
+//                'duration' => $duration,
+//                'showtimeIdentifier' => $showtimeId,
+//                'category' => $categories,
+//            ))->condition("contentIdentifier", $contentId)
+//            ->execute();
 
     return $result;
 }

@@ -54,6 +54,7 @@ function wimtvpro_field_formatter_settings_form($field, $instance, $view_mode, $
             '320|180' => 'Small (320x180)',
             '500|280' => 'Medium (500x280)',
             '640|360' => 'Large (640x360)',
+            '100%|100%' => 'Width 100%',
         ),
     );
 //    $element['tooltip'] = array(
@@ -81,9 +82,8 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
     // RETRIEVE SIZE FROM SETTINGS
     $video_size = $display['settings']['video_size'];
     $video_size_array = explode("|", $video_size);
-    $width = isset($video_size_array[0])?$video_size_array[0]:null;
-    $height = isset($video_size_array[1])?$video_size_array[1]:null;
-    
+    $requiredWidth = isset($video_size_array[0]) ? $video_size_array[0] : null;
+    $requiredHeight = isset($video_size_array[1]) ? $video_size_array[1] : null;
 
     $element = array();
     $videos = "";
@@ -114,7 +114,50 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
 
                 foreach ($arrayVid as $vid) {
                     if (($vid >= 0) && ($vid != "")) {
-                        $videos .= wimtvpro_getPlayerFromVid($vid, 'inline', $width, $height);
+                        // INIT PLAYER VARIABLE
+                        $player = "";
+
+                        // GET VIDEO ITEM FROM LOCAL DB
+                        $localVideoItem = dbGetVideosByVid($vid);
+                        $contentid = $localVideoItem[0]->contentidentifier;
+                        $showtimeid = isset($localVideoItem[0]->showtimeIdentifier) ? $localVideoItem[0]->showtimeIdentifier : null;
+                        // CHECK WHETHER VIDEO IS IN WIMVOD
+//                        $showtimeid = null ;
+                        if ($showtimeid == null || $showtimeid = "") {
+                            // VIDEO IS NOT IN WIMVOD
+                            // GET PLAYER
+                            // $videos .= wimtvpro_getPlayerFromVid($vid, 'inline', $width, $height);
+                                $width= ($requiredWidth == '100%')?null:$requiredWidth;
+                                $height= ($requiredHeight == '100%')?null:$requiredHeight;
+                            $player = wimtvpro_getPlayerFromVid($vid, 'inline', $width, $height);
+                            if ($requiredWidth == '100%' || $requiredHeight == "100%") {
+                                $player = "<div style='width:100%'><div class='iframeContainer'>" . $player . "</div></div>";
+                            }
+                        } else {
+                            // VIDEO IS IN WIMVOD
+                            // GET PLAYER
+                            // SKIN
+                            if (variable_get('nameSkin')) {
+                                $directory = file_create_url('public://skinWim');
+                                $skin = $directory . "/" . variable_get('nameSkin') . ".zip";
+                            } else {
+                                // NS: IN THIS CASE WE PASS NO SKIN (see also wimtvpro_embedded()
+                                // in: wimtvpro/required/embedded.inc
+                                //$base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
+                                $skin = "";
+                            }
+
+
+                            if ($requiredWidth == '100%' || $requiredHeight == "100%") {
+                                $params = "get=1&width=0&height=0" . $skin;
+                            } else {
+                                $params = "get=1&width=" . $width . "&height=" . $height . $skin;
+                            }
+
+                            $iframe = apiGetPlayerShowtime($contentid, $params);
+                            $player = performStyleReplacement($iframe, $requiredWidth, $requiredHeight);
+                        }
+                        $videos .= $player;
                     }
                 }
                 $element[$delta] = array(
@@ -225,6 +268,22 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
             break;
     }
     return $element;
+}
+
+function performStyleReplacement($iframe, $width, $height) {
+    // NS: the restored parameters dont give the expected resize behaviour
+    // hence we mangle the response iframe on the fly
+    $pattern = "/width=\"(\d+)\" height=\"(\d+)\"/";
+    $replacement = "width=\"" . $width . "\" height=\"" . $height . "\"";
+    $player = preg_replace($pattern, $replacement, $iframe);
+    $containerClass = "";
+    if ($width == '100%' || $height == "100%") {
+        $pattern_style = "/style=\"(.*?)\"/";
+        $replacement_style = "style='position: absolute;top: 0;left: 0;width: " . $width . ";height: " . $height . ";'";
+        $player = preg_replace($pattern_style, $replacement_style, $player);
+        $containerClass = "class='iframeContainer'";
+    }
+    return "<div " . $containerClass . ">" . $player . "</div>";
 }
 
 function wimtvpro_field_widget_info() {
@@ -449,16 +508,17 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
                         }
 
                         $rows .= "<tr>";
-                        $rows .= "<td class='video'>" . $urlThumbs . "</td>"; //urlVideo
+                        $rows .= "<td class='video'>" . html_entity_decode($urlThumbs) . "</td>"; //urlVideo
                         $rows .= "<td class='titlevideo'><input class='title' type='text' value='" . $titleVideo . "'/><span class='icon_modTitleVideo' rel='" . $vid . "'></span><strong class='icon_savemodTitleVideo' rel='" . $vid . "'>Apply</strong></td>";
 
                         if (isset($video[0]->contentidentifier)) {
                             $contentId = $video[0]->contentidentifier;
                             global $base_url;
-                            $rows .= "<td id='" . $vid . "'><a class='icon_remove' id='" . $contentId . "' onClick='removeVideo(this)'></a>
+                            $rows .= "<td id='" . $vid . "'><a class='icon_remove_from_field' id='" . $contentId . "' onClick='removeVideo(this)'></a>
                                 <!--span onClick='downloadVideo(\"" . $contentId . "\")'>Download2</span--></td>";
                         } else {
-                            $rows .= "<td id='" . $vid . "'><a class='icon_remove' id='" . $contentId . "' onClick='removeVideoFromContent(this)'></a>
+//                            $rows .= "<td id='" . $vid . "'><a class='icon_remove' id='" . $contentId . "' onClick='removeVideoFromContent(this)'></a>
+                            $rows .= "<td id='" . $vid . "'><a class='icon_remove_from_field' id='" . $contentId . "' onClick='removeVideoFromContent(this)'></a>
                             <!--span onClick='downloadVideo(\"" . $contentId . "\")'>Download2</span--></td>";
                         }
                         $rows .= "</tr>";
@@ -607,6 +667,16 @@ function wimtvpro_upload_content($titlefile, $urlfile, $namefile) {
         unlink(drupal_realpath($unique_temp_filename));
         drupal_set_message(t("Upload Successfully"));
         $id = dbInsertVideo($arrayjsonst->contentIdentifier, $titlefile, "OWNED|" . $namefile);
+        
+        $params = array(
+            'licenseType' => "TEMPLATE_LICENSE",
+            'paymentMode' => "FREEOFCHARGE",
+            'ccType' => "",
+            'pricePerView' => "",
+            'pricePerViewCurrency' => ""
+        );
+        $res = putInShowTime($arrayjsonst->contentIdentifier, $params);
+//        watchdog("auto_wimvod_video".$id, $res);
     } else {
         if (isset($arrayjsonst->message)) {
             $error_msg = $arrayjsonst->message;

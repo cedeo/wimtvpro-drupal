@@ -368,4 +368,25 @@ function getDateRange($startDate, $endDate, $format = "d/m/Y") {
     return $datesArray;
 }
 
+//NS
+/**
+ * 
+ * @param type $contentId: urn
+ * @param type $params: $licenseType, $paymentMode, $ccType, $pricePerView, $pricePerViewCurrency
+ * @return type
+ */
+//function putInShowTime($contentId, $licenseType = "", $paymentMode = "", $ccType = "", $pricePerView = "", $pricePerViewCurrency = "") {
+function putInShowTime($contentId, $params) {
+    //Insert Video into mystreaming and into wim.tv streaming
+    $response = apiPublishOnShowtime($contentId, $params);
+    //Update local db cache (wimtvpro_videos table)
+    $state = "showtime";
+    $array_response = json_decode($response);
+    $sql = "UPDATE {wimtvpro_videos} SET state='" . $state . "' ,showtimeIdentifier='" . $array_response->showtimeIdentifier . "' WHERE contentidentifier='" . $contentId . "'";
+    $query = db_query($sql);
+//    watchdog("wimvod_putInShowTime", $sql);
+
+    return $response;
+}
+
 ?>

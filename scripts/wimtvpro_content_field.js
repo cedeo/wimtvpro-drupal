@@ -45,7 +45,8 @@ jQuery(document).ready(function() {
                 }
                 row += "<td class=\'video\'>" + response.urlThumbs + "</td>"; //urlVideo
                 row += "<td class=\'titlevideo\'><input class=\'title\' type=\'text\' value=\'" + titleVideo + "\'/><span class=\'icon_modTitleVideo\' rel=\'" + response.vid + "\'></span><strong class=\'icon_savemodTitleVideo\' rel=\'" + response.vid + "\'>Apply</strong></td>";
-                row += "<td id=\'" + response.vid + "\'><a class=\'icon_remove\' id=\'" + response.contentId + "\' onClick=\'removeVideo(this)\'></a></td>";
+//                row += "<td id=\'" + response.vid + "\'><a class=\'icon_remove\' id=\'" + response.contentId + "\' onClick=\'removeVideo(this)\'></a></td>";
+                row += "<td id=\'" + response.vid + "\'><a class=\'icon_remove_from_field\' id=\'" + response.contentId + "\' onClick=\'removeVideo(this)\'></a></td>";
                 row += "</tr>";
 
                 jQuery("#view_video_add").append(row);
@@ -107,11 +108,9 @@ function removeVideo(element) {
         complete: function() {
         },
         success: function(response) {
-
             var json = jQuery.parseJSON(response);
             var result = json.result;
             alert(json.result + ": " + json.message);
-
             if (result === "SUCCESS") {
 //                var elencoVideo = jQuery(".videosId");
 //                jQuery(element).parent().parent().remove();

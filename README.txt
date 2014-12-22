@@ -19,7 +19,7 @@ Features:
 With WimTVPro you can extend Drupal with a powerful plugin that allows you to organize, store, publish and stream video in posts, pages or blocks to any location within your website/blog.
 Storage and bandwidth used for the video is provided by WimTV, the innovative platform for live and on demand video streaming. To use the plugin, you must have a Web TV account on WimTV. Registration is free of charge.
 
-For sign up:
+To sign up:
  
 http://www.wim.tv/wimtv-webapp/userRegistration.do?execution=e1s1
 
@@ -41,7 +41,7 @@ Demo site is:
 
 http://research.cedeo.net/drupal
 
-For request a demo user, please send an email to:
+To request a demo user, please send an email to:
 
 info@wimlabs.com
 
@@ -57,4 +57,4 @@ http://support.wim.tv
 
 Last updated:
 ------------
-10/02/2014
+22/12/2014

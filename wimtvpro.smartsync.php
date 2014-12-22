@@ -57,7 +57,7 @@ class wimtvpro_smartSync {
             else {
                 $api_video_details = $api_video_detail_response->body;
 //                var_dump($api_video_details->status);exit;
-                $state = ""; // WE DO NOT SET THIS STUFF BECAUSE WE ARE JUST UPDATING NEWLY UPLOADED VIDEOS
+
                 $status = $api_video_details->status;
                 $title = $api_video_details->title;
                 $url_thumbs = '<img src="' . $api_video_details->thumbnailUrl . '"  title="' . $title . '" class="wimtv-thumbnail" />';
@@ -67,7 +67,8 @@ class wimtvpro_smartSync {
                     $urlVideo .= $api_video_details->streamingUrl->auth_token;
                 }
                 $duration = $api_video_details->duration;
-                $showtime_identifier = ""; // WE DO NOT SET THIS STUFF BECAUSE WE ARE JUST UPDATING NEWLY UPLOADED VIDEOS
+                $state = null; // WE DO NOT SET THIS STUFF BECAUSE WE ARE UPDATING NEWLY UPLOADED VIDEOS
+                $showtime_identifier = null; // WE DO NOT SET THIS STUFF BECAUSE WE ARE UPDATING NEWLY UPLOADED VIDEOS
                 $categories = "";
                 $valuesc_cat_st = "";
                 foreach ($api_video_details->categories as $key => $value) {
