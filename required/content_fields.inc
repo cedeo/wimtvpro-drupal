@@ -470,7 +470,11 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
             drupal_add_js("var drupalRootPath='" . $GLOBALS['base_url'] . "'", 'inline');
 //            drupal_add_js("var drupalRootPath='" . base_path() . "'", 'inline');
             drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-            drupal_add_js('https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
+            
+            // NS
+//            drupal_add_js('https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
+            drupal_add_js('https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js', array('scope' => 'footer'));
+            
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/vendor/jquery.ui.widget.js', array('scope' => 'footer'));
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/jquery.iframe-transport.js', array('scope' => 'footer'));
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/jquery.fileupload.js', array('scope' => 'footer'));
