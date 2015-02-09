@@ -87,8 +87,9 @@ function wimtvpro_playlist_mod($form_state, $id) {
     $options = array('absolute' => TRUE,
         'query' => array('width' => $iframe_width,
             'height' => $iframe_height,));
-    $embedded = "<iframe frameBorder='0' src='" . url("/wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options) . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
 
+//    $embedded = "<iframe frameBorder='0' src='". url("/wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options) . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
+    $embedded = "<iframe frameBorder='0' src='". url($GLOBALS['base_url'] ."/wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options) . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
 
 
 

@@ -151,9 +151,9 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
                             if ($requiredWidth == '100%' || $requiredHeight == "100%") {
                                 $params = "get=1&width=0&height=0" . $skin;
                             } else {
-                                $params = "get=1&width=" . $width . "&height=" . $height . $skin;
+//                                $params = "get=1&width=" . $width . "&height=" . $height . $skin;
+                                $params = "get=1&width=" . $requiredWidth . "&height=" . $requiredHeight . $skin;
                             }
-
                             $iframe = apiGetPlayerShowtime($contentid, $params);
                             $player = performStyleReplacement($iframe, $requiredWidth, $requiredHeight);
                         }
