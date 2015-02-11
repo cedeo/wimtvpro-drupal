@@ -244,7 +244,6 @@ function wimtvpro_embeddedPlaylist() {
             }
         }
 
-
         $playlist = "";
         foreach ($array_videos_new_drupal as $videoT) {
 
@@ -252,12 +251,15 @@ function wimtvpro_embeddedPlaylist() {
             $video = $result_video->fetchAll();
 
             $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'], $video, FALSE);
-
-            if (!isset($videoT->urlThumbs))
+            if (!isset($videoT->urlThumbs)) {
                 $thumbs[0] = "";
-            else
+            } else {
                 $thumbs = explode('"', $videoT->urlThumbs);
-            $playlist .= "{" . $configFile . " 'image':'" . $thumbs[0] . "','title':'" . str_replace("+", " ", urlencode($videoT->title)) . "'},";
+            }
+            preg_match("/src=\"([^\"]+)\"/", html_entity_decode($thumbs[0]), $parsedData);
+            $thumb = isset($parsedData[1]) ? $parsedData[1] : "";
+            
+            $playlist .= "{" . $configFile . " 'image':'" . $thumb . "','title':'" . str_replace("+", " ", urlencode($videoT->title)) . "'},";
         }
 
         $width = variable_get('widthPreview');
@@ -312,6 +314,5 @@ function wimtvpro_embeddedPlaylist() {
         'height' => $height,
         'flash' => $flash,
         'skin' => $skin);
-
     echo render_template('embedded/playlist.php', $args);
 }
