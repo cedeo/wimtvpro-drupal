@@ -243,25 +243,35 @@ function wimtvpro_embeddedPlaylist() {
                 }
             }
         }
-
         $playlist = "";
         foreach ($array_videos_new_drupal as $videoT) {
-
             $result_video = db_query("SELECT * FROM {wimtvpro_videos} WHERE contentidentifier='" . $videoT->contentidentifier . "' ");
             $video = $result_video->fetchAll();
 
+            if (strpos($video[0]->urlThumbs, "<") !== false) {
+                $video[0]->urlThumbs = htmlentities($video[0]->urlThumbs);
+            }
             $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'], $video, FALSE);
+
+
             if (!isset($videoT->urlThumbs)) {
                 $thumbs[0] = "";
             } else {
+                // NS
+                // IF $videoT->urlThumbs IS NOT HTML-ENCODED THAN DO IT 
+                // AND THEN PERFORM THE REGEXP MATCHING
+                if (strpos($videoT->urlThumbs, "<") === 0) {
+                    $videoT->urlThumbs = ltrim($videoT->urlThumbs, '"');
+                    $videoT->urlThumbs = rtrim($videoT->urlThumbs, '"');
+                    $videoT->urlThumbs = htmlentities($videoT->urlThumbs);
+                }
                 $thumbs = explode('"', $videoT->urlThumbs);
             }
-            preg_match("/src=\"([^\"]+)\"/", html_entity_decode($thumbs[0]), $parsedData);
+            // NS: ADDED A stripslashes TO BE CLEAN HTML IMG CONTENT
+            preg_match("/src=\"([^\"]+)\"/", html_entity_decode(stripslashes($thumbs[0])), $parsedData);
             $thumb = isset($parsedData[1]) ? $parsedData[1] : "";
-            
             $playlist .= "{" . $configFile . " 'image':'" . $thumb . "','title':'" . str_replace("+", " ", urlencode($videoT->title)) . "'},";
         }
-
         $width = variable_get('widthPreview');
         $height = variable_get('heightPreview') - 10;
 
@@ -314,5 +324,6 @@ function wimtvpro_embeddedPlaylist() {
         'height' => $height,
         'flash' => $flash,
         'skin' => $skin);
+
     echo render_template('embedded/playlist.php', $args);
 }
