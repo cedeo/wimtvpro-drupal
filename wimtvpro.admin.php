@@ -8,14 +8,24 @@
  * To change this template use File | Settings | File Templates.
  */
 function wimtvpro_admin() {
-
-    $view_page = wimtvpro_alert_reg();
-
     drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.js');
     $response = apiGetProfile();
     $dati = json_decode($response, true);
 
+    if ($dati === null) {
+        drupal_get_messages('status', true);
+        // THE PROFILE IS 
+        variable_set('userWimtv', 'username');
+        variable_set('passWimtv', 'password');
+    }
+    $view_page = wimtvpro_alert_reg();
+
     $form = array();
+    // NS: WE ADD LINKS FOR USER REGISTER/LOGIN
+    $form['register_links'] = array(
+        '#markup' => $view_page
+    );
+
     $form ['#attributes'] = array("enctype" => "multipart/form-data");
     if (variable_get("sandbox") == "yes") {
         $form['htmltag'] = array(
@@ -178,17 +188,13 @@ function wimtvpro_admin() {
 
     if ($view_page == "") {
         $openFieldSet = FALSE;
-
-
-
-        if ($openFieldSet)
+        if ($openFieldSet) {
             $form['fieldPricing'] = array('#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => FALSE);
-        else
+        } else {
             $form['fieldPricing'] = array('#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => TRUE);
+        }
         $form['fieldPayment'] = array('#type' => 'fieldset', '#title' => t('Monetisation'), '#collapsible' => TRUE, '#collapsed' => TRUE);
-
         $form['fieldLive'] = array('#type' => 'fieldset', '#title' => t('Live'), '#collapsible' => TRUE, '#collapsed' => TRUE);
-
         //$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>t('Personal Info'),'#collapsible' => TRUE, '#collapsed' => TRUE);
         $form['fieldFeatures'] = array('#type' => 'fieldset', '#title' => t('Features'), '#collapsible' => TRUE, '#collapsed' => TRUE);
 
@@ -244,7 +250,8 @@ function wimtvpro_admin() {
             '#maxlength' => 200,
             '#required' => FALSE,);
         $form['fieldPayment']['billingAddress[city]'] = array('#type' => 'textfield',
-            '#title' => t('Street'),
+//            '#title' => t('Street'),
+            '#title' => t('City'),
             '#default_value' => !empty($dati['billingAddress']['city']) ? $dati['billingAddress']['city'] : '',
             '#size' => 100,
             '#maxlength' => 200,
@@ -408,6 +415,8 @@ function wimtvpro_admin_validate($form, &$form_state) {
     variable_set('heightPreview', $_POST['heightPreview']);
     variable_set('widthPreview', $_POST['widthPreview']);
 
+
+
     //echo variable_get('heightPreview');
     //echo variable_get('widthPreview');
     //fieldConfig
@@ -415,7 +424,6 @@ function wimtvpro_admin_validate($form, &$form_state) {
     //fieldPayment
     //fieldLive
     //fieldFeatures
-
     if ($view_page == "") {
         $dati = array();
         $dati["affiliate"] = isset($_POST["affiliate"]) ? 'true' : 'false';
@@ -429,6 +437,7 @@ function wimtvpro_admin_validate($form, &$form_state) {
         $dati["billingAddress"]["state"] = $_POST["billingAddress"]["state"];
         $dati["billingAddress"]["zipCode"] = $_POST["billingAddress"]["zipCode"];
         $dati["liveStreamEnabled"] = isset($_POST["liveStreamEnabled"]) ? 'true' : 'false';
+
         if (isset($_POST["liveStreamEnabled"])) {
             // NS: HIDE "EVENT RESELLER" AND "EVENT ORGANIZER"
             /*
@@ -439,9 +448,27 @@ function wimtvpro_admin_validate($form, &$form_state) {
             $dati["liveStreamPwd"] = $_POST["liveStreamPwd"];
         }
 
+
         if (count($dati) > 0) {
+            variable_set('userWimtv', $_POST['userWimtv']);
+            variable_set('passWimtv', $_POST['passWimtv']);
+            initApi(cms_getWimtvApiUrl(), cms_getWimtvUser(), cms_getWimtvPwd());
+
+
             $response = apiEditProfile($dati);
             $arrayjsonst = json_decode($response);
+            if ($arrayjsonst === null) {
+                // THE PROFILE IS 
+                variable_set('userWimtv', 'username');
+                variable_set('passWimtv', 'password');
+
+//                initApi(cms_getWimtvApiUrl(), cms_getWimtvUser(), cms_getWimtvPwd());
+//                form_set_error("fieldConfig", "<b>" . wimtvpro_alert_reg() . "</b>");
+//                var_dump(drupal_get_messages());die;
+//                drupal_set_message(wimtvpro_alert_reg(),'status');
+//                return;
+            }
+
             if (isset($arrayjsonst->result) && ($arrayjsonst->result != "SUCCESS")) {
                 $testoErrore = "";
                 foreach ($arrayjsonst->messages as $message) {

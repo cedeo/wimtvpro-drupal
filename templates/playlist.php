@@ -20,7 +20,8 @@
     jQuery(document).ready(function() {
 
         jQuery(".playlist input.title").click(function() {
-            jQuery(this).parent().parent().children("td.action").children(".icon_modTitlePlay").show();
+//            jQuery(this).parent().parent().children("td.action").children(".icon_modTitlePlay").show();
+            jQuery(this).parent().children(".icon_modTitlePlay").show();
         });
 
         jQuery(".icon_viewPlay").click(function() {
@@ -52,9 +53,11 @@
         });
 
         jQuery(".icon_modTitlePlay").click(function() {
-            var nameNewPlaylist = jQuery(this).parent().parent().children("td").children("input").val();
+//            var nameNewPlaylist = jQuery(this).parent().parent().children("td").children("input").val();
+//            var idPlayList = jQuery(this).parent().attr("rel");
+            var nameNewPlaylist = jQuery(this).parent().children("input").val();
+            var idPlayList = jQuery(this).parent().parent().children("td.action").attr("rel");
             //ID = playlist_##
-            var idPlayList = jQuery(this).parent().attr("rel");
 
             //add to DB
             jQuery.ajax({
@@ -102,25 +105,29 @@
     <table class="wp-list-table widefat fixed posts" style="text-align:center;">
         <tr>
             <th class="manage-column column-title"><?php echo t("Title"); ?></th>
-            <th class="manage-column column-title"><?php echo t("Action"); ?></th>
+            <th class="manage-column column-title"><?php echo t("Edit"); ?></th>
+            <th class="manage-column column-title"><?php echo t("Delete"); ?></th>
         </tr>
         <?php foreach ($playlists as $record) { ?>
             <tr>
                 <td class="playlist">
+                    <input class="title" type="text" value="<?php echo $record->name ?>"/>
+                    <span class="icon_modTitlePlay"></span>
+                    <span class="counter">(<?php echo $record->countVideo ?>)</span>
+                </td>
+
+                <td class="playlist">
                     <a href="<?php echo url('admin/config/wimtvpro/playlist/modify/' . $record->id) ?>">
                         <span class="icon_viewPlay"></span>
                     </a>
-                    <input class="title" type="text" value="<?php echo $record->name ?>"/>
-                    <span class="counter">(<?php echo $record->countVideo ?>)</span>
                 </td>
                 <td class="action"  rel="<?php echo $record->id ?>">
-                    <span class="icon_modTitlePlay"></span>
                     <span class="icon_deletePlay"></span>
                 </td>
             </tr>
         <?php } ?>
         <tr>
-            <td  class="playlistNew">
+            <td colspan="2" class="playlistNew">
                 <input type="text" value="Playlist <?php echo $count ?>" />
             </td>
             <td>

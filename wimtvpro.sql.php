@@ -181,6 +181,7 @@ switch ($function) {
 
     case "modTitlePlaylist":
         $num_updated = db_update('{wimtvpro_playlist}')->fields(array('name' => $name))->condition("id", $idPlayList)->execute();
+        return "";
         break;
 
     case "removePlaylist":

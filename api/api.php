@@ -1,18 +1,20 @@
 <?php
 
+/**
+ * Written by walter at 16/10/13
+ * Updated by Netsense s.r.l. 2014-2015
+ */
 
 namespace Api;
 
 require("Httpful/Bootstrap.php");
 \Httpful\Bootstrap::init();
 
-/**
- * Written by walter at 16/10/13
- */
 use \Httpful\Request;
 use \Httpful\Mime;
 
 class Api {
+
     public $host = null;
     public $username = null;
     public $liveHostsUrl;
@@ -41,6 +43,11 @@ class Api {
 
     static function initAnalyticsApi($host, $username, $password) {
         Api::$analytics = new Api($host, $username, $password);
+    }
+
+    // NS API PROGRAMMINGS
+    function getHost() {
+        return $this->host;
     }
 
     function compileUrl($subUrl) {
@@ -75,7 +82,7 @@ class Api {
         return $request->authenticateWith($this->username, $this->password);
     }
 
-    function execute($request, $expectedMimeType='text/html', $clientLanguage=null) {
+    function execute($request, $expectedMimeType = 'text/html', $clientLanguage = null) {
         $request->expects($expectedMimeType);
         $request->addHeader("X-Wimtv-Pro-Plugin-Name", "drupal");
         if ($clientLanguage)
@@ -93,6 +100,5 @@ class Api {
     }
 
 }
-
 
 ?>

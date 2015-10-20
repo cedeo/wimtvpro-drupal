@@ -118,6 +118,11 @@ function wimtvpro_report() {
             $traffic_json = json_decode($user_response);
             $traffic = $traffic_json->traffic;
 
+            if (!isset($traffic_json->commercialPacket)) {
+                $view_page .="<h2>" . t("Sorry user was not found in Analytics!") . "</h2>";
+                return $view_page;
+            }
+
             $packet = analyticsGetPacket();
             $commercialPacket_json = json_decode($packet);
             $currentPacket = $commercialPacket_json->current_packet;

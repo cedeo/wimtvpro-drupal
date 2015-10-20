@@ -18,7 +18,7 @@
             <th><?php echo t("Title"); ?></th>
             <th><?php echo t("Modify"); ?></th>
             <th><?php echo t("Remove"); ?></th>
-            <th><?php echo t("Shortcode"); ?></th>
+            <!--<th><?php echo t("Shortcode"); ?></th>-->
         </tr>
     </thead>
     <tbody>
@@ -47,13 +47,13 @@
                         <img src='<?php echo base_path() . drupal_get_path("module", "wimtvpro") . "/img/remove.png"; ?>'  alt='<?php t("Remove"); ?>'>
                     </a>
                 </td>
-                <td>
+<!--                <td>
 
                     <textarea style="resize: none; width:90%;height:100%;" readonly='readonly' 
                               onclick="this.focus();
                                       this.select();">[wimprog id="<?php echo $prog->identifier; ?>"]</textarea>
 
-                </td>
+                </td>-->
             </tr>
         <?php endforeach; ?>
     </tbody>

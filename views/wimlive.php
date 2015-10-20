@@ -84,6 +84,7 @@ function wimtvpro_form($type, $identifier) {
                               }
                           }
                           catch (e) {
+//                              alert(e.toString());
                               alert(Drupal.t("Connection error."));
                           }
                       },
@@ -105,28 +106,48 @@ function wimtvpro_form($type, $identifier) {
         // NS: We use the GETted value "timezone_" and we pass it to apiEmbeddedLive(..)
         // to make it aware about "daylight saving".
         $timezone_ = isset($_GET['timezone_']) ? $_GET['timezone_'] : null;
+        $cliTimezoneName = isset($_GET['cliTimezoneName']) ? $_GET['cliTimezoneName'] : "";
+        
+//        $dati = apiEmbeddedLive($identifier, $timezone_);
+        $dati = apiGetLive($identifier, $timezone_);
 
-        $dati = apiEmbeddedLive($identifier, $timezone_);
         $arraydati = json_decode($dati);
 
         $name = $arraydati->name;
-        if ($arraydati->paymentMode == "FREEOFCHARGE")
+        if ($arraydati->paymentMode == "FREEOFCHARGE") {
             $payperview = "0";
-        else
+        } else {
             $payperview = $arraydati->pricePerView;
+        }
 
 
         $url = $arraydati->url;
-
+        $recordEvent = ($arraydati->recordEvent) ? 'true' : 'false';
+        $publicEvent = ($arraydati->publicEvent) ? 'true' : 'false';
         $giorno = $arraydati->eventDate;
 
-        //$timezone = $arraydati->eventTimeZone;
-        if (intval($arraydati->eventMinute) < 10)
-            $arraydati->eventMinute = "0" . $arraydati->eventMinute;
-        $ora = $arraydati->eventHour . ":" . $arraydati->eventMinute;
+        // <#1
+        $data = $arraydati->eventDateMillisec;
+        $timestamp = floor($data / 1000);
+        $start = new DateTime("@$timestamp");
+
+        $cliTimezone = new DateTimeZone($cliTimezoneName);
+        $start->setTimezone($cliTimezone);
+
+        $ora = $start->format('H') . ":" . $start->format('i');
+        // >#1
+        
+///////////////////////
+//        $timezone = $arraydati->eventTimeZone;
+//        if (intval($arraydati->eventMinute) < 10) {
+//            $arraydati->eventMinute = "0" . $arraydati->eventMinute;
+//        }
+//        $ora = $arraydati->eventHour . ":" . $arraydati->eventMinute;
+
+///////////////////////
         $tempo = $arraydati->duration;
-        $public = $arraydati->publicEvent;
-        $recordEvent = $arraydati->recordEvent;
+
+
         $ore = floor($tempo / 60);
         $minuti = $tempo % 60;
 
@@ -134,29 +155,17 @@ function wimtvpro_form($type, $identifier) {
         if ($minuti < 10)
             $durata .= "0";
         $durata .= $minuti;
-
-        if ($public) {
-            $public_res = "true";
-        } else {
-            $public_res = "false";
-        }
-
-        if ($recordEvent) {
-            $recordEvent_res = "true";
-        } else {
-            $recordEvent_res = "false";
-        }
-    } else {
+    }
+    else {
+        // CREATE NEW LIVE EVENT!
         $name = "";
         $payperview = "0";
         $url = "";
         $giorno = "";
         $ora = "";
         $durata = "";
-        $public = "";
-        $recordEvent = "";
-        $public_res = "false";
-        $recordEvent_res = "false";
+        $publicEvent = "false";
+        $recordEvent = "false";
     }
     global $base_url, $base_path, $base_root;
     drupal_add_js("var url_pathPlugin ='" . $base_url . "';", "inline");
@@ -172,7 +181,7 @@ function wimtvpro_form($type, $identifier) {
     drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 
     drupal_add_js('jQuery(document).ready(function(){jQuery( ".pickatime" ).timepicker({  defaultTime:"00:00"  });});', 'inline');
-    drupal_add_js('jQuery(document).ready(function(){jQuery( ".pickaduration" ).timepicker({   defaultTime:"00h05",showPeriodLabels: false,timeSeparator: "h", });});', 'inline');
+    drupal_add_js('jQuery(document).ready(function(){jQuery( ".pickaduration" ).timepicker({   defaultTime:"00h00",showPeriodLabels: false,timeSeparator: "h", });});', 'inline');
 
     $form['htmltag'] = array(
         '#markup' => variable_get('htmltag', l(t("Return event list"), "admin/config/wimtvpro/wimlive"))
@@ -221,7 +230,7 @@ function wimtvpro_form($type, $identifier) {
         '#options' => array('true' => 'Public', 'false' => 'Private'),
         '#description' => 'If you want to index your event on wimlive.wim.tv, and in WimView (WimTV mobile app) select "Public"',
         '#required' => TRUE,
-        '#default_value' => $public_res,
+        '#default_value' => $publicEvent,
     );
 
     $form['Record'] = array(
@@ -231,7 +240,7 @@ function wimtvpro_form($type, $identifier) {
         '#options' => array('true' => 'Yes', 'false' => 'No'),
         '#required' => TRUE,
         '#description' => t('Select "Yes" if you want to record your event. The recorded video will appear in WimBox'),
-        '#default_value' => $recordEvent_res,
+        '#default_value' => $recordEvent,
     );
 
     $form['Giorno'] = array(
@@ -254,12 +263,17 @@ function wimtvpro_form($type, $identifier) {
         '#required' => TRUE,
         '#default_value' => $ora,
     );
-    /*
-      $form['Timezone'] = array(
-      '#type' => 'select',
-      '#title' => t('TimeZone'),
-      '#description' => t('We recommend applying a tolerance on the start time to facilitate payment transactions to the viewers.'),
-      ); */
+
+//    $form['Timezone'] = array(
+    $form['eventTimeZone'] = array(
+        '#type' => 'select',
+        '#title' => t('TimeZone'),
+        '#options' => timezoneList(),
+        '#required' => TRUE,
+        '#default_value' => NULL,
+        '#description' => t(''),
+    );
+
     $form['Duration'] = array(
         '#type' => 'textfield',
         '#title' => t('Duration'),
@@ -425,18 +439,29 @@ function wimtvpro_wimlive_submit($form, &$form_state) {
         "duration" => $duration,
         "durationUnit" => "Minute",
         "publicEvent" => $public,
-        "timezone" => $_POST['timelivejs'],
+//        "timezone" => $_POST['timelivejs'],
+        "eventTimeZone" => $_POST['eventTimeZone'],
         "recordEvent" => $record,
         "paymentCode" => $paymentCode,
         "pricePerView" => $pricePerView,
         "ccy" => $ccy
     );
 
-
-    if ($_POST['typeValue'] == "modify") {
-        $response = apiModifyLive($_POST['identifier'], $params, $_POST['timelivejs']);
+    if ($_POST['eventTimeZone'] != "") {
+        $timezone = $_POST['eventTimeZone'];
     } else {
-        $response = apiAddLive($params, $_POST['timelivejs']);
+        $timezone = $_POST['timelivejs'];
+    }
+
+//    if ($_POST['typeValue'] == "modify") {
+//        $response = apiModifyLive($_POST['identifier'], $params, $_POST['timelivejs']);
+//    } else {
+//        $response = apiAddLive($params, $_POST['timelivejs']);
+//    }
+    if ($_POST['typeValue'] == "modify") {
+        $response = apiModifyLive($_POST['identifier'], $params, $timezone);
+    } else {
+        $response = apiAddLive($params, $timezone);
     }
 
     $formset_error = "";
@@ -478,6 +503,7 @@ function wimtvpro_live_public() {
 
 //List your future live event
 function wimtvpro_elencoLive($number, $type, $onlyActive = true) {
+    drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/scripts/jstz-1.0.4.min.js');
     if ($type == "table") {
         $output = 'jQuery("#tableLive tbody").html(response)';
     } else {
@@ -486,13 +512,15 @@ function wimtvpro_elencoLive($number, $type, $onlyActive = true) {
     $script =
             'jQuery(document).ready(function(){
              var timezone = -(new Date().getTimezoneOffset())*60*1000;
+             var cliTimezoneName = jstz.determine().name();    
              jQuery.ajax({
                  context: this,
                  url:  "' . url("wimtvpro/elencoLive") . '",
                  type: "POST",
                  dataType: "html",
                  async: false,
-                 data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $number . '&onlyActive=' . $onlyActive . '",
+//                 data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $number . '&onlyActive=' . $onlyActive . '",
+                 data: "type=' . $type . '&timezone =" + timezone  + "&id=' . $number . '&onlyActive=' . $onlyActive . '&cliTimezoneName="+ cliTimezoneName,
                  success: function(response) {' . $output . '},
              });
          });';
@@ -502,7 +530,9 @@ function wimtvpro_elencoLive($number, $type, $onlyActive = true) {
 
 function wimtvpro_tableLive() {
     global $base_url, $base_path, $base_root;
-    $timezone = $_POST['timezone_'];
+//    $timezone = $_POST['timezone_'];
+    $timezone = isset($_POST['timezone_']) ? $_POST['timezone_'] : "";
+    $cliTimezoneName = isset($_POST['cliTimezoneName']) ? $_POST['cliTimezoneName'] : "";
     $type = $_POST['type'];
     $id = $_POST['id'];
     $onlyActive = $_POST['onlyActive'];
@@ -542,12 +572,14 @@ function wimtvpro_tableLive() {
                     $durata .= "0";
                 $durata .= $minuti . " min";
             }
-            else
+            else {
                 $durata = $value->duration . " " . $value->durationUnit;
-
+            }
+            $params = "timezone=" . $_POST['timezone_'];
             $identifier = $value->identifier;
-            $embedded_iframe = apiGetLiveIframe($identifier, $timezone);
-            $details_live = apiEmbeddedLive($identifier, $timezone);
+            $embedded_iframe = apiGetLiveIframe($identifier, $params);
+//            $details_live = apiEmbeddedLive($identifier, $timezone);
+            $details_live = apiGetLive($identifier, $timezone);
             $livedate = json_decode($details_live);
 
             $data = $livedate->eventDate;
@@ -562,8 +594,6 @@ function wimtvpro_tableLive() {
 
             $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();">' . $embedded_iframe . '</textarea>';
             if ($type == "table") {
-
-
                 $dataNow = date("d/m/Y");
                 $dataLive = explode(" ", $day);
                 $arrayData = explode("/", $dataLive[0]);
@@ -598,7 +628,7 @@ function wimtvpro_tableLive() {
                         // NS: We append "timezone_" value as querystring to make "modify" function
                         //  aware about "daylight saving"
 //        "<td>" . l(t("Edit"), "admin/config/wimtvpro/wimlive/modify/" . $identifier) . " | " . l(t("Delete"), "admin/config/wimtvpro/wimlive/delete/" . $identifier) . "</td>".
-                        "<td>" . l(t("Edit"), "admin/config/wimtvpro/wimlive/modify/" . $identifier, array('query' => array('timezone_' => $timezone))) . " | " . l(t("Delete"), "admin/config/wimtvpro/wimlive/delete/" . $identifier) . "</td>" .
+                        "<td>" . l(t("Edit"), "admin/config/wimtvpro/wimlive/modify/" . $identifier, array('query' => array('timezone_' => $timezone, 'cliTimezoneName'=>$cliTimezoneName))) . " | " . l(t("Delete"), "admin/config/wimtvpro/wimlive/delete/" . $identifier) . "</td>" .
                         "</tr>";
             }
             elseif ($type == "list") {

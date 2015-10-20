@@ -49,7 +49,8 @@ table.items tr {
 table.items tr {
     margin: 0 auto;
     padding: 0;
-    width: 100%; 	text-align: center;
+    width: 100%; 	
+    text-align: left;
     height: 100%;
     z-index: 2;
     position: relative;
@@ -119,7 +120,7 @@ table.items tr a,
 table.items tr img {
     margin: 0 auto!important;
     padding: 0;
-    width: 160px; height:100px;
+    /*width: 160px; height:100px;*/
 }
 div.formVideo {
     border: 1px solid black;
@@ -317,7 +318,8 @@ div.img_empty {
 .playlist span.counter{font-size:18px}
 
 .icon_modTitlePlay {
-    background: transparent url('../img/mod.png') no-repeat center center; width:20px; height:20px; display:none; float:left; cursor:pointer;
+    /*background: transparent url('../img/mod.png') no-repeat center center; width:20px; height:20px; display:none; float:left; cursor:pointer;*/
+    background: transparent url('../img/save.png') no-repeat center center; width:20px; height:15px; display:none; float:left; cursor:pointer;
 }
 .icon_selectPlay {
     background: transparent url('../img/select.png') no-repeat center center; width:20px; height:20px;display:block; float:left; cursor:pointer;
@@ -610,4 +612,37 @@ input.pickadate {
 .icon_remove_from_field {
     background: transparent url('../img/remove.png') no-repeat center center;
     width:40px; height:40px; display:block;  cursor:pointer;
+}
+
+/*.isTestServer{
+    position: fixed;
+    margin-top: 100px;
+    width: 100%;
+    height: 30px;
+    z-index: 999;
+    text-align: center;
+    font-size: 30px;
+    background-color: white;
+    color: red;
+    border: 1px solid red;
+    padding-top: 10px;
+}*/
+.isTestServer{
+    text-align: center;
+    font-size: 22px;
+    background-color: white;
+    color: red;
+    border: 1px solid red;
+    padding: 2px;
+    margin-top: 5px;
+}
+
+#wimtvpro-wimlive-form .form-item-eventTimeZone{
+    float: left;
+}
+#wimtvpro-wimlive-form .form-item-Ora{
+    float: left;
+}
+#wimtvpro-wimlive-form .form-item-Duration{
+    clear: both;
 }

@@ -28,15 +28,17 @@ function wimtvpro_form_alter(&$form, &$form_state, $form_id) {
             '#title' => t('WimVod'),
             '#markup' => $videos
         );
-        
-        drupal_add_js("var field_to_insert='" . $field_to_insert. "'", 'inline');
+
+        drupal_add_js("var field_to_insert='" . $field_to_insert . "'", 'inline');
         drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/scripts/wimtvpro_node_insert.js');
     }
 
-    //if (isset($form["#field"]["columns"]["wimvideo"]))
-    $form['field']['cardinality']['#options'] = array("1" => "1");
-    //if (isset($form["#field"]["columns"]["wimplaylist"]))
-    $form['field']['cardinality']['#options'] = array("1" => "1");
+    if (isset($form["#field"]["columns"]["wimvideo"])) {
+        $form['field']['cardinality']['#options'] = array("1" => "1");
+    }
+    if (isset($form["#field"]["columns"]["wimplaylist"])) {
+        $form['field']['cardinality']['#options'] = array("1" => "1");
+    }
 }
 
 function wimtvpro_node_view_alter(&$build) {
@@ -112,11 +114,11 @@ function wimtvpro_shortcode_wimtv($valueKey, $risultato, $key_testo, $testoforma
                 $params = "get=1&width=" . $format_video[1] . "&height=" . $format_video[2] . "&skin=" . $skin;
 
                 $response = apiGetPlayerShowtime($contentid, $params); // curl_exec($ch);
-		// NS: the restored parameters dont give the expected resize behaviour
-		// hence we mangle the response iframe on the fly
-		$pattern = "/width=\"(\d+)\" height=\"(\d+)\"/";
-		$replacement = "width=\"" . $format_video[1] . "\" height=\"" . $format_video[2] .  "\"";
-		$response = preg_replace($pattern, $replacement, $response);
+                // NS: the restored parameters dont give the expected resize behaviour
+                // hence we mangle the response iframe on the fly
+                $pattern = "/width=\"(\d+)\" height=\"(\d+)\"/";
+                $replacement = "width=\"" . $format_video[1] . "\" height=\"" . $format_video[2] . "\"";
+                $response = preg_replace($pattern, $replacement, $response);
                 $iframe = $response;
                 $testoformat = str_replace("[wimtv]" . $value . "[/wimtv]", $iframe, $testoformat);
             } else {
