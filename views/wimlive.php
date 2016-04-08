@@ -31,7 +31,7 @@ function wimtvpro_wimlive_formModify($form_state, $id) {
 function wimtvpro_wimlive_delete($form_state, $id) {
     $identifier = $id['build_info']['args'][0];
     apiDeleteLive($identifier);
-    header('Location:' . url("admin/config/wimtvpro/wimlive"));
+    header('Location:' . url('admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('WIMLIVE_urlLink')));
 }
 
 //This is a form
@@ -107,7 +107,7 @@ function wimtvpro_form($type, $identifier) {
         // to make it aware about "daylight saving".
         $timezone_ = isset($_GET['timezone_']) ? $_GET['timezone_'] : null;
         $cliTimezoneName = isset($_GET['cliTimezoneName']) ? $_GET['cliTimezoneName'] : "";
-        
+
 //        $dati = apiEmbeddedLive($identifier, $timezone_);
         $dati = apiGetLive($identifier, $timezone_);
 
@@ -136,14 +136,12 @@ function wimtvpro_form($type, $identifier) {
 
         $ora = $start->format('H') . ":" . $start->format('i');
         // >#1
-        
 ///////////////////////
 //        $timezone = $arraydati->eventTimeZone;
 //        if (intval($arraydati->eventMinute) < 10) {
 //            $arraydati->eventMinute = "0" . $arraydati->eventMinute;
 //        }
 //        $ora = $arraydati->eventHour . ":" . $arraydati->eventMinute;
-
 ///////////////////////
         $tempo = $arraydati->duration;
 
@@ -184,7 +182,7 @@ function wimtvpro_form($type, $identifier) {
     drupal_add_js('jQuery(document).ready(function(){jQuery( ".pickaduration" ).timepicker({   defaultTime:"00h00",showPeriodLabels: false,timeSeparator: "h", });});', 'inline');
 
     $form['htmltag'] = array(
-        '#markup' => variable_get('htmltag', l(t("Return event list"), "admin/config/wimtvpro/wimlive"))
+        '#markup' => variable_get('htmltag', l(t("Return event list"), 'admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('WIMLIVE_urlLink')))
     );
 
     $form['htmltag2'] = array(
@@ -488,7 +486,7 @@ function wimtvpro_wimlive_submit($form, &$form_state) {
         //drupal_set_message(t("Insert event successfully"));
         $form_state['rebuild'] = TRUE;
         drupal_add_js("jQuery(document).ready(function() {
-		        window.location ='" . url("admin/config/wimtvpro/wimlive") . "';
+		        window.location ='" . url('admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('WIMLIVE_urlLink')) . "';
 				});", "inline");
     }
 }
@@ -577,7 +575,10 @@ function wimtvpro_tableLive() {
             }
             $params = "timezone=" . $_POST['timezone_'];
             $identifier = $value->identifier;
-            $embedded_iframe = apiGetLiveIframe($identifier, $params);
+//            $embedded_iframe = apiGetLiveIframe($identifier, $params);
+
+            $embedded_code_content = "[wimlive]" . $identifier . "|" . variable_get("widthPreview") . "|" . variable_get("heightPreview") . "|" . $timezone . "[/wimlive]";
+//                    apiGetLiveIframe($identifier, $params);
 //            $details_live = apiEmbeddedLive($identifier, $timezone);
             $details_live = apiGetLive($identifier, $timezone);
             $livedate = json_decode($details_live);
@@ -590,9 +591,7 @@ function wimtvpro_tableLive() {
             $timeToStart = $livedate->timeToStart;
             $timeLeft = $livedate->timeLeft;
 
-
-
-            $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();">' . $embedded_iframe . '</textarea>';
+            $embedded_code = '<textarea readonly="readonly" onclick="this.focus(); this.select();">' . $embedded_code_content . '</textarea>';
             if ($type == "table") {
                 $dataNow = date("d/m/Y");
                 $dataLive = explode(" ", $day);
@@ -616,7 +615,7 @@ function wimtvpro_tableLive() {
                 }
                 $producer = "";
                 if ($liveIsNow)
-                    $producer = "<a target='newPage' href='" . url("admin/config/wimtvpro/wimlive/webproducer/" . $identifier) . "'  id='" . $identifier . "'><img src='" . $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/img/webcam.png'></a>";
+                    $producer = "<a target='newPage' href='" . url('admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('WIMLIVE_urlLink') . '/webproducer/' . $identifier) . "'  id='" . $identifier . "'><img src='" . $base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/img/webcam.png'></a>";
 
                 $output .="<tr>
         <td>" . $name . "</td>
@@ -628,7 +627,7 @@ function wimtvpro_tableLive() {
                         // NS: We append "timezone_" value as querystring to make "modify" function
                         //  aware about "daylight saving"
 //        "<td>" . l(t("Edit"), "admin/config/wimtvpro/wimlive/modify/" . $identifier) . " | " . l(t("Delete"), "admin/config/wimtvpro/wimlive/delete/" . $identifier) . "</td>".
-                        "<td>" . l(t("Edit"), "admin/config/wimtvpro/wimlive/modify/" . $identifier, array('query' => array('timezone_' => $timezone, 'cliTimezoneName'=>$cliTimezoneName))) . " | " . l(t("Delete"), "admin/config/wimtvpro/wimlive/delete/" . $identifier) . "</td>" .
+                        "<td>" . l(t("Edit"), 'admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('WIMLIVE_urlLink') . "/modify/" . $identifier, array('query' => array('timezone_' => $timezone, 'cliTimezoneName' => $cliTimezoneName))) . " | " . l(t("Delete"), 'admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('WIMLIVE_urlLink') . "/delete/" . $identifier) . "</td>" .
                         "</tr>";
             }
             elseif ($type == "list") {
@@ -651,7 +650,7 @@ function wimtvpro_tableLive() {
         }
     }
     if ($count < 0) {
-        $output = t("No event scheduled at this time");
+        $output = "<tr><td colspan='7'>".t("No event scheduled at this time")."</td></tr>";
     }
     echo $output;
 }

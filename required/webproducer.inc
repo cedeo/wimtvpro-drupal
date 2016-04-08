@@ -1,23 +1,24 @@
 <?php
-  
+
 function wimtvproWebProducer() {
     drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/swfObject/swfobject.js');
+//    drupal_add_js('http://www.wim.tv/wimtv-webapp/script/web-producer/swfobject.js','external');
     drupal_add_css("
         #header{display:none;}
          #footer-wrapper{display:none;}
          #breadcrumb{display:none;}
          .sidebar{display:none!important}"
-        ,'inline');
+            , 'inline');
     $id2 = arg(5);
     $embedded = apiEmbeddedLive($id2);
     $arrayjson_live = json_decode($embedded);
-    $url =  $arrayjson_live->url;
+    $url = $arrayjson_live->url;
     $title = $arrayjson_live->name;
 
-    $stream_url = explode ("/",$url);
-    $stream_name = $stream_url[count($stream_url)-1];
+    $stream_url = explode("/", $url);
+    $stream_name = $stream_url[count($stream_url) - 1];
     $url = "";
-    for ($i=1;$i<count($stream_url)-1;$i++){
+    for ($i = 1; $i < count($stream_url) - 1; $i++) {
         $url .= $stream_url[$i] . "/";
     }
     $url = $stream_url[0] . "/" . $url;

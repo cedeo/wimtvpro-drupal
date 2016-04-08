@@ -7,13 +7,15 @@
  */
 // This tells Drupal what fields it applies to and what settings are available.
 function wimtvpro_field_formatter_info() {
+    $default_size = "320|180";
     return array(
         // We name our field as the associative name of the array.
         'wimtvpro_wimvideo_inline' => array(
             'label' => t('Inline'),
             'field types' => array('wimtvpro_wimvideo'),
             'settings' => array(//Array of the settings we'll create
-                'video_size' => 'small', //give a default value for when the form is first loaded
+//                'video_size' => 'small', //give a default value for when the form is first loaded
+                'video_size' => $default_size, //give a default value for when the form is first loaded
 //                'tooltip' => 'Link to user Facebook page' //ditto
             ),
         ),
@@ -21,7 +23,8 @@ function wimtvpro_field_formatter_info() {
             'label' => t('Block'),
             'field types' => array('wimtvpro_wimvideo'),
             'settings' => array(//Array of the settings we'll create
-                'video_size' => 'small', //give a default value for when the form is first loaded
+//                'video_size' => 'small', //give a default value for when the form is first loaded
+                'video_size' => $default_size, //give a default value for when the form is first loaded
 //                'tooltip' => 'Link to user Facebook page' //ditto
             ),
         ),
@@ -29,7 +32,8 @@ function wimtvpro_field_formatter_info() {
             'label' => t('Playlist'),
             'field types' => array('wimtvpro_playlist'),
             'settings' => array(//Array of the settings we'll create
-                'video_size' => 'small', //give a default value for when the form is first loaded
+//                'video_size' => 'small', //give a default value for when the form is first loaded
+                'video_size' => $default_size, //give a default value for when the form is first loaded
 //                'tooltip' => 'Link to user Facebook page' //ditto
             ),
         ),
@@ -85,9 +89,20 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
     $requiredWidth = isset($video_size_array[0]) ? $video_size_array[0] : null;
     $requiredHeight = isset($video_size_array[1]) ? $video_size_array[1] : null;
 
+
     $element = array();
     $videos = "";
     $insert = true;
+//    var_dump($instance['display'][$view_mode]);
+//    var_dump($video_size);
+//    var_dump($display['settings']['video_size']);
+//    print "display['type']: "+$display['type'];
+//    print "requiredWidth: "+$requiredWidth;
+//    print "requiredHeight: "+$requiredHeight;
+//    $requiredWidth ="100";
+//    $requiredHeight ="100";
+//    die;
+//    $display['type'] ="wimtvpro_wimvideo_inline"; 
     //include (drupal_get_path('module', 'wimtvpro') . "/wimtvpro.sync.php");
     switch ($display['type']) {
         case 'wimtvpro_wimvideo_block':
@@ -127,8 +142,8 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
                             // VIDEO IS NOT IN WIMVOD
                             // GET PLAYER
                             // $videos .= wimtvpro_getPlayerFromVid($vid, 'inline', $width, $height);
-                                $width= ($requiredWidth == '100%')?null:$requiredWidth;
-                                $height= ($requiredHeight == '100%')?null:$requiredHeight;
+                            $width = ($requiredWidth == '100%') ? null : $requiredWidth;
+                            $height = ($requiredHeight == '100%') ? null : $requiredHeight;
                             $player = wimtvpro_getPlayerFromVid($vid, 'inline', $width, $height);
                             if ($requiredWidth == '100%' || $requiredHeight == "100%") {
                                 $player = "<div style='width:100%'><div class='iframeContainer'>" . $player . "</div></div>";
@@ -146,7 +161,6 @@ function wimtvpro_field_formatter_view($entity_type, $entity, $field, $instance,
                                 //$base_url . "/" . drupal_get_path('module', 'wimtvpro') . "/skin/default.zip";
                                 $skin = "";
                             }
-
 
                             if ($requiredWidth == '100%' || $requiredHeight == "100%") {
                                 $params = "get=1&width=0&height=0" . $skin;
@@ -322,7 +336,7 @@ function wimtvpro_field_info() {
 }
 
 //FIELD VIDEO WIMTV//
-// RENDERIZZAZIONE DEL FORM DI ADD O EDIT DIN UN FIELD DI TIPO WIMTV_VIDEO
+// RENDERIZZAZIONE DEL FORM DI ADD O EDIT DI UN FIELD DI TIPO WIMTV_VIDEO
 function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
     ini_set('memory_limit', '-1');
     $widget = $element;
@@ -454,6 +468,7 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
             break;
 
         case 'wimtvpro_upload_content':
+
             global $user;
             $vids = isset($items[$delta]['wimvideo']) ? $items[$delta]['wimvideo'] : '';
 
@@ -470,11 +485,11 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
             drupal_add_js("var drupalRootPath='" . $GLOBALS['base_url'] . "'", 'inline');
 //            drupal_add_js("var drupalRootPath='" . base_path() . "'", 'inline');
             drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-            
+
             // NS
 //            drupal_add_js('https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
             drupal_add_js('https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js', array('scope' => 'footer'));
-            
+
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/vendor/jquery.ui.widget.js', array('scope' => 'footer'));
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/jquery.iframe-transport.js', array('scope' => 'footer'));
             drupal_add_js(drupal_get_path('module', 'wimtvpro') . '/jquery/progressbar/jquery.fileupload.js', array('scope' => 'footer'));
@@ -510,7 +525,6 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
                         } else {
                             $contentId = "";
                         }
-
                         $rows .= "<tr>";
                         $rows .= "<td class='video'>" . html_entity_decode($urlThumbs) . "</td>"; //urlVideo
                         $rows .= "<td class='titlevideo'><input class='title' type='text' value='" . $titleVideo . "'/><span class='icon_modTitleVideo' rel='" . $vid . "'></span><strong class='icon_savemodTitleVideo' rel='" . $vid . "'>Apply</strong></td>";
@@ -518,7 +532,8 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
                         if (isset($video[0]->contentidentifier)) {
                             $contentId = $video[0]->contentidentifier;
                             global $base_url;
-                            $rows .= "<td id='" . $vid . "'><a class='icon_remove_from_field' id='" . $contentId . "' onClick='removeVideo(this)'></a>
+                            $showtimeID = $video[0]->showtimeIdentifier;
+                            $rows .= "<td id='" . $vid . "'><a class='icon_remove_from_field' id='" . $contentId . "' showtimeId='" . $showtimeID . "' onClick='removeVideo(this)'></a>
                                 <!--span onClick='downloadVideo(\"" . $contentId . "\")'>Download2</span--></td>";
                         } else {
 //                            $rows .= "<td id='" . $vid . "'><a class='icon_remove' id='" . $contentId . "' onClick='removeVideoFromContent(this)'></a>
@@ -641,6 +656,7 @@ function wimtvpro_field_widget_form(&$form, &$form_state, $field, $instance, $la
 
 //Function for upload video into content type custom
 //Call this function and passed title and temp file $_FILES['files']['tmp_name']["videoFile"];
+// Il metodo che segue è chiamamto a sua volta dal metodo "wimtvpro_uploadFile" contenuto in "/required/plus.inc"
 function wimtvpro_upload_content($titlefile, $urlfile, $namefile) {
     set_time_limit(0);
     $directory = "public://skinWim";
@@ -671,7 +687,7 @@ function wimtvpro_upload_content($titlefile, $urlfile, $namefile) {
         unlink(drupal_realpath($unique_temp_filename));
         drupal_set_message(t("Upload Successfully"));
         $id = dbInsertVideo($arrayjsonst->contentIdentifier, $titlefile, "OWNED|" . $namefile);
-        
+
         $params = array(
             'licenseType' => "TEMPLATE_LICENSE",
             'paymentMode' => "FREEOFCHARGE",

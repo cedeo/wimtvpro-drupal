@@ -1,0 +1,41 @@
+API_URL = https://www.wim.tv/wimtv-webapp/rest/
+APP_NAME = WimTvPro
+APP_HOME_LINK_URL = http://www.wim.tv
+HELP_LINK_URL = http://support.wim.tv/?cat=5
+
+# menu items
+SETTINGS_menuLink = Configuration
+REGISTER_menuLink = REGISTER
+UPLOAD_menuLink = Upload video
+WIMBOX_menuLink = WimBox
+WIMVOD_menuLink = WimVod
+PLAYLIST_menuLink = Playlist
+WIMLIVE_menuLink = WimLive
+SCHEDULES_menuLink = WimCast
+ANALYTICS_menuLink = Analytics
+
+# menu urls
+SETTINGS_urlLink = config
+REGISTER_urlLink = register
+UPLOAD_urlLink = uploadvideo
+WIMBOX_urlLink = showvideo
+WIMVOD_urlLink = showpublished
+PLAYLIST_urlLink = playlist
+WIMLIVE_urlLink = liveevent
+SCHEDULES_urlLink = schedules
+ANALYTICS_urlLink = analytics
+
+# page titles
+SETTINGS_pageTitle = Configuration
+REGISTER_pageTitle = Register
+UPLOAD_pageTitle = Upload video
+WIMBOX_pageTitle = Wimbox
+WIMVOD_pageTitle = WimVod
+PLAYLIST_pageTitle = Playlist
+WIMLIVE_pageTitle = WimLive
+SCHEDULES_pageTitle = WimCast
+ANALYTICS_pageTitle = Analytics
+Event = Event
+Edit = Edit
+Delete = Delete
+New = New

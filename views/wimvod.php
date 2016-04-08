@@ -15,7 +15,7 @@ function wimtvpro_wimvod() {
         jQuery(".icon_download").click(function() {
             var id = jQuery(this).attr("id").split("|");
 
-            var uri = "' . variable_get("basePathWimtv") . 'videos/" + id[0] + "/download";
+            var uri = "' . cms_getWimtvApiUrl() . 'videos/" + id[0] + "/download";
             if (typeof id[1] !== "undefined"){
                 var file = id[1].split(".");
                 uri = uri + "?ext=" + file[1] + "&filename=" + file[0];

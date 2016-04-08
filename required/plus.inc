@@ -24,7 +24,7 @@ function wimtvpro_upload_submit($form, &$form_state) {
 
     $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
     $ch = curl_init();
-    $url_upload = variable_get("basePathWimtv") . 'videos';
+    $url_upload = cms_getWimtvApiUrl() . 'videos';
 
     curl_setopt($ch, CURLOPT_URL, $url_upload);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
@@ -115,7 +115,7 @@ function wimtvpro_getIframeFromVid($vid) {
     else
         $skin = $base_url . drupal_get_path('module', 'wimtvpro') . "/skin/skin/default.zip";
 
-    $url = variable_get("basePathWimtv") . variable_get("urlVideosWimtv") . "/" . $contentid . '/embeddedPlayers';
+    $url = cms_getWimtvApiUrl() . variable_get("urlVideosWimtv") . "/" . $contentid . '/embeddedPlayers';
     $url .= "?get=1&width=" . $width . "&height=" . $height . "&skin=" . $skin;
     $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -201,7 +201,7 @@ function wimtvpro_getPlayerFromVid($vid, $typeInline, $videoWidth = null, $video
                 } else {
                     $output .= "skin: '" . $directory . "/skin/default.zip',";
                 }
-                
+
                 $dimension = " width='" . (variable_get('widthPreview') + 50) . "px' height='" . (variable_get('heightPreview') + 50) . "px'";
                 // NS: refactoring signature: contentID is not required!
 //                $configFile = wimtvpro_viever_jwplayer($_SERVER['HTTP_USER_AGENT'], $vid, $video);
@@ -417,6 +417,7 @@ function wimtvpro_uploadFile() {
             $urlVideo = $video[0]->urlPlay;
             $titleVideo = $video[0]->title;
             $contentId = $video[0]->contentidentifier;
+            $showtimeid = $video[0]->showtimeIdentifier;
             $error = "";
             $vid = $uploadRes;
         } else {
@@ -437,6 +438,7 @@ function wimtvpro_uploadFile() {
     $jsonResponse .= '"urlVideo": "' . $urlVideo . '",';
     $jsonResponse .= '"titleVideo": "' . $titleVideo . '",';
     $jsonResponse .= '"contentId": "' . $contentId . '",';
+    $jsonResponse .= '"showtimeid": "' . $showtimeid . '",';
     $jsonResponse .= '"file": "' . $_FILES[$fileElementName]["name"][$fieldname] . '"';
     $jsonResponse .= '}';
     echo $jsonResponse;
@@ -654,7 +656,7 @@ function wimtvpro_insert_videoapp($contentid) {
 
 function wimtvpro_updateVideoSync($contentid) {
     //Check API
-    $videoDetails = variable_get("basePathWimtv") . "videos/" . $contentid . "?details=true";
+    $videoDetails = cms_getWimtvApiUrl() . "videos/" . $contentid . "?details=true";
     $credential = variable_get("userWimtv") . ":" . variable_get("passWimtv");
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $videoDetails);

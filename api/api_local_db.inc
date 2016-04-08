@@ -105,4 +105,44 @@ function dbGetVideosByVid($vid) {
     return $array_videos_drupal;
 }
 
+function dbExtractSpecificPlayist($idPlayList) {
+    $table_name = PLAYLIST_TABLE_NAME;
+    $query = "SELECT listVideo,
+			name FROM {$table_name}
+			WHERE id='" . $idPlayList . "'";
+    $result = db_query($query);
+    return $result->fetchAll();
+}
+
+
+function dbGetUserVideosIn($user, $listVideos, $showtime = false, $playlist = true) {
+    $table = VIDEO_TABLE_NAME;
+    $and_showtime = "";
+    if ($showtime) {
+        $and_showtime .= "AND state='showtime'";
+    }
+    
+    $where = dbBuildVideosIn($listVideos, $playlist);
+    $query = "SELECT * FROM {$table} WHERE uid='{$user}' {$and_showtime} {$where}";
+    $result = db_query($query);
+    return $result->fetchAll();
+}
+
+function dbBuildVideosIn($listVideos, $in = true) {
+    if (count($listVideos)) {
+        $where = " AND contentidentifier ";
+        if (!$in)
+            $where .= "NOT";
+        $where .= " IN (";
+        foreach ($listVideos as $index => $video) {
+            $where .= "'" . $video . "'";
+            if ($index < count($listVideos) - 1)
+                $where .= ", ";
+        }
+        $where .= ")";
+        return $where;
+    }
+    return "";
+}
+
 ?>

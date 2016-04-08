@@ -10,7 +10,7 @@ function wimtvpro_playlist_mod($form_state, $id) {
     //    NS: CALL  smartSync FUNCTION ON "pending" VIDEOS TO CHECK WHETHER
     //    THEY HAVE BEEN ALREADY TRANSCODED
     wimtvpro_smartSync::sync("pending");
-    
+
     drupal_add_library('system', 'ui.sortable');
     drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/css/wimtvpro.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
     drupal_add_css(drupal_get_path('module', 'wimtvpro') . '/jquery/css/redmond/jquery-ui-1.8.21.custom.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
@@ -66,7 +66,7 @@ function wimtvpro_playlist_mod($form_state, $id) {
         '#value' => $array_playlist[0]->listVideo);
 
     $form['htmltag2'] = array(
-        '#markup' => variable_get('htmltag2', '<h2>' . $array_playlist[0]->name . '  <a href="' . wimtvpro_checkCleanUrl('admin/config/wimtvpro/', 'playlist/', '../../') . '">' . t("Back") . '</a>
+        '#markup' => variable_get('htmltag2', '<h2>' . $array_playlist[0]->name . '  <a href="' . wimtvpro_checkCleanUrl('admin/config/' . getWhiteLabel('APP_NAME') . '/', getWhiteLabel('PLAYLIST_urlLink') . '/', '../../') . '">' . t("Back") . '</a>
 		</h2>
 		<div class="region region-help"> <div id="block-system-help" class="block block-system"><div class="content">
 		<p>' . t("Create a playlist of videos (ONLY FREE) to be inserted within your website") . '</p><p>' . t("Drag and drop the video thumbnails from the All videos to the Playlist area. To change the order, drag and drop thumbnails to the desired position in the Playlist area.") . "</p></div></div></div>"));
@@ -89,7 +89,7 @@ function wimtvpro_playlist_mod($form_state, $id) {
             'height' => $iframe_height,));
 
 //    $embedded = "<iframe frameBorder='0' src='". url("/wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options) . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
-    $embedded = "<iframe frameBorder='0' src='". url($GLOBALS['base_url'] ."/wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options) . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
+    $embedded = "<iframe frameBorder='0' src='" . url($GLOBALS['base_url'] . "/wimtvpro/viewEmbeddedPlaylist/" . $identifier, $options) . "' width='" . $iframe_width . "' height='" . $iframe_height . "'></iframe>";
 
 
 

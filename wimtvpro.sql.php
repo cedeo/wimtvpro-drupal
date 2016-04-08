@@ -176,12 +176,12 @@ switch ($function) {
     case "createPlaylist":
         $sql = "INSERT INTO {wimtvpro_playlist} (uid,listVideo,name,id) VALUES ('" . variable_get("userWimtv") . "' ,'','" . $name . "','" . time() . "')";
         $query = db_query($sql);
-        return;
+        echo $query->rowCount();
         break;
 
     case "modTitlePlaylist":
         $num_updated = db_update('{wimtvpro_playlist}')->fields(array('name' => $name))->condition("id", $idPlayList)->execute();
-        return "";
+        echo $num_updated;
         break;
 
     case "removePlaylist":
@@ -215,7 +215,7 @@ switch ($function) {
                 }
             }
         }
-        $url_download = variable_get("basePathWimtv") . "videos/" . $id . "/download";
+        $url_download = cms_getWimtvApiUrl() . "videos/" . $id . "/download";
         if ($filename != "") {
             $url_download .= "?filename=" . $filename . "&ext=" . $ext;
         }

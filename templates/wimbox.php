@@ -1,5 +1,4 @@
-<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
-
+<?php render_help_link();?>
 
 <div class='action'>
     <span class='icon_sync0' title='Syncronize'><a href="javascript:void(0)" class='button'><?php echo t("Synchronize"); ?></a></span>
@@ -19,7 +18,7 @@
 </div>
 
 <?php
-print l("+" . t('Upload video'), 'admin/config/wimtvpro/upload');
+print l("+" . t('Upload video'), 'admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('UPLOAD_urlLink'));
 
 // NS: RENDER "VIDEOS SEARCH FORM" AND "VIDEOS FOUND FORM"
 //if ($thumbs) {

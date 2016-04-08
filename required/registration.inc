@@ -108,6 +108,7 @@ function wimtvproRegistration($node, $form_state) {
             '#type' => 'submit',
             '#value' => t('Register')
         );
+        
         $form['#validate'][] = 'wimtvproRegistration_validate';
         $form['#submit'][] = 'wimtvproRegistration_submit';
         return $form;
@@ -188,13 +189,14 @@ function wimtvproRegistration_submit($form, &$form_state) {
                     "dateOfBirth" => "01/01/1900");
         
         $response = apiRegistration($params); //curl_exec($ch);
-        
         $arrayjsonst = json_decode($response);
+        
         if ($arrayjsonst->result == "SUCCESS") {
             variable_set('userWimtv', $username);
             variable_set('passWimtv', $password);
             drupal_add_js('window.location =  "' . url("admin/config/wimtvpro") . '"', 'inline');
             drupal_set_message(t("Successfully registered"));
+            $form_state['redirect'] = 'admin/config/' . getWhiteLabel("APP_NAME") . '/configure';
         } else {
             $testo_errore = "";
             foreach ($arrayjsonst->messages as $message) {

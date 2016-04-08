@@ -22,7 +22,8 @@ jQuery(document).ready(function() {
     var file_field = jQuery("input#wimtv_fileuploaded");
     var id = file_field.attr("id");
     var name = file_field.attr("name");
-    // var url = wimtvpro_checkCleanUrl("", "wimtvpro/wimtvproCallUpload", "../../");
+    // Il metodo chiamato si trova è "wimtvpro_uploadFile" contenuto in "/required/plus.inc" e che chiama a sua volta
+    // "wimtvpro_upload_content" in "/required/content_fields.inc"
     var url = wimtvpro_checkCleanUrl(drupalRootPath + "/admin/config/wimtvpro/", "wimtvproCallUpload", "");
     jQuery("#wimtv_fileuploaded").fileupload({
         dataType: "json",
@@ -32,6 +33,7 @@ jQuery(document).ready(function() {
         done: function(e, data, jqXHR) {
             var response = data.jqXHR.responseText;
             var elencoVideo = jQuery(".videosId");
+            console.log(response);
             response = jQuery.parseJSON(response);
             if (response.error4 !== "") {
                 alert(response.msg);
@@ -43,10 +45,10 @@ jQuery(document).ready(function() {
                 if (response.urlThumbs === "") {
                     response.urlThumbs = "<div class=\'none\'></div>";
                 }
-                row += "<td class=\'video\'>" + response.urlThumbs + "</td>"; //urlVideo
+                row += "<td class=\'video\'>" + response.urlThumbs + "</td>"; //urlVideo 
                 row += "<td class=\'titlevideo\'><input class=\'title\' type=\'text\' value=\'" + titleVideo + "\'/><span class=\'icon_modTitleVideo\' rel=\'" + response.vid + "\'></span><strong class=\'icon_savemodTitleVideo\' rel=\'" + response.vid + "\'>Apply</strong></td>";
 //                row += "<td id=\'" + response.vid + "\'><a class=\'icon_remove\' id=\'" + response.contentId + "\' onClick=\'removeVideo(this)\'></a></td>";
-                row += "<td id=\'" + response.vid + "\'><a class=\'icon_remove_from_field\' id=\'" + response.contentId + "\' onClick=\'removeVideo(this)\'></a></td>";
+                row += "<td id=\'" + response.vid + "\'><a class=\'icon_remove_from_field\' id=\'" + response.contentId + "\' showtimeid=\'" + response.showtimeid + "\' onClick=\'removeVideo(this)\'></a></td>";
                 row += "</tr>";
 
                 jQuery("#view_video_add").append(row);
@@ -93,47 +95,62 @@ jQuery(document).ready(function() {
 });
 
 function removeVideo(element) {
-//    var elencoVideo = jQuery(".videosId");
+    contentId = jQuery(element).attr("id");
+    showtimeId = jQuery(element).attr("showtimeid");
     jQuery.ajax({
         context: this,
         url: wimtvpro_checkCleanUrl("", "admin/config/wimtvpro/wimtvproCallAjax", "../../"),
         type: "GET",
         dataType: "html",
-        async: false,
-        data: "namefunction=RemoveVideo&id=" + jQuery(element).attr("id"),
-        beforeSend: function() {
-            jQuery(".icon_save").hide();
-            jQuery("#progressbar").hide();
-        },
-        complete: function() {
-        },
+        data: "namefunction=removeST&id=" + contentId + "&showtimeId=" + showtimeId,
+        beforeSend: function() {},
+        complete: function() {},
         success: function(response) {
+            console.log(response);
             var json = jQuery.parseJSON(response);
             var result = json.result;
-            alert(json.result + ": " + json.message);
             if (result === "SUCCESS") {
-//                var elencoVideo = jQuery(".videosId");
-//                jQuery(element).parent().parent().remove();
-//                var vid = jQuery(element).parent().attr("id");
-//                var val = elencoVideo.val();
-//                val = val.replace(vid, "");
-//                val = val.replace(",,", "");
-//                elencoVideo.val(val);
-                removeVideoFromContent(element);
+                jQuery.ajax({
+                    context: this,
+                    url: wimtvpro_checkCleanUrl("", "admin/config/wimtvpro/wimtvproCallAjax", "../../"),
+                    type: "GET",
+                    dataType: "html",
+                    async: false,
+                    data: "namefunction=RemoveVideo&id=" + jQuery(element).attr("id"),
+                    beforeSend: function() {
+                        jQuery(".icon_save").hide();
+                        jQuery("#progressbar").hide();
+                    },
+                    complete: function() {
+                    },
+                    success: function(response) {
+                        var json = jQuery.parseJSON(response);
+                        var result = json.result;
+                        alert(json.result + ": " + json.message);
+                        if (result === "SUCCESS") {
+                            removeVideoFromContent(element);
+                        }
+                        jQuery(".icon_save").show();
+                        jQuery("#progressbar").hide();
+                    },
+                    error: function(request, error) {
+                        alert(request.responseText);
+                        jQuery(".icon_save").show();
+                    }
+                })
             }
-            jQuery(".icon_save").show();
-            jQuery("#progressbar").hide();
         },
         error: function(request, error) {
             alert(request.responseText);
-            jQuery(".icon_save").show();
         }
-    })
-
+    });
 }
 
 function removeVideoFromContent(element) {
     var elencoVideo = jQuery(".videosId");
+//    alert(elencoVideo.html());
+//    alert(jQuery(element).parent().parent().html());
+//    return;
     jQuery(element).parent().parent().remove();
     var vid = jQuery(element).parent().attr("id");
     var val = elencoVideo.val();

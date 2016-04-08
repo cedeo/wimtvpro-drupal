@@ -95,7 +95,8 @@ function wimtvpro_programming_delete() {
         if ($progId !== null) {
             apiDeleteProgramming($progId);
         }
-        drupal_goto("/admin/config/wimtvpro/programming/");
+//        drupal_goto("/admin/config/wimtvpro/programming/");
+        drupal_goto('/admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('SCHEDULES_urlLink'));
     }
     return $view_page;
 }

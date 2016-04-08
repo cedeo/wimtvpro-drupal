@@ -14,14 +14,16 @@ use \Httpful\Request;
 /* * *** API SETTINGS **** */
 //NS
 global $WIMTV_API_TEST, $WIMTV_API_PRODUCTION, $WIMTV_API_HOST;
-$WIMTV_API_TEST = "http://peer.wim.tv:8080/wimtv-webapp/rest/";
-$WIMTV_API_PRODUCTION = cms_getWimtvApiUrl();
+
+$WIMTV_API_TEST = cms_getWimtvApiTestUrl();
+$WIMTV_API_PRODUCTION = cms_getWimtvApiProductionUrl();
 
 //$WIMTV_API_HOST = $WIMTV_API_TEST;
 $WIMTV_API_HOST = $WIMTV_API_PRODUCTION;
 /* * ******* */
 
 function initApi($host, $username, $password) {
+// $host = "http://www.wim.tv/wimtv-webapp/rest/";
     Api::initApiAccessor($host, $username, $password);
 }
 
@@ -72,11 +74,6 @@ function apiUpload($parameters) {
 
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
-
-//    var_dump($request);print("\napiupload request!\n");
-//    $response =  $apiAccessor->execute($request);
-//    var_dump($response);die("\napiupload response\n");;
-//    return $response;
 }
 
 function apiGetUploadProgress($contentIdentifier) {
@@ -95,7 +92,6 @@ function apiGetProfile() {
 }
 
 function apiEditProfile($params) {
-//    var_dump($params);
     $apiAccessor = getApi();
     $request = $apiAccessor->postRequest('profile');
 //    $request->sends(Mime::JSON);
@@ -105,8 +101,7 @@ function apiEditProfile($params) {
     $request->body($params);
     $request = $apiAccessor->authenticate($request);
 //    return $apiAccessor->execute($request, 'application/json');
-    $response = $apiAccessor->execute($request);
-    return $response;
+    return $apiAccessor->execute($request);
 }
 
 function apiRegistration($params) {
@@ -204,7 +199,8 @@ function apiGetDetailsShowtime($id) {
 
 function apiGetPlayerShowtime($id, $parameters) {
     $apiAccessor = getApi();
-    $request = $apiAccessor->getRequest('videos/' . $id . "/embeddedPlayers?" . $parameters);
+//    $request = $apiAccessor->getRequest('videos/' . $id . "/embeddedPlayers?" . $parameters);
+    $request = $apiAccessor->getRequest('vod/' . $id . "/embed?" . $parameters);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }
@@ -273,12 +269,14 @@ function apiGetLive($host_id, $timezone = "") {
 function apiGetLiveIframe($host_id, $params = "") {
     $apiAccessor = getApi();
     $url = $apiAccessor->liveHostsUrl . '/' . $host_id . '/embed';
+    
+    //liveStream/{reseller}/{organizer}/hosts/{hostId}/embed 
     if (strlen($params)) {
         $url .="?" . $params;
     }
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'text/xml, application/xml');
+    return $apiAccessor->execute($request, 'text/xml'); //'text/xml, application/xml' - 'application/xml' - 'application/json'
 }
 
 //function apiGetLiveIframe($host_id, $timezone = "") {
@@ -305,26 +303,10 @@ function apiAddLive($parameters, $timezone = null) {
 //    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 
     $request->body($parameters);
-    
+
     $response = $apiAccessor->execute($request, 'application/json', false);
 
-//    $parameters_json = json_encode($parameters);
-//    $apiAccessor = getApi();
-//    $url = $apiAccessor->liveHostsUrl;
-//    if ($timezone)
-//        $url .= '?timezone=' . $timezone;
-//    $request = $apiAccessor->postRequest($url);
-//    $request->body($parameters_json);
-//    $request = $apiAccessor->authenticate($request);
-//    $response = $apiAccessor->execute($request, 'application/json', false);
-//    var_dump($parameters);
-//    print "<hr/>";
-//    var_dump($parameters_json);
-//    print "<hr/>";
-//    var_dump($request);
-//    print "<hr/>";
-//    var_dump($response);
-//    die;
+
     return $response;
 }
 
@@ -348,12 +330,11 @@ function apiDeleteLive($host_id) {
 
 //PROGRAMMING
 // NS API PROGRAMMINGS
-function apiProgrammingGetIframe($progID) {
+function apiProgrammingGetIframe($progID, $locale = null) {
     $apiAccessor = getApi();
     $apiHost = $apiAccessor->getHost();
     $wimtvUrl = substr($apiHost, 0, -6) . "/"; // OPP: str_replace("/rest", "", $apiHost);
     $simple = "true";
-//    $wimtvuser = variable_get("userWimtv"); //"linolino2";
     $wimtvuser = cms_getWimtvUser(); //"linolino2";
     $OTPresponse = apiProgrammingGetOTP();
     $arrayjsonst = json_decode($OTPresponse);
@@ -362,6 +343,9 @@ function apiProgrammingGetIframe($progID) {
 //    $wimtvpwd = "edab5d78-3533-11e5-a151-feff819cdc9f"; //get_option("wp_passwimtv")
         $wimtvpwd = $arrayjsonst->key;
         $url = $wimtvUrl . "programming.do?simple=$simple&wimtvuser=$wimtvuser&wimtvpwd=$wimtvpwd";
+        if ($locale != null) {
+            $url .= "&locale=" . $locale;
+        }
 
         if ($progID != "" && $progID != null) {
             $url.="&progId=$progID";
@@ -384,6 +368,16 @@ function apiProgrammingGetOTP($expire = 3) {
     $request->sendsAndExpects(Mime::JSON);
     $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
     $request->body($params);
+    $request = $apiAccessor->authenticate($request);
+    return $apiAccessor->execute($request);
+}
+
+function apiProgrammingPlayer($progID, $parameters) {
+    $apiAccessor = getApi();
+//    http://www.wim.tv/wimtv-webapp/rest/programming/{programmingId}/embedCode
+//    $request = $apiAccessor->getRequest('programming/' . $progID . "/embedCode?" . $parameters);
+//    var_dump($parameters);die;
+    $request = $apiAccessor->getRequest('programming/' . $progID . "/embed?" . $parameters);
     $request = $apiAccessor->authenticate($request);
     return $apiAccessor->execute($request);
 }

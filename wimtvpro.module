@@ -6,6 +6,7 @@
  *
  */
 // Load default implementations of insert hooks for core modules.
+require_once(drupal_get_path('module', 'wimtvpro') . '/functions/jwPlayer.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/upload.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/blocks.inc');
 require_once(drupal_get_path('module', 'wimtvpro') . '/required/download.inc');
@@ -28,10 +29,15 @@ require_once(drupal_get_path('module', 'wimtvpro') . '/views/wimlive.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/views/playlist.php');
 require_once(drupal_get_path('module', 'wimtvpro') . '/embedded/embeddedProgramming.php');
 //require_once(drupal_get_path('module', 'wimtvpro') . '/functions/programming/programmings.php');
-
+//
 //global $databases;
 //$dbprefix = ($databases['default']['default']['prefix'] != "") ? $databases['default']['default']['prefix'] . "_" : "";
 define("VIDEO_TABLE_NAME", "{wimtvpro_videos}");
+define("PLAYLIST_TABLE_NAME", "{wimtvpro_playlist}");
+
+loadWhiteLabelDictionary();
+
+variable_set('basePathWimtv', getWhiteLabel("API_URL"));
 
 // NS: WE REQUIRE SMART SYNC CLASS 
 require_once(drupal_get_path('module', 'wimtvpro') . '/wimtvpro.smartsync.php');
@@ -46,148 +52,106 @@ function wimtvpro_page_alter() {
         drupal_add_css($css_path);
 //        PRINT "<div class='isTestServer'>WARNING: WIMTV IS CONNECTED TO TEST SERVER!</div>";
         $message = "<div class='isTestServer'>WARNING: WIMTV IS CONNECTED TO TEST SERVER!</div>";
-        drupal_set_message($message,"warning");
+        drupal_set_message($message, "warning");
     }
 }
 
 //Principal menu Admin and for User
 function wimtvpro_menu() {
     $items = array();
-    $items['admin/config/wimtvpro'] =
+    $items['admin/config/' . getWhiteLabel("APP_NAME")] =
             array(
-                'title' => 'WimTvPro',
+                'title' => getWhiteLabel("APP_NAME"),
                 'page callback' => 'drupal_get_form',
                 'page arguments' => array('wimtvpro_admin'),
                 'access arguments' => array('administer users'),
     );
 
-
-    $items['admin/config/wimtvpro/wimbox'] =
+    // NS: Add Settings to menu
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/configure'] =
             array(
-                'title' => 'WimBox',
+                'title' => getWhiteLabel("SETTINGS_menuLink"), //t('Configure'),
+                'page callback' => 'drupal_get_form',
+                'page arguments' => array('wimtvpro_admin'),
+                'access arguments' => array('administer users'),
+                'weight' => 0
+    );
+
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("UPLOAD_urlLink")] =
+            array(
+                'title' => getWhiteLabel("UPLOAD_menuLink"),
+                'description' => t('You can upload a new video'),
+                'page callback' => 'drupal_get_form',
+                'page arguments' => array('wimtvpro_upload_form'),
+                'access arguments' => array('administer users'),
+                'weight' => 1
+    );
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("WIMBOX_urlLink")] =
+            array(
+                'title' => getWhiteLabel("WIMBOX_menuLink"),
                 'description' => t('This page gives you the list of all videos you have uploaded to your personal WimTV repository. If you wish to post one of these videos to your site, move it to WimVod by clicking the corresponding icon'),
                 'page callback' => 'wimtvpro_wimbox',
                 'page arguments' => array('wimtvpro_wimbox'),
                 'access arguments' => array('administer users'),
-                'weight' => 1
+                'weight' => 2
     );
-    $items['admin/config/wimtvpro/wimvod'] =
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("WIMVOD_urlLink")] =
             array(
-                'title' => 'WimVod',
+                'title' => getWhiteLabel("WIMVOD_menuLink"),
                 'page callback' => 'wimtvpro_wimvod',
                 'description' => t('This page lets you manage the videos you want to publish'),
                 'page arguments' => array('wimtvpro_wimvod'),
                 'access arguments' => array('administer users'),
-                'weight' => 2
+                'weight' => 3
     );
-    $items['admin/config/wimtvpro/playlist'] =
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("PLAYLIST_urlLink")] =
             array(
-                'title' => 'Playlist',
+                'title' => getWhiteLabel("PLAYLIST_menuLink"),
                 'page callback' => 'wimtvpro_playlist',
                 'description' => t('Create a playlist of videos (currently only FREE videos can be included) to be posted to your website'),
                 'page arguments' => array('wimtvpro_playlist'),
                 'access arguments' => array('administer users'),
-                'weight' => 3
+                'weight' => 4
     );
-    $items['admin/config/wimtvpro/playlist/modify/%'] =
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("PLAYLIST_urlLink") . '/modify/%'] =
             array(
-                'title' => 'Playlist Editing',
+                'title' => getWhiteLabel("Edit") . ' ' . getWhiteLabel("PLAYLIST_menuLink"), // . ' Editing',
                 'page callback' => 'drupal_get_form',
                 'page arguments' => array('wimtvpro_playlist_mod', 5),
                 'access arguments' => array('administer users'),
                 'type' => MENU_CALLBACK,
     );
-    $items['admin/config/wimtvpro/upload'] =
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("WIMLIVE_urlLink")] =
             array(
-                'title' => t('Upload Video'),
-                'description' => t('You can upload a new video'),
-                'page callback' => 'drupal_get_form',
-                'page arguments' => array('wimtvpro_upload_form'),
-                'access arguments' => array('administer users'),
-                'weight' => 0
-    );
-    $items['admin/config/wimtvpro/wimlive'] =
-            array(
-                'title' => 'WimLive',
+                'title' => getWhiteLabel("WIMLIVE_menuLink"),
                 'page callback' => 'wimtvpro_wimlive',
                 'description' => t('This page lets you create and post live streaming events to your website.'),
                 'page arguments' => array('wimtvpro_wimlive'),
                 'access arguments' => array('administer users'),
-                'weight' => 4
-    );
-    $items['admin/config/wimtvpro/mypersonalBlock'] =
-            array(
-                'title' => t('My personal detail'),
-                'description' => t('Configuration personal detail of Wimtv block'),
-                'page callback' => 'drupal_get_form',
-                'page arguments' => array('wimtvpro_blockUser_config'),
-                'access arguments' => array('administer users'),
                 'weight' => 5
     );
-    $items['admin/config/wimtvpro/report'] =
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("REGISTER_urlLink")] =
             array(
-                'title' => t('Analytics'),
-                'page callback' => 'wimtvpro_report',
-                'description' => t('You can see the viewers of your videos'),
-                'page arguments' => array('wimtvpro_report'),
-                'access arguments' => array('administer users'),
-                'weight' => 6
+                'title' => getWhiteLabel("REGISTER_menuLink"), //t('WimTV Registration'),
+                'file' => 'required/registration.inc',
+                'page arguments' => array('wimtvproRegistration'),
+                'access callback' => TRUE,
+                'type' => MENU_CALLBACK
     );
 
-    $items['admin/config/wimtvpro/programming'] =
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("WIMLIVE_urlLink") . '/insert'] =
             array(
-                'title' => 'Programmings',
-//                'description' => t(''),
-                'page callback' => 'wimtvpro_programmingList',
-                'page arguments' => array('wimtvpro_programmingMain'),
-                'access arguments' => array('administer users'),
-                'weight' => 7
-    );
-    $items['admin/config/wimtvpro/programming/add'] =
-            array(
-                'title' => t('New Programming'),
-                'page callback' => 'wimtvpro_programming_add',
-                'page arguments' => array('wimtvpro_programming'),
-                'access arguments' => array('administer users'),
-                'type' => MENU_CALLBACK,
-    );
-
-    $items['admin/config/wimtvpro/programming/edit'] =
-            array(
-                'title' => t('Edit Programming'),
-                'page callback' => 'wimtvpro_programming_edit',
-                'page arguments' => array('wimtvpro_programming'),
-                'access arguments' => array('administer users'),
-                'type' => MENU_CALLBACK,
-    );
-
-    $items['admin/config/wimtvpro/programming/delete'] =
-            array(
-                'title' => t('Delete Programming'),
-                'page callback' => 'wimtvpro_programming_delete',
-                'page arguments' => array('wimtvpro_programming'),
-                'access arguments' => array('administer users'),
-                'type' => MENU_CALLBACK,
-    );
-
-    // NS: Add Settings to menu
-    $items['admin/config/wimtvpro/configure'] =
-            array(
-                'title' => t('Configure'),
-                'page callback' => 'drupal_get_form',
-                'page arguments' => array('wimtvpro_admin'),
-                'access arguments' => array('administer users'),
-                'weight' => 8
-    );
-    $items['admin/config/wimtvpro/wimlive/insert'] =
-            array(
-                'title' => t('Add new Event'),
+                'title' => getWhiteLabel("New") . ' ' . getWhiteLabel("WIMLIVE_menuLink") . ' ' . getWhiteLabel("Event"), //t('Add new Event'),
                 'page callback' => 'drupal_get_form',
                 'page arguments' => array('wimtvpro_wimlive_form'),
                 'access arguments' => array('administer users'),
                 'type' => MENU_CALLBACK,
     );
-    $items['admin/config/wimtvpro/wimlive/webproducer/%'] =
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("WIMLIVE_urlLink") . '/webproducer/%'] =
             array(
                 'file' => 'required/webproducer.inc',
                 'page arguments' => array('wimtvproWebProducer', 5),
@@ -196,30 +160,85 @@ function wimtvpro_menu() {
                 'access callback' => TRUE,
                 'type' => MENU_CALLBACK
     );
-    $items['admin/config/wimtvpro/wimlive/modify/%'] =
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("WIMLIVE_urlLink") . '/modify/%'] =
             array(
-                'title' => t('Modify Event'),
+                'title' => getWhiteLabel("Edit") . ' ' . getWhiteLabel("WIMLIVE_menuLink") . ' ' . getWhiteLabel("Event"), //t('Modify Event'),
                 'page callback' => 'drupal_get_form',
                 'page arguments' => array('wimtvpro_wimlive_formModify', 5),
                 'access arguments' => array('administer users'),
                 'type' => MENU_CALLBACK,
     );
-    $items['admin/config/wimtvpro/registration'] =
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("WIMLIVE_urlLink") . '/delete/%'] =
             array(
-                'file' => 'required/registration.inc',
-                'title' => t('WimTV Registration'),
-                'page arguments' => array('wimtvproRegistration'),
-                'access callback' => TRUE,
-                'type' => MENU_CALLBACK
-    );
-    $items['admin/config/wimtvpro/wimlive/delete/%'] =
-            array(
-                'title' => t('Delete Event'),
+                'title' => getWhiteLabel("Delete") . ' ' . getWhiteLabel("WIMLIVE_menuLink") . ' ' . getWhiteLabel("Event"), //t('Delete Event'),
                 'page callback' => 'drupal_get_form',
                 'page arguments' => array('wimtvpro_wimlive_delete', 5),
                 'access arguments' => array('administer users'),
                 'type' => MENU_CALLBACK,
     );
+
+//    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/mypersonalBlock'] =
+//            array(
+//                'title' => t('My personal detail'),
+//                'description' => t('Configuration personal detail of Wimtv block'),
+//                'page callback' => 'drupal_get_form',
+//                'page arguments' => array('wimtvpro_blockUser_config'),
+//                'access arguments' => array('administer users'),
+//                'weight' => 5
+//    );
+
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("SCHEDULES_urlLink")] =
+            array(
+                'title' => getWhiteLabel("SCHEDULES_menuLink"),
+//                'description' => t(''),
+                'page callback' => 'wimtvpro_programmingList',
+                'page arguments' => array('wimtvpro_programmingMain'),
+                'access arguments' => array('administer users'),
+                'weight' => 6
+    );
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("SCHEDULES_urlLink") . '/add'] =
+            array(
+                'title' => getWhiteLabel("New") . ' ' . getWhiteLabel("SCHEDULES_menuLink"), //t('New Programming'),
+                'page callback' => 'wimtvpro_programming_add',
+                'page arguments' => array('wimtvpro_programming'),
+                'access arguments' => array('administer users'),
+                'type' => MENU_CALLBACK,
+    );
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("SCHEDULES_urlLink") . '/edit'] =
+            array(
+                'title' => getWhiteLabel("New") . ' ' . getWhiteLabel("SCHEDULES_menuLink"), //,t('Edit Programming'),
+                'page callback' => 'wimtvpro_programming_edit',
+                'page arguments' => array('wimtvpro_programming'),
+                'access arguments' => array('administer users'),
+                'type' => MENU_CALLBACK,
+    );
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("SCHEDULES_urlLink") . '/delete'] =
+            array(
+                'title' => getWhiteLabel("Delete") . ' ' . getWhiteLabel("SCHEDULES_menuLink"), //t('Delete Programming'),
+                'page callback' => 'wimtvpro_programming_delete',
+                'page arguments' => array('wimtvpro_programming'),
+                'access arguments' => array('administer users'),
+                'type' => MENU_CALLBACK,
+    );
+
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("ANALYTICS_urlLink")] =
+            array(
+                'title' => getWhiteLabel("ANALYTICS_menuLink"), //t('Analytics'),
+                'page callback' => 'wimtvpro_report',
+                'description' => t('You can see the viewers of your videos'),
+                'page arguments' => array('wimtvpro_report'),
+                'access arguments' => array('administer users'),
+                'weight' => 7
+    );
+
+
+
+
+
     $items['wimtvpro/elencoLive'] =
             array(
                 'file' => 'views/wimlive.php',
@@ -264,7 +283,7 @@ function wimtvpro_menu() {
                 'access callback' => TRUE,
                 'type' => MENU_CALLBACK
     );
-    $items['admin/config/wimtvpro/pricing'] =
+    $items['admin/config/' . getWhiteLabel("APP_NAME") . '/pricing'] =
             array(
                 'file' => 'required/pricing.inc',
                 'access callback' => TRUE,
@@ -278,17 +297,17 @@ function wimtvpro_menu() {
                 'access arguments' => array('access content'),
                 'type' => MENU_CALLBACK
     );
-    $items['wimtvpro'] =
+    $items[getWhiteLabel("APP_NAME")] =
             array(
-                'title' => 'WimVod Video',
+                'title' => getWhiteLabel("APP_NAME") . ' Video',
                 'page arguments' => array('wimtvpro_public'),
                 'page callback' => 'wimtvpro_public',
                 'access arguments' => array('access content'),
                 'type' => MENU_CALLBACK
     );
-    $items['wimlive'] =
+    $items[getWhiteLabel("WIMLIVE_urlLink")] =
             array(
-                'title' => 'Live',
+                'title' => getWhiteLabel("WIMLIVE_menuLink"), //'Live',
                 'page arguments' => array('wimtvpro_live_public'),
                 'page callback' => 'wimtvpro_live_public',
                 'access arguments' => array('access content'),
@@ -325,12 +344,16 @@ function wimtvpro_menu() {
         'access arguments' => array('access content'),
         'type' => MENU_CALLBACK,
     );
+
+
+    // NS: RIVEDERE!!!!
     $items['wimtvproplus/viewEmbeddedPlaylist/%'] = array(
         'page callback' => 'wimtvpro_embeddedPlaylist_output',
         'page arguments' => array('wimtvpro_admin'),
         'access arguments' => array('access content'),
         'type' => MENU_CALLBACK,
     );
+
     $items['admin/config/wimtvpro/download'] = array(
         'page callback' => 'wimtvpro_download',
         'page arguments' => array('wimtvpro_admin'),
@@ -339,6 +362,297 @@ function wimtvpro_menu() {
     );
     return $items;
 }
+
+/* OLD MENU
+  function wimtvpro_menu() {
+  $items = array();
+  $items['admin/config/wimtvpro'] =
+  array(
+  'title' => 'WimTvPro',
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('administer users'),
+  );
+
+
+  $items['admin/config/wimtvpro/wimbox'] =
+  array(
+  'title' => 'WimBox',
+  'description' => t('This page gives you the list of all videos you have uploaded to your personal WimTV repository. If you wish to post one of these videos to your site, move it to WimVod by clicking the corresponding icon'),
+  'page callback' => 'wimtvpro_wimbox',
+  'page arguments' => array('wimtvpro_wimbox'),
+  'access arguments' => array('administer users'),
+  'weight' => 1
+  );
+  $items['admin/config/wimtvpro/wimvod'] =
+  array(
+  'title' => 'WimVod',
+  'page callback' => 'wimtvpro_wimvod',
+  'description' => t('This page lets you manage the videos you want to publish'),
+  'page arguments' => array('wimtvpro_wimvod'),
+  'access arguments' => array('administer users'),
+  'weight' => 2
+  );
+  $items['admin/config/wimtvpro/playlist'] =
+  array(
+  'title' => 'Playlist',
+  'page callback' => 'wimtvpro_playlist',
+  'description' => t('Create a playlist of videos (currently only FREE videos can be included) to be posted to your website'),
+  'page arguments' => array('wimtvpro_playlist'),
+  'access arguments' => array('administer users'),
+  'weight' => 3
+  );
+  $items['admin/config/wimtvpro/playlist/modify/%'] =
+  array(
+  'title' => 'Playlist Editing',
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('wimtvpro_playlist_mod', 5),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/wimtvpro/upload'] =
+  array(
+  'title' => t('Upload Video'),
+  'description' => t('You can upload a new video'),
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('wimtvpro_upload_form'),
+  'access arguments' => array('administer users'),
+  'weight' => 0
+  );
+  $items['admin/config/wimtvpro/wimlive'] =
+  array(
+  'title' => 'WimLive',
+  'page callback' => 'wimtvpro_wimlive',
+  'description' => t('This page lets you create and post live streaming events to your website.'),
+  'page arguments' => array('wimtvpro_wimlive'),
+  'access arguments' => array('administer users'),
+  'weight' => 4
+  );
+  $items['admin/config/wimtvpro/mypersonalBlock'] =
+  array(
+  'title' => t('My personal detail'),
+  'description' => t('Configuration personal detail of Wimtv block'),
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('wimtvpro_blockUser_config'),
+  'access arguments' => array('administer users'),
+  'weight' => 5
+  );
+  $items['admin/config/wimtvpro/report'] =
+  array(
+  'title' => t('Analytics'),
+  'page callback' => 'wimtvpro_report',
+  'description' => t('You can see the viewers of your videos'),
+  'page arguments' => array('wimtvpro_report'),
+  'access arguments' => array('administer users'),
+  'weight' => 6
+  );
+
+  $items['admin/config/wimtvpro/programming'] =
+  array(
+  'title' => 'Programmings',
+  //                'description' => t(''),
+  'page callback' => 'wimtvpro_programmingList',
+  'page arguments' => array('wimtvpro_programmingMain'),
+  'access arguments' => array('administer users'),
+  'weight' => 7
+  );
+  $items['admin/config/wimtvpro/programming/add'] =
+  array(
+  'title' => t('New Programming'),
+  'page callback' => 'wimtvpro_programming_add',
+  'page arguments' => array('wimtvpro_programming'),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/config/wimtvpro/programming/edit'] =
+  array(
+  'title' => t('Edit Programming'),
+  'page callback' => 'wimtvpro_programming_edit',
+  'page arguments' => array('wimtvpro_programming'),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/config/wimtvpro/programming/delete'] =
+  array(
+  'title' => t('Delete Programming'),
+  'page callback' => 'wimtvpro_programming_delete',
+  'page arguments' => array('wimtvpro_programming'),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+
+  // NS: Add Settings to menu
+  $items['admin/config/wimtvpro/configure'] =
+  array(
+  'title' => t('Configure'),
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('administer users'),
+  'weight' => 8
+  );
+  $items['admin/config/wimtvpro/wimlive/insert'] =
+  array(
+  'title' => t('Add new Event'),
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('wimtvpro_wimlive_form'),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/wimtvpro/wimlive/webproducer/%'] =
+  array(
+  'file' => 'required/webproducer.inc',
+  'page arguments' => array('wimtvproWebProducer', 5),
+  'access arguments' => array('administer users'),
+  'page callback' => 'wimtvproWebProducer',
+  'access callback' => TRUE,
+  'type' => MENU_CALLBACK
+  );
+  $items['admin/config/wimtvpro/wimlive/modify/%'] =
+  array(
+  'title' => t('Modify Event'),
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('wimtvpro_wimlive_formModify', 5),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/wimtvpro/registration'] =
+  array(
+  'file' => 'required/registration.inc',
+  'title' => t('WimTV Registration'),
+  'page arguments' => array('wimtvproRegistration'),
+  'access callback' => TRUE,
+  'type' => MENU_CALLBACK
+  );
+  $items['admin/config/wimtvpro/wimlive/delete/%'] =
+  array(
+  'title' => t('Delete Event'),
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('wimtvpro_wimlive_delete', 5),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['wimtvpro/elencoLive'] =
+  array(
+  'file' => 'views/wimlive.php',
+  'page callback' => 'wimtvpro_tableLive',
+  'access arguments' => array('access content'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['wimtvpro/viewEmbeddedPlaylist/%'] =
+  array(
+  'page callback' => 'wimtvpro_embeddedPlaylist',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('access content'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/wimtvpro/embedded'] =
+  array(
+  'title' => t('Video Embedded'),
+  'page callback' => 'wimtvpro_embedded',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/wimtvpro/embeddedAll'] =
+  array(
+  'title' => t('Preview Video'),
+  'page callback' => 'wimtvpro_embeddedAll',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/wimtvpro/wimtvproCallAjax'] =
+  array(
+  'file' => 'wimtvpro.sql.php',
+  'page arguments' => array('wimtvproCallAjax'),
+  'access callback' => TRUE,
+  'type' => MENU_CALLBACK
+  );
+  $items['admin/config/wimtvpro/wimtvproCallSync'] =
+  array(
+  'file' => 'wimtvpro.sync.php',
+  'page arguments' => array('wimtvproCallSync'),
+  'access callback' => TRUE,
+  'type' => MENU_CALLBACK
+  );
+  $items['admin/config/wimtvpro/pricing'] =
+  array(
+  'file' => 'required/pricing.inc',
+  'access callback' => TRUE,
+  'type' => MENU_CALLBACK
+  );
+  $items['wimtvpro/embedded'] =
+  array(
+  'title' => 'Video Embedded',
+  'page callback' => 'wimtvpro_embedded',
+  'page arguments' => array('wimtvpro_public'),
+  'access arguments' => array('access content'),
+  'type' => MENU_CALLBACK
+  );
+  $items['wimtvpro'] =
+  array(
+  'title' => 'WimVod Video',
+  'page arguments' => array('wimtvpro_public'),
+  'page callback' => 'wimtvpro_public',
+  'access arguments' => array('access content'),
+  'type' => MENU_CALLBACK
+  );
+  $items['wimlive'] =
+  array(
+  'title' => 'Live',
+  'page arguments' => array('wimtvpro_live_public'),
+  'page callback' => 'wimtvpro_live_public',
+  'access arguments' => array('access content'),
+  'type' => MENU_NORMAL_ITEM
+  );
+  $items['wimtvpro/viewEmbeddedPlayer/%'] =
+  array(
+  'page callback' => 'wimtvpro_plus_embeddedAll',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('access content'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['wimtvpro/viewEmbeddedPlaylist/%'] =
+  array(
+  'page callback' => 'wimtvpro_embeddedPlaylist',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('access content'),
+  'type' => MENU_CALLBACK,
+  );
+  //PLUS
+  //    $items['wimtvproplus/wimtvproCallUpload'] = array(
+  //    $items['wimtvpro/wimtvproCallUpload'] = array(
+  $items['admin/config/wimtvpro/wimtvproCallUpload'] = array(
+  'page callback' => 'wimtvpro_uploadFile',
+  'page arguments' => array('wimtvproCallUpload'),
+  'access callback' => TRUE,
+  'type' => MENU_CALLBACK
+  );
+  //basePath + "/admin/config/wimtvpro/"  + jQuery(this).attr("id")
+  //    $items['wimtvproplus/viewEmbeddedPlayer/%'] = array(
+  $items['wimtvpro/viewEmbeddedPlayer/%'] = array(
+  'page callback' => 'wimtvpro_embeddedAll_output',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('access content'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['wimtvproplus/viewEmbeddedPlaylist/%'] = array(
+  'page callback' => 'wimtvpro_embeddedPlaylist_output',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('access content'),
+  'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/wimtvpro/download'] = array(
+  'page callback' => 'wimtvpro_download',
+  'page arguments' => array('wimtvpro_admin'),
+  'access arguments' => array('administer users'),
+  'type' => MENU_CALLBACK,
+  );
+  return $items;
+  }
+ */
 
 function wimtvpro_admin_paths_alter(&$paths) {
     $paths['admin/config/wimtvpro/wimlive/webproducer/*'] = FALSE;
@@ -583,29 +897,60 @@ function wimtvpro_videosearch_form($form_state) {
     return $form;
 }
 
-//function wimtvpro_js_alter(&$javascript) {
-//    var_dump($javascript["misc/jquery.js"]);
-//    unset($javascript["misc/jquery.js"]);
-//    var_dump($javascript);
-//    global $base_url;
-//    $jQuery_version = '1.7.2';
-//    //$jQuery_local = $base_url.'/'.drupal_get_path('module', 'my_module').'/jquery-1.7.2.min.js';
-//    $jQuery_local = $base_url . '/' . drupal_get_path('module', 'my_module') . '/jquery-1.7.2.min.js?v=' . $jQuery_version;
-//    $jQuery_cdn = 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js';
-//    $javascript['misc/jquery.js']['data'] = $jQuery_cdn;
-//    $javascript['misc/jquery.js']['version'] = $jQuery_version;
-//
-//
-//    $group = $javascript['misc/jquery.js']['group'] = JS_LIBRARY;
-//    $weight = $javascript['misc/jquery.js']['weight'] = -20;
-//    drupal_add_js('window.jQuery || document.write(\'<script type="text/javascript" src="' . $jQuery_local . '"><\/script>\')', array('type' => 'inline', 'scope' => 'header', 'group' => $group, 'every_page' => TRUE, 'weight' => $weight));
-//}
-
-
-
+/*
+  //function wimtvpro_js_alter(&$javascript) {
+  //    var_dump($javascript["misc/jquery.js"]);
+  //    unset($javascript["misc/jquery.js"]);
+  //    var_dump($javascript);
+  //    global $base_url;
+  //    $jQuery_version = '1.7.2';
+  //    //$jQuery_local = $base_url.'/'.drupal_get_path('module', 'my_module').'/jquery-1.7.2.min.js';
+  //    $jQuery_local = $base_url . '/' . drupal_get_path('module', 'my_module') . '/jquery-1.7.2.min.js?v=' . $jQuery_version;
+  //    $jQuery_cdn = 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js';
+  //    $javascript['misc/jquery.js']['data'] = $jQuery_cdn;
+  //    $javascript['misc/jquery.js']['version'] = $jQuery_version;
+  //
+  //
+  //    $group = $javascript['misc/jquery.js']['group'] = JS_LIBRARY;
+  //    $weight = $javascript['misc/jquery.js']['weight'] = -20;
+  //    drupal_add_js('window.jQuery || document.write(\'<script type="text/javascript" src="' . $jQuery_local . '"><\/script>\')', array('type' => 'inline', 'scope' => 'header', 'group' => $group, 'every_page' => TRUE, 'weight' => $weight));
+  //}
+ */
 
 /*
  * WIMTV PRO PLUS FUNCTIONS
  * 
  */
+
+function render_help_link() {
+    echo "<div class='help'><a href='" . getWhiteLabel('HELP_LINK_URL') . "' target='_new'>Help</a></div>";
+}
+
+function loadWhiteLabelDictionary() {
+    global $WL_DICTIONARY;
+    global $language;
+    //print "<h2>loading dictionary</h2>";
+    $lang_name = $language->language;
+    $modulePath = drupal_realpath(drupal_get_path("module", "wimtvpro"));
+    $wlPath = $modulePath . "/translations/wl/";
+    $filename = $wlPath . "/wimtvpro_wl_$lang_name.txt";
+    if (!file_exists($filename)) {
+        $filename = $wlPath . "/wimtvpro_wl_all.txt";
+    }
+    $line_dictionary = file($filename, FILE_SKIP_EMPTY_LINES);
+    $WL_DICTIONARY = array();
+    foreach ($line_dictionary as $line) {
+        $parts = explode("=", $line);
+        if (sizeof($parts) == 2) {
+            $WL_DICTIONARY[trim($parts[0])] = trim($parts[1]);
+        }
+    }
+}
+
+function getWhiteLabel($wl_string) {
+    global $WL_DICTIONARY;
+    $res = (sizeof($WL_DICTIONARY) > 0 && array_key_exists($wl_string, $WL_DICTIONARY)) ? $WL_DICTIONARY[$wl_string] : "$wl_string";
+    return $res;
+}
+
 ?>

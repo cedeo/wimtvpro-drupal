@@ -1,4 +1,5 @@
-<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
+<?php render_help_link(); ?>
+
 <div class='action'></div>
 
 <div class="region region-help">
@@ -18,7 +19,6 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function() {
-
         jQuery(".playlist input.title").click(function() {
 //            jQuery(this).parent().parent().children("td.action").children(".icon_modTitlePlay").show();
             jQuery(this).parent().children(".icon_modTitlePlay").show();
@@ -105,6 +105,7 @@
     <table class="wp-list-table widefat fixed posts" style="text-align:center;">
         <tr>
             <th class="manage-column column-title"><?php echo t("Title"); ?></th>
+            <th class="manage-column column-title"><?php echo t("Shortcode"); ?></th>
             <th class="manage-column column-title"><?php echo t("Edit"); ?></th>
             <th class="manage-column column-title"><?php echo t("Delete"); ?></th>
         </tr>
@@ -115,9 +116,12 @@
                     <span class="icon_modTitlePlay"></span>
                     <span class="counter">(<?php echo $record->countVideo ?>)</span>
                 </td>
+                <td class="playlist shortcode">
+                    <textarea readonly='readonly' onclick="this.focus();this.select();"
+            >[playlistWimtv]<?php echo $record->id . "|" . variable_get("widthPreview") . "|" . variable_get("heightPreview"); ?>[/playlistWimtv]</textarea></td>
 
                 <td class="playlist">
-                    <a href="<?php echo url('admin/config/wimtvpro/playlist/modify/' . $record->id) ?>">
+                    <a href="<?php echo url('admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('PLAYLIST_urlLink') . '/modify/' . $record->id) ?>">
                         <span class="icon_viewPlay"></span>
                     </a>
                 </td>
@@ -125,9 +129,9 @@
                     <span class="icon_deletePlay"></span>
                 </td>
             </tr>
-        <?php } ?>
+<?php } ?>
         <tr>
-            <td colspan="2" class="playlistNew">
+            <td colspan="3" class="playlistNew">
                 <input type="text" value="Playlist <?php echo $count ?>" />
             </td>
             <td>

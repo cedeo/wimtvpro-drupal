@@ -75,10 +75,8 @@ jQuery(document).ready(function() {
 
     function callviewVideothumbs(element) {
         var id = element.parent().parent().parent().parent("li").attr("id");
-
         jQuery(".icon_viewVideo").colorbox({
             html: function() {
-
                 stateView = jQuery(this).attr("rel");
 
                 text = '<p>Do you want view the thumb?</p>';

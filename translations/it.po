@@ -979,9 +979,9 @@ msgstr "Stato"
 msgid "View"
 msgstr "Visualizza"
 
-#: templates/wimbox.php:29 templates/wimvod.php:29 views/wimlive.php:509
-msgid "Delete"
-msgstr "Elimina"
+# : templates/wimbox.php:29 templates/wimvod.php:29 views/wimlive.php:509
+# msgid "Delete"
+# msgstr "Elimina"
 
 #: templates/wimlive.php:10
 msgid ""
@@ -1078,9 +1078,9 @@ msgstr ""
 "Si consiglia di applicare una tolleranza sul tempo di avvio per facilitare "
 "le operazioni di pagamento per gli spettatori."
 
-#: views/wimlive.php:269;509
-msgid "Edit"
-msgstr "Modifica"
+# : views/wimlive.php:269;509
+# msgid "Edit"
+# msgstr "Modifica"
 
 #: views/wimlive.php:369
 msgid ""

@@ -46,6 +46,7 @@ function wimtvpro_admin() {
     }
 
     $form['fieldConfig'] = array(
+        '#id' => 'config',
         '#type' => 'fieldset',
         '#title' => 'Configuration',
         '#collapsible' => TRUE,
@@ -95,16 +96,18 @@ function wimtvpro_admin() {
     if (is_dir($directory)) {
         if ($directory_handle = opendir($directory)) {
             while (($file = readdir($directory_handle)) !== FALSE) {
-                if ((!is_dir($file)) && ($file != ".") && ($file != "..")) {
-                    $explodeFile = explode(".", $file);
-                    if ($explodeFile[1] == "zip")
-                        $elencoSkin[$explodeFile[0]] = $explodeFile[0];
+                if ((is_dir($directory . DIRECTORY_SEPARATOR . $file) && ($file != ".") && ($file != ".."))) {
+                    $elencoSkin[$file] = $file;
                 }
+//                if ((!is_dir($file)) && ($file != ".") && ($file != "..")) {
+//                    $explodeFile = explode(".", $file);
+//                    if (sizeof($explodeFile)>1 && $explodeFile[1] == "zip")
+//                        $elencoSkin[$explodeFile[0]] = $explodeFile[0];
+//                }
             }
             closedir($directory_handle);
         }
     }
-
     $form['fieldConfig']['nameSkin'] = array(
         '#type' => 'select',
         '#title' => t('Skin name'),
@@ -186,17 +189,21 @@ function wimtvpro_admin() {
     }
     //End FieldsetConfig
 
+
     if ($view_page == "") {
-        $openFieldSet = FALSE;
-        if ($openFieldSet) {
-            $form['fieldPricing'] = array('#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => FALSE);
-        } else {
-            $form['fieldPricing'] = array('#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => TRUE);
-        }
-        $form['fieldPayment'] = array('#type' => 'fieldset', '#title' => t('Monetisation'), '#collapsible' => TRUE, '#collapsed' => TRUE);
-        $form['fieldLive'] = array('#type' => 'fieldset', '#title' => t('Live'), '#collapsible' => TRUE, '#collapsed' => TRUE);
+//        $openFieldSet = FALSE;
+//        $openFieldSet = strpos($_GET['q'],"/configure/pricing")>0;
+//        if ($openFieldSet) {
+//            $form['fieldPricing'] = array('#id'=>'pricing','#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => FALSE);
+//        } else {
+//            $form['fieldPricing'] = array('#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => TRUE);
+//        }
+        $form['fieldPricing'] = array('#id' => 'pricing', '#type' => 'fieldset', '#title' => t('Pricing'), '#collapsible' => TRUE, '#collapsed' => FALSE);
+
+        $form['fieldPayment'] = array('#id' => 'payment', '#type' => 'fieldset', '#title' => t('Monetisation'), '#collapsible' => TRUE, '#collapsed' => TRUE);
+        $form['fieldLive'] = array('#id' => 'live', '#type' => 'fieldset', '#title' => t('Live'), '#collapsible' => TRUE, '#collapsed' => TRUE);
         //$form['fieldPersonal'] = array('#type'=>'fieldset','#title'=>t('Personal Info'),'#collapsible' => TRUE, '#collapsed' => TRUE);
-        $form['fieldFeatures'] = array('#type' => 'fieldset', '#title' => t('Features'), '#collapsible' => TRUE, '#collapsed' => TRUE);
+        $form['fieldFeatures'] = array('#id' => 'features', '#type' => 'fieldset', '#title' => t('Features'), '#collapsible' => TRUE, '#collapsed' => TRUE);
 
         //fieldPricing
         $pricing = wimtvpro_callPricing();
@@ -371,6 +378,16 @@ function wimtvpro_admin() {
     unset($form['addPageMyStreaming']);
 
     $form['#validate'][] = 'wimtvpro_admin_validate';
+
+//    foreach ($form as $key => $value) {
+//        if (isset($value['#type']) && $value['#type'] == 'fieldset')
+//            if ($value['#title'] == t($_GET["field"])) {
+//                $form[$key]['#collapsed'] = FALSE;
+//            }
+//            else{
+//                $form[$key]['#collapsed'] = TRUE;
+//            }
+//    }
     return system_settings_form($form);
 }
 
@@ -386,7 +403,19 @@ function wimtvpro_admin_validate($form, &$form_state) {
             $validators = array(
                 'file_validate_extensions' => array('zip')
             );
-            file_save_upload("uploadSkin", $validators, $directory);
+
+            file_save_upload("uploadSkin", $validators, $directory, FILE_EXISTS_REPLACE);
+
+            $zip = new ZipArchive;
+            $realpath = drupal_realpath($directory);
+            if ($zip->open($realpath . "/" . $file) === TRUE) {
+                $zip->extractTo($realpath);
+                $zip->close();
+            } else {
+                file_unmanaged_delete($realpath . "/" . $file);
+                $errortext = "Unzip Failed - file: " . $realpath . "/" . $file;
+                form_set_error("Unzip Error", $errortext);
+            }
             //form_set_value("Upload", $arrayFile[0], $form_state);
         }
     }

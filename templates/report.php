@@ -66,7 +66,8 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
 }
 ?>
 
-<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
+<?php render_help_link(); ?>
+
 <div class='wrap'>
     <h2>Report user Wimtv <?php echo $user ?></h2>
     <h3 id='changeTitle'><?php echo $title_user ?></h3>
@@ -83,7 +84,16 @@ function writeGraph($from_dmy, $to_dmy, $dateNumber, $dateTraffic) {
         </form>
     </div>
     <p><?php echo t("The Storage and Bandwidth Package you subscribed:") ?>:
-        <b><?php echo $namePacket ?></b> - <a href='../../wimtvpro-drupal/templates/?page=WimTvPro&pack=1&return=WimTVPro_Report'><?php echo t("Change") ?></a>
+        <b><?php echo $namePacket ?></b> - 
+        <!--<a href='../../wimtvpro-drupal/templates/?page=WimTvPro&pack=1&return=WimTVPro_Report'>-->
+        <?php
+//        $changeLink = '../../wimtvpro-drupal/templates/?page=WimTvPro&pack=1&return=WimTVPro_Report';
+        $changeLink = '/admin/config/' . getWhiteLabel('APP_NAME') . '/configure#pricing';
+        ?>
+        
+        <a href="<?php echo $changeLink ?>">
+            <?php echo t("Change") ?>
+        </a>
     </p>
     <?php if ($traffic == "") { ?>
         <p><?php echo t("You did not generate any traffic in this period") ?></p>

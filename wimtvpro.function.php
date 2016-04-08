@@ -276,22 +276,22 @@ function wimtvpro_viever_jwplayer($userAgent, $video, $viewFlashPlayer = true) {
     return false;
 }
 
-function dbBuildVideosIn($listVideos, $in = true) {
-    if (count($listVideos)) {
-        $where = " AND contentidentifier ";
-        if (!$in)
-            $where .= "NOT";
-        $where .= " IN (";
-        foreach ($listVideos as $index => $video) {
-            $where .= "'" . $video . "'";
-            if ($index < count($listVideos) - 1)
-                $where .= ", ";
-        }
-        $where .= ")";
-        return $where;
-    }
-    return "";
-}
+//function dbBuildVideosIn($listVideos, $in = true) {
+//    if (count($listVideos)) {
+//        $where = " AND contentidentifier ";
+//        if (!$in)
+//            $where .= "NOT";
+//        $where .= " IN (";
+//        foreach ($listVideos as $index => $video) {
+//            $where .= "'" . $video . "'";
+//            if ($index < count($listVideos) - 1)
+//                $where .= ", ";
+//        }
+//        $where .= ")";
+//        return $where;
+//    }
+//    return "";
+//}
 
 function wimtvpro_getThumbs_playlist($list, $showtime = FALSE, $private = TRUE, $insert_into_page = FALSE, $type_public = "", $playlist = FALSE) {
     global $user;
@@ -348,7 +348,7 @@ function wimtvpro_getThumbs_playlist($list, $showtime = FALSE, $private = TRUE, 
 function wimtvpro_alert_reg() {
     //If user isn't registered or had not insert user and password
     if ((variable_get("userWimtv") == "username") && (variable_get("passWimtv") == "password")) {
-        return t("If you don't have a WimTV account <a href='@url'>REGISTER</a> | <a href='@url2'>LOGIN</a> with your WimTV credentials", array('@url' => url('admin/config/wimtvpro/registration'), '@url2' => url('admin/config/wimtvpro')));
+        return t("If you don't have a WimTV account <a href='@url'>REGISTER</a> | <a href='@url2'>LOGIN</a> with your WimTV credentials", array('@url' => url('admin/config/' . getWhiteLabel("APP_NAME") . '/' . getWhiteLabel("REGISTER_urlLink")), '@url2' => url('admin/config/' . getWhiteLabel("APP_NAME"))));
     } else {
         return "";
     }
@@ -388,7 +388,6 @@ function putInShowTime($contentId, $params) {
 
     return $response;
 }
-
 
 function timezoneList() {
     /**
@@ -436,7 +435,7 @@ function getTimezoneNameEquivalent($timezoneName) {
     foreach ($defaultTimezoneArray as $tzName => $descr) {
         $tzTime = new \DateTime('now', new DateTimeZone($tzName));
         $tzTimezoneOffset = $tzTime->format('P');
-        if ($tzTimezoneOffset == $timezoneOffset){
+        if ($tzTimezoneOffset == $timezoneOffset) {
             return $tzName;
         }
     }

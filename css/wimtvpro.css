@@ -284,12 +284,13 @@ div#view_graph div.cols div.col div.countview .barTraffic{
 }
 
 div.wimtv-thumbnail {
-    position:relative; text-align:center;
+    position:relative; text-align:left;
 }
 div.wimtv-thumbnail img {
     min-height:100px; min-width:160px; background:#fff url('../img/empty.jpg') no-repeat center center;
     position:relative;
 }
+
 div.img_empty {
     margin:0; padding:0;
     width:160px; height:100px; background:#fff url('../img/empty.jpg') no-repeat center center;
@@ -310,6 +311,13 @@ div.img_empty {
 }
 .playlist input{
     width:40%; display:block; float:left; background-color:#fff!important; border:1px solid #666!important;
+}
+.playlist.shortcode {
+    width:20%;;
+}
+
+.playlist.shortcode textarea{
+    resize: none; width:100%;
 }
 .playlistNew input{
     width:40%; display:block; float:left; background-color:#fff!important; border:1px solid #666!important;
@@ -645,4 +653,19 @@ input.pickadate {
 }
 #wimtvpro-wimlive-form .form-item-Duration{
     clear: both;
+}
+
+span.wimtv-thumbnail img{
+    /*width:100%;*/
+    background:#fff url('../img/empty.jpg') no-repeat center center;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+span.wimtv-thumbnail{
+    /*width:100%;*/
+    width: 200px !important;
+}
+
+img.icon-transcoding{
+    width:130px !important;
 }

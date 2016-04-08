@@ -1,4 +1,4 @@
-<div class="help"><a href="http://support.wim.tv/?cat=5" target="_new">Help</a></div>
+<?php render_help_link(); ?>
 
 <div class="region region-help">
     <div id="block-system-help" class="block block-system">
@@ -18,8 +18,7 @@
     </div>
 </div>
 
-
-<?php echo l(t("Add") . " " . t("new event"), "admin/config/wimtvpro/wimlive/insert") ?>
+<?php echo l(t("Add") . " " . t("new event"), 'admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('WIMLIVE_urlLink') . "/insert") ?>
 <table id='tableLive'>
     <thead>
         <tr>

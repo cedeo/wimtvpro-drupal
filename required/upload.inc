@@ -105,7 +105,7 @@ function wimtvpro_upload($form_state) {
         );
 
 
-        $url_categories = variable_get("basePathWimtv") . "videoCategories";
+        $url_categories = cms_getWimtvApiUrl() . "videoCategories";
         $response = apiGetVideoCategories(); // curl_exec($ch);
         $category_json = json_decode($response);
         $category = array();
@@ -232,7 +232,8 @@ function wimtvpro_upload_validate($form, &$form_state) {
         $arrayjsonst = json_decode($response);
 
         if (isset($arrayjsonst->contentIdentifier)) {
-            drupal_set_message(t("Upload successful") . " - " . l(t('Back to WimBox'), 'admin/config/wimtvpro/wimbox'));
+//            drupal_set_message(t("Upload successful") . " - " . l(t('Back to WimBox'), 'admin/config/wimtvpro/wimbox'));
+            drupal_set_message(t("Upload successful") . " - " . l(t('Back to WimBox'), 'admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('WIMBOX_urlLink')));
             // NS: We use the "check_plain" method to safely insert strange 
             // filename chars into database.
 //            $query = db_query("INSERT INTO {wimtvpro_videos} (uid,contentidentifier,mytimestamp,position,state, viewVideoModule,status,acquiredIdentifier,urlThumbs,category,title,duration,showtimeIdentifier) VALUES (
