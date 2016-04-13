@@ -125,7 +125,7 @@ function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null)
             if ($isiPad || $isiPhone || $isAndroid || $isApple) {
                 $html5 = true;
             }
-            
+
             if (!$html5) {
                 $playlistConf['modes'] = "[{type:'flash',src:'" . $dirJwPlayer . "'}]";
             } else {
@@ -148,7 +148,7 @@ function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null)
             $playlistConfPlaylistItem = array();
             $playlistConfPlaylistItem['file'] = $arrayjson->streamingUrl->file;
             $playlistConfPlaylistItem['streamer'] = $arrayjson->streamingUrl->streamer;
-            
+
             $playlistConfPlaylistItem['type'] = "rtmp";
             $playlistConfPlaylistItem['primary'] = $html5 ? "html5" : "flash";
             $playlistConfPlaylistItem['rtmp'] = "{tunnelling: false, fallback: false}";
@@ -177,8 +177,8 @@ function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null)
     $playlistConf['repeat'] = "always";
     $playlistConf['fallback'] = "false";
 
-    $playlistConf['width'] = ((isset($width) && $width != "") ? $width : variable_get("widthPreview")) . "px";
-    $playlistConf['height'] = ((isset($height) && $height != "") ? $height : variable_get("heightPreview")) . "px";
+    $playlistConf['width'] = ((isset($width) && $width != "") ? $width : variable_get("widthPreview"));
+    $playlistConf['height'] = ((isset($height) && $height != "") ? $height : variable_get("heightPreview"));
 
 //        $playListScript .= "width:1000px, height:100px";
 

@@ -162,14 +162,14 @@ function wimtvpro_admin() {
         '#type' => 'hidden',
         '#value' => t('no')
     );
-    $form['fieldConfig']['addPageMyStreaming'] = array(
-        '#title' => t('Would you like to add a public (visible to End Users) Video page to your web site?'),
-        '#type' => 'select',
-        '#maxlength' => 5,
-        '#options' => array('no' => 'No', 'yes' => 'Yes, add a page'),
-        '#required' => TRUE,
-        '#default_value' => variable_get('addPageMyStreaming', 'no'),
-    );
+//    $form['fieldConfig']['addPageMyStreaming'] = array(
+//        '#title' => t('Would you like to add a public (visible to End Users) Video page to your web site?'),
+//        '#type' => 'select',
+//        '#maxlength' => 5,
+//        '#options' => array('no' => 'No', 'yes' => 'Yes, add a page'),
+//        '#required' => TRUE,
+//        '#default_value' => variable_get('addPageMyStreaming', 'no'),
+//    );
     $my_fields = field_info_fields();
 
     if (count($my_fields) > 0) {
