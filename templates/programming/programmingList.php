@@ -20,7 +20,7 @@
             <th><?php echo t("Shortcode"); ?></th>
             <th><?php echo t("Modify"); ?></th>
             <th><?php echo t("Remove"); ?></th>
-            
+
         </tr>
     </thead>
     <tbody>
@@ -35,10 +35,16 @@
             <tr>
                 <td><?php echo $titleProgramming; ?></td>
                 <td>
-
+                    <?php
+                    $pid = $prog->identifier;
+                    $width = variable_get("widthPreview");
+                    $height = variable_get("heightPreview");
+                    $shortcode = "[wimprog]" . $pid . "|" . $width . "|" . $height . "[/wimprog]";
+                    ?>
                     <textarea style="resize: none; width:90%;height:100%;" readonly='readonly' 
                               onclick="this.focus();
-                                      this.select();">[wimprog id="<?php echo $prog->identifier; ?>"]</textarea>
+                                      this.select();"><?php echo $shortcode ?></textarea>
+    <!--[wimprog id="<?php //echo $prog->identifier; ?>"]-->
 
                 </td>
                 <?php
@@ -47,18 +53,18 @@
                 $path_edit = '/admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('SCHEDULES_urlLink') . '/edit?title=' . $titleProgramming . "&progId=" . $prog->identifier;
                 $path_delete = '/admin/config/' . getWhiteLabel('APP_NAME') . '/' . getWhiteLabel('SCHEDULES_urlLink') . '/delete?progId=' . $prog->identifier;
                 ?>
-                <td>
+                <td style="width: 10%;">
                     <a href='<?php echo $path_edit ?>' alt='<?php t("Modify"); ?>' title='<?php t("Modify"); ?>'>
                         <img src='<?php echo base_path() . drupal_get_path("module", "wimtvpro") . "/img/mod.png"; ?>'  alt='<?php t("Modify"); ?>'>
                     </a>
                 </td>
-                <td>
+                <td style="width: 10%;">
                     <!--<a href='?page=WimVideoPro_Programming&functionList=delete&id=<?php echo $prog->identifier; ?>' alt='<?php t("Remove"); ?>' title='<?php t("Remove"); ?>'>-->
                     <a href='<?php echo $path_delete ?>' alt='<?php t("Modify"); ?>' title='<?php t("Modify"); ?>'>
                         <img src='<?php echo base_path() . drupal_get_path("module", "wimtvpro") . "/img/remove.png"; ?>'  alt='<?php t("Remove"); ?>'>
                     </a>
                 </td>
-                
+
             </tr>
         <?php endforeach; ?>
     </tbody>

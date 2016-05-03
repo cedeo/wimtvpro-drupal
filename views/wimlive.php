@@ -456,6 +456,11 @@ function wimtvpro_wimlive_submit($form, &$form_state) {
 //    } else {
 //        $response = apiAddLive($params, $_POST['timelivejs']);
 //    }
+
+//    watchdog("wimlive_debug_id", '<pre>' . print_r($_POST['identifier'], true) . '</pre>');
+//    watchdog("wimlive_debug_params", '<pre>' . print_r($params, true) . '</pre>');
+//    watchdog("wimlive_debug_timezone", '<pre>' . print_r($timezone, true) . '</pre>');
+//var_dump($_POST['identifier'], $params, $timezone);die;
     if ($_POST['typeValue'] == "modify") {
         $response = apiModifyLive($_POST['identifier'], $params, $timezone);
     } else {
@@ -542,6 +547,7 @@ function wimtvpro_tableLive() {
     $count = -1;
     $output = "";
     if ($arrayjson_live) {
+//        watchdog("wimlive_views_wimlive_array_debug", '<pre>' . print_r($arrayjson_live, true) . '</pre>');
         foreach ($arrayjson_live->hosts as $key => $value) {
             $count++;
             $name = $value->name;
@@ -581,6 +587,7 @@ function wimtvpro_tableLive() {
 //                    apiGetLiveIframe($identifier, $params);
 //            $details_live = apiEmbeddedLive($identifier, $timezone);
             $details_live = apiGetLive($identifier, $timezone);
+//            watchdog("wimlive_views_wimlive_details_debug", '<pre>' . print_r($details_live, true) . '</pre>');
             $livedate = json_decode($details_live);
 
             $data = $livedate->eventDate;
@@ -650,7 +657,7 @@ function wimtvpro_tableLive() {
         }
     }
     if ($count < 0) {
-        $output = "<tr><td colspan='7'>".t("No event scheduled at this time")."</td></tr>";
+        $output = "<tr><td colspan='7'>" . t("No event scheduled at this time") . "</td></tr>";
     }
     echo $output;
 }

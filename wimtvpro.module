@@ -940,11 +940,13 @@ function loadWhiteLabelDictionary() {
     $line_dictionary = file($filename, FILE_SKIP_EMPTY_LINES);
     $WL_DICTIONARY = array();
     foreach ($line_dictionary as $line) {
-        $parts = explode("=", $line);
+
+        $parts = explode("=", $line, 2); // WE ALLOW IN THIS WAY TO ADD THE "EQUALS" SIGN INTO VALUE
         if (sizeof($parts) == 2) {
             $WL_DICTIONARY[trim($parts[0])] = trim($parts[1]);
         }
     }
+//    die;
 }
 
 function getWhiteLabel($wl_string) {

@@ -1,7 +1,7 @@
 API_URL = https://www.wim.tv/wimtv-webapp/rest/
 APP_NAME = WimTvPro
 APP_HOME_LINK_URL = http://www.wim.tv
-HELP_LINK_URL = http://support.wim.tv/?cat=5
+HELP_LINK_URL = http://support.wim.tv/wimtvpro-drupal
 
 # menu items
 SETTINGS_menuLink = Configurazione

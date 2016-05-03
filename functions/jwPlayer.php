@@ -11,20 +11,28 @@ function wimtvpro_get_skin_data() {
         $skinData["skinName"] = variable_get('nameSkin');
         $skinBaseUrl = file_create_url("public://skinWim");
         $skinBaseDir = drupal_realpath("public://skinWim");
-
-        $skinCssFile = $skinBaseDir . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".css";
-
-        if (file_exists($skinCssFile)) {
-            $skinUrl = $skinBaseUrl . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".css";
-            $skinData["styleUrl"] = htmlentities($skinUrl);
-        }
-        $logoUri = $skinBaseDir . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".png";
-        $logoUrl = $skinBaseUrl . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".png";
-
-        if (image_get_info($logoUri)) {
-            $skinData["logoUrl"] = $logoUrl;
-        }
+    } else {
+        $skinData["skinName"] = "wimtv";
+        $skinBaseUrl = file_create_url(drupal_get_path('module', 'wimtvpro') . "/skin");
+        $skinBaseDir = drupal_realpath(drupal_get_path('module', 'wimtvpro') . "/skin");
     }
+
+
+    $skinCssFile = $skinBaseDir . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".css";
+
+    if (file_exists($skinCssFile)) {
+        $skinUrl = $skinBaseUrl . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".css";
+        $skinData["styleUrl"] = htmlentities($skinUrl);
+    }
+    $logoUri = $skinBaseDir . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".png";
+    $logoUrl = $skinBaseUrl . "/" . $skinData["skinName"] . "/" . $skinData["skinName"] . ".png";
+
+    if (image_get_info($logoUri)) {
+        $skinData["logoUrl"] = $logoUrl;
+    }
+
+
+//    var_dump($skinData);die();
     return $skinData;
 }
 
@@ -62,7 +70,8 @@ function configurePlayerJS($contentItem, $width = null, $height = null) {
     $playerScript = "
             <script type='text/javascript'>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>
             <script type='text/javascript'>jwplayer('$divContainerID').setup({";
-    $playerScript .= getConfFromDataArray($player);
+    $playerConfig = getConfFromDataArray($player);
+    $playerScript .= $playerConfig;
     $playerScript .= "});</script>";
 
     $playerScript = "<div id='$divContainerID' ></div>" . $playerScript;
@@ -149,6 +158,8 @@ function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null)
             $playlistConfPlaylistItem['file'] = $arrayjson->streamingUrl->file;
             $playlistConfPlaylistItem['streamer'] = $arrayjson->streamingUrl->streamer;
 
+//            $playlistConfPlaylistItem['skin'] = "";
+//            $playlistConfPlaylistItem['logo'] = "";
             $playlistConfPlaylistItem['type'] = "rtmp";
             $playlistConfPlaylistItem['primary'] = $html5 ? "html5" : "flash";
             $playlistConfPlaylistItem['rtmp'] = "{tunnelling: false, fallback: false}";
@@ -181,7 +192,6 @@ function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null)
     $playlistConf['height'] = ((isset($height) && $height != "") ? $height : variable_get("heightPreview"));
 
 //        $playListScript .= "width:1000px, height:100px";
-
     $skinData = wimtvpro_get_skin_data();
     if ($skinData['styleUrl'] != "") {
         $playlistConf['skin'] = "{name : '" . $skinData["skinName"] . "', url : '" . $skinData['styleUrl'] . "'}";
@@ -199,11 +209,7 @@ function configurePlayer_PlaylistJS($playlist_id, $width = null, $height = null)
             <script>jwplayer.key='2eZ9I53RjqbPVAQkIqbUFMgV2WBIyWGMCY7ScjJWMUg=';</script>
             <script type='text/javascript'>jwplayer('$divContainerID').setup({";
 
-
-    $playListScript .= getConfFromDataArray($playlistConf);
-//    print($playlistConf); die;
-    $playListScript .= "});</script>";
-
+    $playListScript .= getConfFromDataArray($playlistConf) . "});</script>";
     $playListScript = "<div id='$divContainerID' ></div>" . $playListScript;
     return $playListScript;
 }

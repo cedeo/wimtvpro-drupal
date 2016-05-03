@@ -31,7 +31,8 @@ class wimtvpro_smartSync {
 
             // VIDEO HAS NOT YET TRANSCODED OR NOT EXISTS
             if ($api_video_detail_response == "") {
-                $notReadyString = "The video is not ready yet";
+//                $notReadyString = "The video is not ready yet";
+                $notReadyString = "not ready yet";
 //                $errorBody = isset($error_response->body) ? $error_response->body : "";                
                 $errorBody = $error_response->body;
 
@@ -44,7 +45,9 @@ class wimtvpro_smartSync {
 //                watchdog("wimtv", $msg);
 
                 $notReady = strstr($errorBody, $notReadyString);
-
+//                watchdog("wimtv-smartsynch", '<pre>' . print_r($errorBody, true) . '</pre>');
+//                watchdog("wimtv-smartsynch", '<pre>' . print_r($notReadyString, true) . '</pre>');
+                
                 if ($notReady == false) {
                     // VIDEO NOT FOUND IN REMOTE SERVER: delete it from local cache
                     dbDeleteVideo($db_record->contentidentifier);

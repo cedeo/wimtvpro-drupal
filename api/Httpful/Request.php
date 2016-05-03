@@ -200,7 +200,6 @@ class Request
     {
         if (!$this->hasBeenInitialized())
             $this->_curlPrep();
-
         $result = curl_exec($this->_ch);
         
         if ($result === false) {
