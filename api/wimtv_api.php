@@ -256,7 +256,8 @@ function apiGetLiveEvents($timezone, $activeOnly) {
     }
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'application/json');
+    $lang = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
+    return $apiAccessor->execute($request, 'application/json', $lang);
 }
 
 function apiGetLive($host_id, $timezone = "") {
@@ -266,7 +267,9 @@ function apiGetLive($host_id, $timezone = "") {
         $url .= '?timezone=' . $timezone;
     $request = $apiAccessor->getRequest($url);
     $request = $apiAccessor->authenticate($request);
-    return $apiAccessor->execute($request, 'application/json');
+    $lang = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
+    return $apiAccessor->execute($request, 'application/json', $lang);
+//    return $apiAccessor->execute($request, 'application/json');
 }
 
 function apiGetLiveIframe($host_id, $params = "") {
@@ -301,7 +304,6 @@ function apiAddLive($parameters, $timezone = null) {
 
     $request = $apiAccessor->postRequest($url);
     $request = $apiAccessor->authenticate($request);
-
 //    $request->sendsAndExpects(Mime::JSON);
 //    $request->addOnCurlOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 
@@ -316,6 +318,9 @@ function apiAddLive($parameters, $timezone = null) {
 }
 
 function apiModifyLive($host_id, $parameters, $timezone = null) {
+//    watchdog("wimlive_apiModifyLive_debug", '<pre>' . print_r($host_id, true) . '</pre>');
+//    watchdog("wimlive_apiModifyLive_debug", '<pre>' . print_r($parameters, true) . '</pre>');
+//    watchdog("wimlive_apiModifyLive_debug", '<pre>' . print_r($timezone, true) . '</pre>');
     $apiAccessor = getApi();
     $url = $apiAccessor->liveHostsUrl . '/' . $host_id;
     if ($timezone)
@@ -326,6 +331,7 @@ function apiModifyLive($host_id, $parameters, $timezone = null) {
     //    $response = $apiAccessor->execute($request, 'application/json', false);
     $lang = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
     $response = $apiAccessor->execute($request, 'application/json', $lang);
+//    watchdog("wimlive_apiModifyLive_debug", '<pre>' . print_r($response, true) . '</pre>');
     return $response;
 }
 

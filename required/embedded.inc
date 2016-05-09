@@ -118,7 +118,7 @@ function wimtvpro_embeddedAll() {
 //			   }},";
 //
 //        $output .= "image: '" . $thumbs[1] . "',});</script>&nbsp;";
-        
+
         $output .= configurePlayerJS($contentItem);
         $output .= "<h3>" . $video[0]->title . " (" . t("Preview") . ")</h3>";
         $output .= "<p>" . t("Duration") . ": <b>" . $video[0]->duration . "</b>";
