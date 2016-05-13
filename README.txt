@@ -8,6 +8,11 @@ Requires:
 - php5 curl (LibCurl). Extension server php "php_curl.dll"
 - verify php.ini install curl. For install "sudo apt-get install php5-curl"
 
+PHP settings to upload video to WimTVPro: PHP assumes maximum values for file upload to a remote server, typically to avoid upload of large files by non-authorised users. For this reason such limits are typically low (a few MB), especially for video upload. The values to modify are found in file php.ini (in the relevant system configuration area of the PHP system) are:
+
+post_max_size – Maximum size of POST data that PHP will accept – http://php.net/post-max-size
+upload_max_filesize – Maximum allowed size for uploaded files – http://php.net/upload-max-filesize
+
 Overview:
 --------
 WimTVPro is the video module that adds several features to manage and publish video on demand, video playlists and stream live events on your website.
